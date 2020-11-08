@@ -1,0 +1,14 @@
+{
+  "name": "dwfe-routing",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "bootstrap": "lerna bootstrap --hoist",
+    "clean:dist": "lerna run clean",
+    "total:clean": "npm run clean:dist && lerna clean --yes && rimraf package-lock.json && rimraf ./node_modules"
+  },
+  "devDependencies": {
+    "lerna": "3",
+    "rimraf": "3"
+  }
+}
