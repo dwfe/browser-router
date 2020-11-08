@@ -1,0 +1,21 @@
+{
+  "name": "@dwfe/browser-router",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "typings": "./dist/types",
+  "scripts": {
+    "clean": "rimraf ./dist",
+    "build": "npm run clean && tsc -b",
+    "build watch": "npm run clean && tsc -b -w"
+  },
+  "devDependencies": {
+    "@types/node": "12",
+    "typescript": "4",
+    "rimraf": "3",
+    "rxjs": "6",
+    "@dwfe/path-resolver": "*",
+    "history": "5"
+  },
+  "dependencies": {}
+}
