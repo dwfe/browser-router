@@ -1,7 +1,7 @@
 {
   "name": "@dwfe/routing-tests",
-  "version": "1.0.0",
-  "license": "MIT",
+  "private": true,
+  "license": "UNLICENSED",
   "main": "./dist/index.js",
   "typings": "./dist/types",
   "scripts": {
