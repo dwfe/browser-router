@@ -19,7 +19,7 @@
     "@types/jest": "26",
     "babel-jest": "26",
     "jest": "^26",
-    "@dwfe/path-resolver": "1"
+    "@do-while-for-each/path-resolver": "1"
   },
   "dependencies": {}
 }
