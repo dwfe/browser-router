@@ -1,5 +1,5 @@
 {
-  "name": "@dwfe/path-resolver",
+  "name": "@do-while-for-each/path-resolver",
   "version": "1.0.1",
   "license": "MIT",
   "main": "./dist/index.js",
@@ -14,5 +14,6 @@
     "path-to-regexp": "6",
     "rimraf": "3",
     "typescript": "4"
-  }
+  },
+  "gitHead": "d14c814ac1151254ae99aa745352c5564b17d166"
 }
