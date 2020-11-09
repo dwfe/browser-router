@@ -13,12 +13,12 @@
     "build watch": "npm run clean && tsc -b -w"
   },
   "devDependencies": {
-    "@do-while-for-each/path-resolver": "1",
     "@types/node": "12",
     "history": "5",
     "rimraf": "3",
     "rxjs": "6",
-    "typescript": "4"
+    "typescript": "4",
+    "@do-while-for-each/path-resolver": "1"
   },
   "gitHead": "ba5aa382e029d28b722b620c1d7ff909a63508ec"
 }
