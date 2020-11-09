@@ -1,5 +1,5 @@
 import {describe, expect} from '@jest/globals'
-import {PathResolver, PathResolveResult, Route, Routes} from '@dwfe/path-resolver'
+import {PathResolver, PathResolveResult, Route, Routes} from '@do-while-for-each/path-resolver'
 
 const routes: Routes = [
   {

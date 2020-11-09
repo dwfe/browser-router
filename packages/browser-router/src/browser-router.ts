@@ -1,4 +1,4 @@
-import {GoTo, PathResolver, PathResolveResult, Route, Routes, ToType} from '@dwfe/path-resolver'
+import {GoTo, PathResolver, PathResolveResult, Route, Routes, ToType} from '@do-while-for-each/path-resolver'
 import {BrowserHistory, createBrowserHistory, Update} from 'history'
 import {Observable, Subject} from 'rxjs'
 import {filter, shareReplay} from 'rxjs/operators'
