@@ -14,8 +14,8 @@
   },
   "devDependencies": {
     "@types/node": "12",
-    "rimraf": "3",
-    "typescript": "4"
+    "typescript": "4",
+    "rimraf": "3"
   },
   "dependencies": {
     "path-to-regexp": "6"
