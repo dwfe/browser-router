@@ -5,7 +5,8 @@
   "scripts": {
     "bootstrap": "lerna bootstrap --hoist",
     "clean:dist": "lerna run clean",
-    "total:clean": "npm run clean:dist && lerna clean --yes && rimraf package-lock.json && rimraf ./node_modules"
+    "total:clean": "npm run clean:dist && lerna clean --yes && rimraf package-lock.json && rimraf ./node_modules",
+    "publish": "lerna publish"
   },
   "devDependencies": {
     "lerna": "3",
