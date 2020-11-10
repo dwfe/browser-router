@@ -1,6 +1,6 @@
 {
   "name": "@do-while-for-each/path-resolver",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "license": "MIT",
   "main": "./dist/index.js",
   "typings": "./dist/types",
@@ -18,8 +18,8 @@
     "typescript": "4"
   },
   "dependencies": {
-    "path-to-regexp": "6",
-    "history": "5"
+    "history": "5",
+    "path-to-regexp": "6"
   },
   "gitHead": "ba5aa382e029d28b722b620c1d7ff909a63508ec"
 }
