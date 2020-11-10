@@ -1,6 +1,6 @@
 {
   "name": "@do-while-for-each/browser-router",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "license": "MIT",
   "main": "./dist/index.js",
   "typings": "./dist/types",
@@ -18,7 +18,7 @@
     "typescript": "4"
   },
   "dependencies": {
-    "@do-while-for-each/path-resolver": "^1.0.7",
+    "@do-while-for-each/path-resolver": "^1.0.8",
     "history": "5",
     "rxjs": "6"
   },
