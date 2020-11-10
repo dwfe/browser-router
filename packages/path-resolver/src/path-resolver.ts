@@ -1,10 +1,10 @@
 import {compile, match} from 'path-to-regexp'
 import {PathResolveResult, Route, Routes} from './contract'
 
-export class PathResolver<TComponent = any, TActionContext = any, TActionResult = any> {
-  routes: Routes<TComponent, TActionContext, TActionResult> = [];
+export class PathResolver {
+  routes: Routes = [];
 
-  constructor(routes: Routes<TComponent, TActionContext, TActionResult>) {
+  constructor(routes: Routes) {
     routes.forEach(r => {
       const route: Route = {...r} // clone
 
@@ -34,14 +34,13 @@ export class PathResolver<TComponent = any, TActionContext = any, TActionResult 
     for (let i = 0; i < routes.length; i++) {
       const route = {...routes[i]}
       const matching = match(route.path)(pathname)
-      let params;
       if (matching) {
-        params = matching.params
+        const pathParams = matching.params
         if (route.redirectTo) {
-          route.redirectTo = compile(route.redirectTo)(params)
+          route.redirectTo = compile(route.redirectTo)(pathParams)
         }
         route.path = pathname
-        return {route, params}
+        return {route, pathParams}
       }
       const found = this.find(pathname, route.children)
       if (found)

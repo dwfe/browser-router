@@ -1,22 +1,31 @@
-export type Routes<TComponent = any, TActionContext = any, TActionResult = any> =
-  Route<TComponent, TActionContext, TActionResult>[];
+import {State, Update} from 'history'
 
-export interface Route<TComponent = any, TActionContext = any, TActionResult = any> {
-  path: string;      // See: https://github.com/pillarjs/path-to-regexp#readme
+export type Routes = Route[];
+
+export interface Route<TComponent = any, TContext extends State = State> {
+  path: string;  // See syntax here: https://github.com/pillarjs/path-to-regexp#readme
   redirectTo?: string;
   component?: TComponent;
-  action?: (ctx: TActionContext) => TActionResult;
-  children?: Routes<TComponent, TActionContext, TActionResult>;
-
+  action?: (data: IActionData<TContext>) => Promise<ActionResult<TComponent>>;
+  children?: Routes;
   name?: string;
+}
+
+export interface IActionData<TContext extends State = State> extends Update<TContext> {
+  pathParams: PathParams;
+}
+
+export interface ActionResult<TComponent = any> {
+  redirectTo?: string;
+  component?: TComponent;
 }
 
 export interface PathResolveResult {
   route: Route;
-  params: PathParams
+  pathParams: PathParams
 }
 
-export type PathParams = {} | { [key: string]: string; }
+export type PathParams = object | { [key: string]: string; }
 
 
 export type ToType = GoTo | string;
