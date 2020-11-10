@@ -5,9 +5,7 @@
   "main": "./dist/index.js",
   "typings": "./dist/types",
   "scripts": {
-    "clean": "rimraf ./dist",
-    "build": "npm run clean && tsc -b",
-    "build watch": "tsc -b -w"
+    "clean": "rimraf ./dist"
   },
   "devDependencies": {
     "@types/node": "12",

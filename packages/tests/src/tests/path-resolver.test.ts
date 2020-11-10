@@ -60,7 +60,7 @@ describe(`tests`, () => {
     res = pathResolver.resolve(pathname)
     expect(res).toBeTruthy()
     expect((res as PathResolveResult).route.redirectTo).toBeFalsy()
-    params = (res as PathResolveResult).params
+    params = (res as PathResolveResult).pathParams
     expect(params).toBeTruthy()
     expect(Object.keys(params).length).toEqual(2)
     expect(params.year).toEqual('2020')
@@ -74,7 +74,7 @@ describe(`tests`, () => {
     pathname = '/team/0/group/12' // '/team/:id/group/:gr_id'
     res = pathResolver.resolve(pathname)
     expect(res).toBeTruthy()
-    params = (res as PathResolveResult).params
+    params = (res as PathResolveResult).pathParams
     expect(params).toBeTruthy()
     expect(Object.keys(params).length).toEqual(2)
     expect(params.id).toEqual('0')
