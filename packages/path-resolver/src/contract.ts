@@ -15,7 +15,7 @@ export interface RoutingResult<TComponent = any> {
 }
 
 export interface IActionData<TContext extends State = State> {
-  ctx: TContext;
+  ctx: TContext; // can be null !!!
   to: GoTo;
   /**
    * A unique string associated with this location. May be used to safely store

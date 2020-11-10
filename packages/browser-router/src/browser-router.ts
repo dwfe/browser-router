@@ -86,7 +86,7 @@ export class BrowserRouter<TComponent = any, TContext extends State = State, TAc
     this.go(initTo)
   }
 
-  go(to: ToType, ctx: TContext = {} as any) {
+  go(to: ToType, ctx?: TContext) {
     to = convertGoToFromStr(to)
     if (isGoAway(to)) {
       this.goAway(to)
