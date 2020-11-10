@@ -1,28 +1,40 @@
-import {State, Update} from 'history'
+import {Action, State} from 'history'
 
 export type Routes = Route[];
 
-export interface Route<TComponent = any, TContext extends State = State> {
+export interface Route<TComponent = any, TContext extends State = State, TActionResult extends RoutingResult<TComponent> = RoutingResult<TComponent>> extends RoutingResult<TComponent> {
   path: string;  // See syntax here: https://github.com/pillarjs/path-to-regexp#readme
-  redirectTo?: string;
-  component?: TComponent;
-  action?: (data: IActionData<TContext>) => Promise<ActionResult<TComponent>>;
+  action?: (data: IActionData<TContext>) => Promise<TActionResult>;
   children?: Routes;
   name?: string;
 }
 
-export interface IActionData<TContext extends State = State> extends Update<TContext> {
-  pathParams: PathParams;
-}
-
-export interface ActionResult<TComponent = any> {
+export interface RoutingResult<TComponent = any> {
   redirectTo?: string;
   component?: TComponent;
 }
 
+export interface IActionData<TContext extends State = State> {
+  ctx: TContext;
+  to: GoTo;
+  /**
+   * A unique string associated with this location. May be used to safely store
+   * and retrieve data in some other storage API, like `localStorage`.
+   *
+   * Note: This value is always "default" on the initial location.
+   *
+   * @see https://github.com/ReactTraining/history/tree/master/docs/api-reference.md#location.key
+   */
+  key: string;
+  /**
+   * The action that triggered the change of route.
+   */
+  action: Action;
+}
+
 export interface PathResolveResult {
   route: Route;
-  pathParams: PathParams
+  pathParams: PathParams;
 }
 
 export type PathParams = object | { [key: string]: string; }
@@ -51,6 +63,10 @@ export interface GoTo {
    * Can be set, to navigate to the same URL with a changed fragment (ignores leading "#").
    */
   hash?: string;
+
+  pathParams?: PathParams;
+  searchParams?: URLSearchParams;
+
 
   /**
    * Returns the Location object's URL's origin.

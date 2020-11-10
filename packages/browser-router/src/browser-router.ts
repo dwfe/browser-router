@@ -1,9 +1,9 @@
-import {ActionResult, GoTo, IActionData, PathResolver, PathResolveResult, Route, Routes, ToType} from '@do-while-for-each/path-resolver'
+import {convertGoToFromStr, getLocalRoute, getUrl, IActionData, isGoAway, PathParams, PathResolver, PathResolveResult, Route, Routes, RoutingResult, ToType} from '@do-while-for-each/path-resolver'
 import {BrowserHistory, createBrowserHistory, State, Update} from 'history'
 import {Observable, Subject} from 'rxjs'
 import {filter, shareReplay} from 'rxjs/operators'
 
-export class BrowserRouter<TComponent = any, TContext extends State = State> {
+export class BrowserRouter<TComponent = any, TContext extends State = State, TActionResult extends RoutingResult<TComponent> = RoutingResult<TComponent>> {
   private pathResolver: PathResolver
   private history: BrowserHistory<State> = createBrowserHistory()
   private component = new Subject<TComponent>()
@@ -14,43 +14,66 @@ export class BrowserRouter<TComponent = any, TContext extends State = State> {
 
   private async onLocationChange(update: Update<TContext>) {
     const {location} = update
-    const url = `url: '${getUrl(location)}'`
+    if (location.state === null) // after change hash into browser command line, history auto update location with state === null
+      return;
+    const url = `'${getUrl(location)}'`
     const resolved = this.pathResolver.resolve(location.pathname)
     if (resolved) {
       const {route, pathParams} = resolved as PathResolveResult
-      const {redirectTo, component, action} = route as Route<TComponent, TContext>
-
-      if (this.processResolve(redirectTo, component))
+      const data = this.getActionData(update, pathParams)
+      if (this.processPathResolve(route)
+        || await this.processRouteAction(route as Route<TComponent, TContext, TActionResult>, data, url))
         return;
-      else if (action) {
-        let actionResult: ActionResult<TComponent>
-        try {
-          const data: IActionData<TContext> = {...update, pathParams}
-          actionResult = await action(data)
-        } catch (e) {
-          throw new Error(`Processing of route resolve #2. Error run action(...) for ${url}. ${e}`)
-        }
-        const {redirectTo, component} = actionResult
-        if (!this.processResolve(redirectTo, component)) {
-          throw new Error(`Processing of route resolve #3. Impossible to process result from action(...) for ${url}`)
-        }
-      } else
-        throw new Error(`Processing of route resolve #1. Impossible to process result for ${url}`)
+      throw new Error(`Impossible to process of route resolve for ${url}`)
     } else {
       throw new Error(`Cannot match any routes for ${url}`)
     }
   }
 
-  private processResolve(redirectTo?: string, component?: TComponent): boolean {
-    let success = false
-    if (redirectTo) {
-      success = true
-      this.redirect(redirectTo)
-    } else if (component) {
-      success = true
-      this.component.next(component)
+  private getActionData({location, action}: Update<TContext>, pathParams: PathParams): IActionData<TContext> {
+    const {pathname, search, hash, key, state} = location
+    return {
+      to: {
+        pathname,
+        pathParams,
+        search,
+        searchParams: new URLSearchParams(search),
+        hash: hash && hash.replace('#', ''),
+      },
+      ctx: state,
+      key,
+      action
     }
-    return success
+  }
+
+
+  private processPathResolve({redirectTo, component}: RoutingResult<TComponent>): boolean {
+    if (redirectTo) {
+      this.redirect(redirectTo)
+      return true
+    } else if (component) {
+      this.component.next(component)
+      return true
+    }
+    return false
+  }
+
+  private async processRouteAction({action}: Route<TComponent, TContext, TActionResult>, data: IActionData<TContext>, url): Promise<boolean> {
+    if (!action)
+      return false;
+
+    let actionResult: TActionResult
+    try {
+      actionResult = await action(data)
+    } catch (e) {
+      throw new Error(`Error in route action(...) for ${url}. ${e}`)
+    }
+    if (!this.processPathResolve(actionResult)) {
+      // If the route action does not return one of {redirectTo OR component},
+      // so here you need to send the actionResult to the waiting listeners,
+      // but why anyone would want to do that - I can't think of...
+    }
+    return true
   }
 
   component$: Observable<TComponent> = this.component.asObservable().pipe(
@@ -64,7 +87,7 @@ export class BrowserRouter<TComponent = any, TContext extends State = State> {
   }
 
   go(to: ToType, ctx: TContext = {} as any) {
-    to = convertStr(to)
+    to = convertGoToFromStr(to)
     if (isGoAway(to)) {
       this.goAway(to)
     } else {
@@ -81,7 +104,7 @@ export class BrowserRouter<TComponent = any, TContext extends State = State> {
   }
 
   goAway(to: ToType) {
-    to = convertStr(to)
+    to = convertGoToFromStr(to)
     const url = getUrl(to)
     if (!url)
       return;
@@ -93,26 +116,8 @@ export class BrowserRouter<TComponent = any, TContext extends State = State> {
   }
 
   redirect(to: ToType) {
-    to = convertStr(to)
+    to = convertGoToFromStr(to)
     this.history.replace(to)
   }
 
 }
-
-const isGoAway = ({origin, target}: GoTo) =>
-  target === '_blank'
-  || origin && origin !== window.location.origin // eslint-disable-line
-;
-const getUrl = ({href, origin, pathname, search, hash}: GoTo): string =>
-  href || `${origin || ''}${pathname || ''}${search || ''}${hash || ''}`
-;
-const getLocalRoute = (to: GoTo): GoTo => ({
-  pathname: to.pathname,
-  search: to.search,
-  hash: to.hash
-})
-const convertStr = (to: GoTo | string): GoTo =>
-  typeof to === 'string'
-    ? {pathname: to}
-    : to
-;
