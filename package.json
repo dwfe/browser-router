@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "bootstrap": "lerna bootstrap --hoist",
     "clean:dist": "lerna run clean",
+    "bootstrap": "npm run clean:dist && rimraf package-lock.json && lerna bootstrap --hoist",
     "build:packages": "lerna run build",
     "total:clean": "npm run clean:dist && lerna clean --yes && rimraf package-lock.json && rimraf ./node_modules",
     "publish": "npm run build:packages && lerna publish"

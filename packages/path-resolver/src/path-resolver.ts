@@ -1,5 +1,5 @@
 import {compile, match} from 'path-to-regexp'
-import {PathResolveResult, Route, Routes} from './contract'
+import {ICustomTo, PathResolveResult, Route, Routes} from './contract'
 
 export class PathResolver {
   routes: Routes = [];
@@ -13,7 +13,8 @@ export class PathResolver {
 
       // Step 1. All root paths get a prefix '/'
       route.path = '/' + route.path
-      route.redirectTo = init.redirectTo(route.redirectTo, '/')
+      route.redirectTo = init.calcTo(route.redirectTo, '/')
+      route.customTo = init.calcCustomTo(route.customTo, '/')
 
       // Step 2. All children paths are obtained as follows:
       //         [full parent path] + '/' + [child path]
@@ -51,16 +52,22 @@ export class PathResolver {
 }
 
 const init = {
-  redirectTo: (redirectTo, parentPath) => {
-    if (typeof redirectTo === 'string') {
-      if (redirectTo === '')
+  calcTo: (to, parentPath): string | undefined => {
+    if (typeof to === 'string') {
+      if (to === '')
         return parentPath
-      else if (redirectTo[0] === '/')
-        return redirectTo
+      else if (to[0] === '/')
+        return to
       else {
         const prefix = parentPath === '/' ? '/' : parentPath + '/'
-        return prefix + redirectTo
+        return prefix + to
       }
+    }
+  },
+  calcCustomTo: function (to: ICustomTo | undefined, parentPath): ICustomTo | undefined {
+    if (to) {
+      to.pathname = this.calcTo(to.pathname, parentPath) as string
+      return to
     }
   },
   children: function ({path: parentPath, children: routes}: Route): Routes | undefined {
@@ -83,7 +90,8 @@ const init = {
         const prefix = parentPath === '/' ? '' : parentPath
         route.path = prefix + '/' + path
       }
-      route.redirectTo = this.redirectTo(route.redirectTo, parentPath)
+      route.redirectTo = this.calcTo(route.redirectTo, parentPath)
+      route.customTo = this.calcCustomTo(route.customTo, parentPath)
       route.children = this.children(route)
     }
     return children

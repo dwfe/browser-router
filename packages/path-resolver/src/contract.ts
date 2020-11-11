@@ -1,16 +1,21 @@
-import {Action, State} from 'history'
+import {State} from 'history'
 
 export type Routes = Route[];
 
+// export interface RouteContext extends State
+
 export interface Route<TComponent = any,
   TContext extends State = State,
-  TActionResult extends RoutingResult<TComponent> = RoutingResult<TComponent>,
+  TActionResult extends RoutingResult<TComponent, TContext> = RoutingResult<TComponent, TContext>,
   TNote = any>
-  extends RoutingResult<TComponent> {
+  extends RoutingResult<TComponent, TContext> {
 
   path: string; // See syntax here: https://github.com/pillarjs/path-to-regexp#readme
-  // redirectTo?: string;
-  // component?: TComponent;
+
+  // extends from RoutingResult part:
+  //   redirectTo?: string;
+  //   customTo?: ICustomTo<TContext>;
+  //   component?: TComponent;
 
   action?: (data: IActionData<TContext, TNote>) => Promise<TActionResult>;
 
@@ -20,9 +25,16 @@ export interface Route<TComponent = any,
 
 }
 
-export interface RoutingResult<TComponent = any> {
+export interface RoutingResult<TComponent = any, TContext extends State = State> {
   redirectTo?: string;
+  customTo?: ICustomTo<TContext>;
   component?: TComponent;
+}
+
+export interface ICustomTo<TContext extends State = State> {
+  pathname: string;
+  isRedirect?: boolean;
+  actionData?: IActionData<TContext>; // to pass as previous
 }
 
 export interface IActionData<TContext extends State = State, TNote = any> {
@@ -40,6 +52,8 @@ export interface IActionData<TContext extends State = State, TNote = any> {
 
     note?: TNote; // note field defined in the route
   }
+
+  previous?: IActionData<TContext>;
 
 }
 

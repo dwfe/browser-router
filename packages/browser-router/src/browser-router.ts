@@ -3,7 +3,10 @@ import {BrowserHistory, createBrowserHistory, Location, State, Update} from 'his
 import {Observable, Subject} from 'rxjs'
 import {filter, shareReplay} from 'rxjs/operators'
 
-export class BrowserRouter<TComponent = any, TContext extends State = State, TActionResult extends RoutingResult<TComponent> = RoutingResult<TComponent>> {
+export class BrowserRouter<TComponent = any,
+  TContext extends State = State,
+  TActionResult extends RoutingResult<TComponent, TContext> = RoutingResult<TComponent, TContext>,
+  TNote = any> {
   private pathResolver: PathResolver
   private history: BrowserHistory<State> = createBrowserHistory()
   private component = new Subject<TComponent>()
@@ -18,8 +21,8 @@ export class BrowserRouter<TComponent = any, TContext extends State = State, TAc
     if (resolved) {
       const {route} = resolved
       const data = getActionData(location, resolved)
-      if (this.processPathResolve(route)
-        || await this.processRouteAction(route as Route<TComponent, TContext, TActionResult>, data, url))
+      if (this.processResult(route)
+        || await this.processRouteAction(route as Route<TComponent, TContext, TActionResult, TNote>, data, url))
         return;
       throw new Error(`Impossible to process of route resolve for ${url}`)
     } else {
@@ -27,10 +30,19 @@ export class BrowserRouter<TComponent = any, TContext extends State = State, TAc
     }
   }
 
-  private processPathResolve({redirectTo, component}: RoutingResult<TComponent>): boolean {
+  private processResult({redirectTo, customTo, component}: RoutingResult<TComponent>): boolean {
     if (redirectTo) {
       this.redirect(redirectTo)
       return true
+    } else if (customTo) {
+      const {pathname, isRedirect, actionData} = customTo
+      if (isRedirect) {
+        this.redirect(pathname)
+        return true
+      } else {
+        this.go(pathname)
+        return true
+      }
     } else if (component) {
       this.component.next(component)
       return true
@@ -38,7 +50,7 @@ export class BrowserRouter<TComponent = any, TContext extends State = State, TAc
     return false
   }
 
-  private async processRouteAction({action}: Route<TComponent, TContext, TActionResult>, data: IActionData<TContext>, url): Promise<boolean> {
+  private async processRouteAction({action}: Route<TComponent, TContext, TActionResult, TNote>, data: IActionData<TContext>, url): Promise<boolean> {
     if (!action)
       return false;
 
@@ -48,7 +60,7 @@ export class BrowserRouter<TComponent = any, TContext extends State = State, TAc
     } catch (e) {
       throw new Error(`Error in route action(...) for ${url}. ${e}`)
     }
-    if (!this.processPathResolve(actionResult)) {
+    if (!this.processResult(actionResult)) {
       // If the route action does not return one of {redirectTo OR component},
       // so here you need to send the actionResult to the waiting listeners,
       // but why anyone would want to do that - I can't think of a single case...
@@ -95,9 +107,9 @@ export class BrowserRouter<TComponent = any, TContext extends State = State, TAc
     }
   }
 
-  redirect(to: ToType) {
+  redirect(to: ToType, ctx?: TContext) {
     to = convertGoToFromStr(to)
-    this.history.replace(to)
+    this.history.replace(to, ctx)
   }
 
 }

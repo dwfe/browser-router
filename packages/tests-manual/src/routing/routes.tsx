@@ -5,7 +5,7 @@ import {NotFound} from './components/NotFound';
 import {IRouteContext, IRouteNote, RouteActionData} from './contract';
 
 
-export const routes: Route<ReactElement, IRouteContext, RoutingResult<ReactElement>, IRouteNote>[] = [
+export const routes: Route<ReactElement, IRouteContext, RoutingResult<ReactElement, IRouteContext>, IRouteNote>[] = [
   {path: '', component: <MainPage/>},
   {
     path: 'first', children: [
@@ -23,8 +23,12 @@ export const routes: Route<ReactElement, IRouteContext, RoutingResult<ReactEleme
 ]
 
 
-async function notFoundAction(data: RouteActionData): Promise<RoutingResult<ReactElement>> {
+async function notFoundAction(data: RouteActionData): Promise<RoutingResult<ReactElement, IRouteContext>> {
   return {
+    customTo: {
+      pathname: '/second/pic',
+      isRedirect: true
+    },
     component: <NotFound routeActionData={data}/>
   }
 }

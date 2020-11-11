@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import {container} from 'tsyringe'
-import React, {ReactElement} from 'react'
+import {ReactElement} from 'react'
 import ReactDOM from 'react-dom'
 import {Routes} from '@do-while-for-each/path-resolver'
 import {BrowserRouter} from '@do-while-for-each/browser-router'
