@@ -31,7 +31,7 @@ export class BrowserRouter<TComponent = any, TContext extends State = State, TAc
   private getActionData({location, action}: Update<TContext>, pathParams: PathParams): IActionData<TContext> {
     const {pathname, search, hash, key, state} = location
     return {
-      to: {
+      targetGoTo: {
         pathname,
         pathParams,
         search,

@@ -34,7 +34,7 @@ export class PathResolver {
     for (let i = 0; i < routes.length; i++) {
       const route = {...routes[i]}
       const matching = match(route.path)(pathname)
-      if (matching) {
+      if (matching && !needToMatchChildren(route)) {
         const pathParams = matching.params
         if (route.redirectTo) {
           route.redirectTo = compile(route.redirectTo)(pathParams)
@@ -89,6 +89,12 @@ const init = {
     return children
   },
 }
+
+
+const needToMatchChildren = ({redirectTo, component, children}: Route): boolean =>
+  redirectTo === undefined && component === undefined // if 'redirectTo' and 'component' are omitted
+  && children !== undefined && children.length > 0    // but children are available
+;
 
 
 const errorLeadSlash = (route: Route) =>

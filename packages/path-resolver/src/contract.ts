@@ -15,7 +15,7 @@ export interface RoutingResult<TComponent = any> {
 }
 
 export interface IActionData<TContext extends State = State> {
-  to: GoTo;
+  targetGoTo: GoTo;
   ctx: TContext; // is unreliable!!!, because context is null if:
   //                 - the user follows an uncontrolled direct link
   //                 - the user manually changes link in the browser line, then follows it
