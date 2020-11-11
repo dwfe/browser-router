@@ -14,8 +14,6 @@ export class BrowserRouter<TComponent = any, TContext extends State = State, TAc
 
   private async onLocationChange(update: Update<TContext>) {
     const {location} = update
-    if (location.state === null) // after change hash into browser command line, history auto update location with state === null
-      return;
     const url = `'${getUrl(location)}'`
     const resolved = this.pathResolver.resolve(location.pathname)
     if (resolved) {

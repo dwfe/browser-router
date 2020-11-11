@@ -15,8 +15,11 @@ export interface RoutingResult<TComponent = any> {
 }
 
 export interface IActionData<TContext extends State = State> {
-  ctx: TContext; // can be null !!!
   to: GoTo;
+  ctx: TContext; // is unreliable!!!, because context is null if:
+  //                 - the user follows an uncontrolled direct link
+  //                 - the user manually changes link in the browser line, then follows it
+
   /**
    * A unique string associated with this location. May be used to safely store
    * and retrieve data in some other storage API, like `localStorage`.
