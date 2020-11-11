@@ -1,16 +1,16 @@
 import React, {HTMLProps} from 'react';
-import {RouteActionData} from '../routes';
+import {RouteActionData} from '../contract';
 
-export const NotFound = (props: IProps) => {
-  let {routeActionData} = props
-  return (<>
-    <h2>{routeActionData?.ctx?.title || 'Error'}</h2>
+export const NotFound = ({routeActionData}: IProps) => (
+  <div>
+    <h2>{routeActionData?.data.ctx?.title || `instead 'ctx.title'`}</h2>
+    <h2>{routeActionData?.data.note?.title || `instead 'note.title'`}</h2>
     <p>404. Not found</p>
-    <textarea readOnly={true} style={{width: '500px', height: '200px'}}>
-      {JSON.stringify(routeActionData?.targetGoTo, null, 2)}
-    </textarea>
-  </>)
-}
+    <textarea readOnly={true}
+              style={{width: '50vw', height: '50vh'}}
+              value={JSON.stringify(routeActionData, null, 2)}/>
+  </div>
+)
 
 interface IProps extends HTMLProps<any> {
   routeActionData?: RouteActionData;

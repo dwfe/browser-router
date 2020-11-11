@@ -2,11 +2,22 @@ import {Action, State} from 'history'
 
 export type Routes = Route[];
 
-export interface Route<TComponent = any, TContext extends State = State, TActionResult extends RoutingResult<TComponent> = RoutingResult<TComponent>> extends RoutingResult<TComponent> {
-  path: string;  // See syntax here: https://github.com/pillarjs/path-to-regexp#readme
-  action?: (data: IActionData<TContext>) => Promise<TActionResult>;
+export interface Route<TComponent = any,
+  TContext extends State = State,
+  TActionResult extends RoutingResult<TComponent> = RoutingResult<TComponent>,
+  TNote = any>
+  extends RoutingResult<TComponent> {
+
+  path: string; // See syntax here: https://github.com/pillarjs/path-to-regexp#readme
+  // redirectTo?: string;
+  // component?: TComponent;
+
+  action?: (data: IActionData<TContext, TNote>) => Promise<TActionResult>;
+
   children?: Routes;
-  name?: string;
+
+  note?: TNote;
+
 }
 
 export interface RoutingResult<TComponent = any> {
@@ -14,25 +25,22 @@ export interface RoutingResult<TComponent = any> {
   component?: TComponent;
 }
 
-export interface IActionData<TContext extends State = State> {
+export interface IActionData<TContext extends State = State, TNote = any> {
   targetGoTo: GoTo;
-  ctx: TContext; // is unreliable!!!, because context is null if:
-  //                 - the user follows an uncontrolled direct link
-  //                 - the user manually changes link in the browser line, then follows it
 
-  /**
-   * A unique string associated with this location. May be used to safely store
-   * and retrieve data in some other storage API, like `localStorage`.
-   *
-   * Note: This value is always "default" on the initial location.
-   *
-   * @see https://github.com/ReactTraining/history/tree/master/docs/api-reference.md#location.key
-   */
-  key: string;
-  /**
-   * The action that triggered the change of route.
-   */
-  action: Action;
+  data: {
+    /**
+     * Context data passed at click time.
+     * Context is unreliable!, because context will be null when:
+     *   - the user manually changes link in the browser line, then follows it (go to initial location);
+     *   - the user follows an uncontrolled direct link (I mean, you can't set the context when you click).
+     * better use GoTo.searchParams or route.note field
+     */
+    ctx: TContext;
+
+    note?: TNote; // note field defined in the route
+  }
+
 }
 
 export interface PathResolveResult {
@@ -68,7 +76,7 @@ export interface GoTo {
   hash?: string;
 
   pathParams?: PathParams;
-  searchParams?: URLSearchParams;
+  searchParams?: URLSearchParams; // parsed 'search' field
 
 
   /**

@@ -1,5 +1,5 @@
-import {convertGoToFromStr, getLocalRoute, getUrl, IActionData, isGoAway, PathParams, PathResolver, PathResolveResult, Route, Routes, RoutingResult, ToType} from '@do-while-for-each/path-resolver'
-import {BrowserHistory, createBrowserHistory, State, Update} from 'history'
+import {convertGoToFromStr, getLocalRoute, getUrl, IActionData, isGoAway, PathResolver, PathResolveResult, Route, Routes, RoutingResult, ToType} from '@do-while-for-each/path-resolver'
+import {BrowserHistory, createBrowserHistory, Location, State, Update} from 'history'
 import {Observable, Subject} from 'rxjs'
 import {filter, shareReplay} from 'rxjs/operators'
 
@@ -12,13 +12,12 @@ export class BrowserRouter<TComponent = any, TContext extends State = State, TAc
     this.pathResolver = new PathResolver(routes)
   }
 
-  private async onLocationChange(update: Update<TContext>) {
-    const {location} = update
+  private async onLocationChange({location}: Update<TContext>) {
     const url = `'${getUrl(location)}'`
     const resolved = this.pathResolver.resolve(location.pathname)
     if (resolved) {
-      const {route, pathParams} = resolved as PathResolveResult
-      const data = this.getActionData(update, pathParams)
+      const {route} = resolved
+      const data = getActionData(location, resolved)
       if (this.processPathResolve(route)
         || await this.processRouteAction(route as Route<TComponent, TContext, TActionResult>, data, url))
         return;
@@ -27,23 +26,6 @@ export class BrowserRouter<TComponent = any, TContext extends State = State, TAc
       throw new Error(`Cannot match any routes for ${url}`)
     }
   }
-
-  private getActionData({location, action}: Update<TContext>, pathParams: PathParams): IActionData<TContext> {
-    const {pathname, search, hash, key, state} = location
-    return {
-      targetGoTo: {
-        pathname,
-        pathParams,
-        search,
-        searchParams: new URLSearchParams(search),
-        hash: hash && hash.replace('#', ''),
-      },
-      ctx: state,
-      key,
-      action
-    }
-  }
-
 
   private processPathResolve({redirectTo, component}: RoutingResult<TComponent>): boolean {
     if (redirectTo) {
@@ -69,7 +51,7 @@ export class BrowserRouter<TComponent = any, TContext extends State = State, TAc
     if (!this.processPathResolve(actionResult)) {
       // If the route action does not return one of {redirectTo OR component},
       // so here you need to send the actionResult to the waiting listeners,
-      // but why anyone would want to do that - I can't think of...
+      // but why anyone would want to do that - I can't think of a single case...
     }
     return true
   }
@@ -119,3 +101,17 @@ export class BrowserRouter<TComponent = any, TContext extends State = State, TAc
   }
 
 }
+
+const getActionData = <TContext extends State = State>({pathname, search, hash, state}: Location<TContext>, {route, pathParams}: PathResolveResult): IActionData<TContext> => ({
+  targetGoTo: {
+    pathname,
+    pathParams,
+    search,
+    searchParams: new URLSearchParams(search),
+    hash: hash && hash.replace('#', ''),
+  },
+  data: {
+    ctx: state,
+    note: route.note,
+  },
+})

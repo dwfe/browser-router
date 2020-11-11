@@ -1,6 +1,6 @@
 import React, {HTMLProps, SyntheticEvent} from 'react'
 import {useRouter} from '../useRouter'
-import {IRouteContext} from '../routes';
+import {IRouteContext} from '../contract';
 
 export const Link = (props: IProps) => {
   const {href, onClick, children, ctx} = props

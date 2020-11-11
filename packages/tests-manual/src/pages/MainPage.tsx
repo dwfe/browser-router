@@ -6,6 +6,6 @@ export const MainPage = () => {
     <Link href="/first">First component</Link><br/><br/>
     <Link href="/second">Second component</Link><br/><br/>
     <Link href="http://ya.ru">Ya.ru</Link><br/><br/>
-    <Link href="/hello" ctx={{title: 'custom header: "hello world"'}}>hello</Link><br/><br/>
+    <Link href="/hello" ctx={{title: `ctx.title = 404`}}>hello</Link><br/><br/>
   </div>)
 }
