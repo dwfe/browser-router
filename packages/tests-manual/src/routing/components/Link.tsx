@@ -1,6 +1,6 @@
 import React, {HTMLProps, SyntheticEvent} from 'react'
 import {useRouter} from '../useRouter'
-import {IRouteContext} from '../contract';
+import {Ctx} from '../contract';
 
 export const Link = (props: IProps) => {
   const {href, onClick, children, ctx} = props
@@ -21,5 +21,5 @@ export const Link = (props: IProps) => {
 }
 
 interface IProps extends HTMLProps<HTMLAnchorElement> {
-  ctx?: IRouteContext;
+  ctx?: Ctx;
 }

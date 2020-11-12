@@ -1,12 +1,10 @@
-import {IActionData} from '@do-while-for-each/path-resolver'
+import {IActionData, RouteContext} from '@do-while-for-each/path-resolver'
 
-export type RouteActionData = IActionData<RouteContext>
+export type RouteActionData = IActionData<Ctx, IRouteNote>
 
-export type RouteContext = IRouteContext | null // because history type 'State' = object | null
-
-export interface IRouteContext {
+export type Ctx = RouteContext & {
   title?: string;
-}
+} | null // because history type 'State' = object | null
 
 export interface IRouteNote {
   title?: string;

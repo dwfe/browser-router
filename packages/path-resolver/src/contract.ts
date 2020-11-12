@@ -1,11 +1,12 @@
-import {State} from 'history'
-
 export type Routes = Route[];
 
-// export interface RouteContext extends State
+export type RouteContext = {
+  previous?: IActionData<RouteContext>;
+} | null // because history type 'State' = object | null
+
 
 export interface Route<TComponent = any,
-  TContext extends State = State,
+  TContext extends RouteContext = RouteContext,
   TActionResult extends RoutingResult<TComponent, TContext> = RoutingResult<TComponent, TContext>,
   TNote = any>
   extends RoutingResult<TComponent, TContext> {
@@ -25,19 +26,21 @@ export interface Route<TComponent = any,
 
 }
 
-export interface RoutingResult<TComponent = any, TContext extends State = State> {
+export interface RoutingResult<TComponent = any, TContext extends RouteContext = RouteContext> {
   redirectTo?: string;
   customTo?: ICustomTo<TContext>;
   component?: TComponent;
 }
 
-export interface ICustomTo<TContext extends State = State> {
+export interface ICustomTo<TContext extends RouteContext = RouteContext> {
   pathname: string;
+  search?: string;
+  hash?: string;
   isRedirect?: boolean;
-  actionData?: IActionData<TContext>; // to pass as previous
+  actionData?: IActionData<TContext>; // to pass as IRouteContext.previous
 }
 
-export interface IActionData<TContext extends State = State, TNote = any> {
+export interface IActionData<TContext extends RouteContext = RouteContext, TNote = any> {
   targetGoTo: GoTo;
 
   data: {
@@ -46,15 +49,12 @@ export interface IActionData<TContext extends State = State, TNote = any> {
      * Context is unreliable!, because context will be null when:
      *   - the user manually changes link in the browser line, then follows it (go to initial location);
      *   - the user follows an uncontrolled direct link (I mean, you can't set the context when you click).
-     * better use GoTo.searchParams or route.note field
+     * better use GoTo.search or route.note field
      */
     ctx: TContext;
 
     note?: TNote; // note field defined in the route
   }
-
-  previous?: IActionData<TContext>;
-
 }
 
 export interface PathResolveResult {
@@ -90,7 +90,6 @@ export interface GoTo {
   hash?: string;
 
   pathParams?: PathParams;
-  searchParams?: URLSearchParams; // parsed 'search' field
 
 
   /**

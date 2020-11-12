@@ -1,10 +1,10 @@
-import {convertGoToFromStr, getLocalRoute, getUrl, IActionData, isGoAway, PathResolver, PathResolveResult, Route, Routes, RoutingResult, ToType} from '@do-while-for-each/path-resolver'
+import {convertGoToFromStr, getLocalRoute, getUrl, IActionData, isGoAway, PathResolver, PathResolveResult, Route, RouteContext, Routes, RoutingResult, ToType} from '@do-while-for-each/path-resolver'
 import {BrowserHistory, createBrowserHistory, Location, State, Update} from 'history'
 import {Observable, Subject} from 'rxjs'
 import {filter, shareReplay} from 'rxjs/operators'
 
 export class BrowserRouter<TComponent = any,
-  TContext extends State = State,
+  TContext extends RouteContext = RouteContext,
   TActionResult extends RoutingResult<TComponent, TContext> = RoutingResult<TComponent, TContext>,
   TNote = any> {
   private pathResolver: PathResolver
@@ -35,12 +35,17 @@ export class BrowserRouter<TComponent = any,
       this.redirect(redirectTo)
       return true
     } else if (customTo) {
-      const {pathname, isRedirect, actionData} = customTo
+      const {pathname, search, hash, isRedirect, actionData} = customTo
+      const to = {pathname, search, hash}
+      const ctx: RouteContext | undefined = actionData
+        ? {previous: actionData} as RouteContext
+        : undefined
+
       if (isRedirect) {
-        this.redirect(pathname)
+        this.redirect(to, ctx as TContext)
         return true
       } else {
-        this.go(pathname)
+        this.go(to, ctx as TContext)
         return true
       }
     } else if (component) {
@@ -114,13 +119,12 @@ export class BrowserRouter<TComponent = any,
 
 }
 
-const getActionData = <TContext extends State = State>({pathname, search, hash, state}: Location<TContext>, {route, pathParams}: PathResolveResult): IActionData<TContext> => ({
+const getActionData = <TContext extends RouteContext = RouteContext>({pathname, search, hash, state}: Location<TContext>, {route, pathParams}: PathResolveResult): IActionData<TContext> => ({
   targetGoTo: {
     pathname,
     pathParams,
-    search,
-    searchParams: new URLSearchParams(search),
-    hash: hash && hash.replace('#', ''),
+    search: search && search[0] === '?' ? search.slice(1) : search,
+    hash: hash && hash[0] === '#' ? hash.slice(1) : hash,
   },
   data: {
     ctx: state,
