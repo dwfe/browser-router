@@ -1,6 +1,5 @@
 export type Routes = Route[];
 
-
 export interface Route<TComponent = any,
   TContext extends RouteContext = RouteContext,
   TActionResult extends RoutingResult<TComponent, TContext> = RoutingResult<TComponent, TContext>,
@@ -19,7 +18,7 @@ export interface Route<TComponent = any,
   children?: Routes;
 
   note?: TNote;
-  
+
   name?: string;
 }
 
@@ -46,17 +45,27 @@ export interface IActionData<TContext extends RouteContext = RouteContext, TNote
   target: GoTo;
 
   /**
-   * Context data passed at click time.
    * Context is unreliable!, because context will be null when:
-   *   - the user manually changes link in the browser line, then follows it (go to initial location);
-   *   - the user follows an uncontrolled direct link (I mean, you can't set the context when you click).
-   * better use GoTo.search or route.note field
+   *   - user manually changes link in the browser line, then follows it;
+   *   - user refreshed the page (F5)
+   *   - user follows an uncontrolled direct link (I mean, you can't set the context when you click).
+   * for independent reuse of values better use 'target.search' or 'note' fields
    */
   ctx: TContext;
 
   note?: TNote; // note field defined in the route
 
   previous?: IActionData<TContext>;
+
+  /**
+   * A unique string associated with this location. May be used to safely store
+   * and retrieve data in some other storage API, like `localStorage`.
+   *
+   * Note: This value is always "default" on the initial location.
+   *
+   * @see https://github.com/ReactTraining/history/tree/master/docs/api-reference.md#location.key
+   */
+  key: string;
 
 }
 

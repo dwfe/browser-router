@@ -9,7 +9,7 @@ export const routes: Route<ReactElement, Ctx, RoutingResult<ReactElement, Ctx>, 
   {path: '', component: <MainPage/>, note: {title: 'Index'}},
   {
     path: 'first', component: <FirstPage/>, note: {title: 'First page'}, children: [
-      {path: 'to-pic', customTo: {pathname: '/second/pic', search: '?hello=world', hash: '#pic'}},
+      {path: 'to-pic', customTo: {pathname: '/second/pic', search: 'hello=world', hash: 'pic'}},
       {path: '(.*)', redirectTo: '/not-found'},
     ]
   },

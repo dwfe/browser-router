@@ -8,7 +8,7 @@ export const PicPage = (props: IRoutableProps) => {
   useDocumentTitle(props)
   return (<>
     <p>Pic works!</p>
-    <img src={routingPic} alt="Routing" width="200"/>
+    <img src={routingPic} alt="Routing" width="200"/><br/><br/>
     <ActionData actionData={props.currentActionData}/>
   </>);
 }

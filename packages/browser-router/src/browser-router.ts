@@ -2,13 +2,14 @@ import {convertGoToFromStr, getLocalRoute, getUrl, IActionData, isGoAway, PathRe
 import {BrowserHistory, createBrowserHistory, Location, State, Update} from 'history'
 import {Observable, Subject} from 'rxjs'
 import {filter, shareReplay} from 'rxjs/operators'
+import {addFirstSymbol, excludeFirstSymbol} from './globals';
 import React = require('react');
-import {excludeFirstSymbol} from './globals';
 
 export class BrowserRouter<TComponent = any,
   TContext extends RouteContext = RouteContext,
   TActionResult extends RoutingResult<TComponent, TContext> = RoutingResult<TComponent, TContext>,
   TNote = any> {
+
   private pathResolver: PathResolver
   private history: BrowserHistory<State> = createBrowserHistory()
   private component = new Subject<TComponent>()
@@ -41,8 +42,11 @@ export class BrowserRouter<TComponent = any,
       return true
     } else if (customTo) {
       let {pathname, search, hash, isRedirect} = customTo
+      search = addFirstSymbol('?', search)
+      hash = addFirstSymbol('#', hash)
       const to = {pathname, search, hash}
       isRedirect = isRedirect === undefined || isRedirect === true
+
       if (isRedirect) {
         this.redirect(to, context_for_To_or_Go)
         return true
@@ -122,7 +126,7 @@ export class BrowserRouter<TComponent = any,
 
 }
 
-const getCurrentActionData = <TContext extends RouteContext = RouteContext>({pathname, search, hash, state}: Location<TContext>, {route, pathParams}: PathResolveResult): IActionData<TContext> => {
+const getCurrentActionData = <TContext extends RouteContext = RouteContext>({pathname, search, hash, state, key}: Location<TContext>, {route, pathParams}: PathResolveResult): IActionData<TContext> => {
   const previous = state?.previousActionData as IActionData<TContext>
   if (previous) {
     delete state?.previousActionData
@@ -140,6 +144,7 @@ const getCurrentActionData = <TContext extends RouteContext = RouteContext>({pat
     ctx: state,
     note: route.note,
     previous,
+    key,
   }
 }
 
