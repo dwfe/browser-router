@@ -1,8 +1,8 @@
 import React, {ReactElement} from 'react'
 import {Route, RoutingResult} from '@do-while-for-each/path-resolver'
-import {FirstPage, MainPage, PicPage, SecondPage} from '../pages';
-import {NotFound} from './components/NotFound';
-import {Ctx, IRouteNote} from './contract';
+import {FirstPage, MainPage, PicPage, SecondPage} from './pages';
+import {NotFound} from './routing/components/NotFound';
+import {Ctx, IRouteNote} from './routing';
 
 
 export const routes: Route<ReactElement, Ctx, RoutingResult<ReactElement, Ctx>, IRouteNote>[] = [

@@ -2,7 +2,7 @@ import {convertGoToFromStr, getLocalRoute, getUrl, IActionData, isGoAway, PathRe
 import {BrowserHistory, createBrowserHistory, Location, State, Update} from 'history'
 import {Observable, Subject} from 'rxjs'
 import {filter, shareReplay} from 'rxjs/operators'
-import {addFirstSymbol, excludeFirstSymbol} from './globals';
+import {addFirstSymbol, excludeFirstSymbol} from '../globals';
 import React = require('react');
 
 export class BrowserRouter<TComponent = any,

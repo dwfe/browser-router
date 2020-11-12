@@ -1,10 +1,10 @@
 import React, {HTMLProps, SyntheticEvent} from 'react'
-import {useRouter} from '../useRouter'
-import {Ctx} from '../contract';
+import {BrowserRouter} from '@do-while-for-each/browser-router';
+import {useRouter} from '../hooks/useRouter'
 
 export const Link = (props: IProps) => {
   const {href, onClick, children, ctx} = props
-  const [router] = useRouter()
+  const [router] = useRouter<BrowserRouter>(BrowserRouter)
 
   const handleClick = (event: SyntheticEvent) => {
     event.preventDefault()
@@ -21,5 +21,5 @@ export const Link = (props: IProps) => {
 }
 
 interface IProps extends HTMLProps<HTMLAnchorElement> {
-  ctx?: Ctx;
+  ctx?: any;
 }

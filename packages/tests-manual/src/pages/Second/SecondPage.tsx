@@ -1,8 +1,5 @@
 import React from 'react';
-import {Link} from '../../routing/components/Link';
-import {IRoutableProps} from '../../routing/contract';
-import {ActionData} from '../../routing/components/ActionData/ActionData';
-import {useDocumentTitle} from '../../routing/globals';
+import {ActionData, IRoutableProps, Link, useDocumentTitle} from '../../routing';
 
 export const SecondPage = (props: IRoutableProps) => {
   useDocumentTitle(props)

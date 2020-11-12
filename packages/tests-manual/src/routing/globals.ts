@@ -1,5 +1,4 @@
-import {IRoutableProps, RouteActionData} from './contract';
-import {useEffect} from 'react';
+import {RouteActionData} from './contract';
 
 export const getPreviousActionData = (currentActionData?: RouteActionData): RouteActionData | undefined => {
   if (currentActionData) {
@@ -7,11 +6,3 @@ export const getPreviousActionData = (currentActionData?: RouteActionData): Rout
   }
 }
 
-
-export const useDocumentTitle = ({currentActionData}: IRoutableProps) => {
-  useEffect(() => {
-    const title = currentActionData?.note?.title
-    if (title)
-      document.title = title
-  }, [])
-}

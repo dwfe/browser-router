@@ -1,7 +1,8 @@
 import React from 'react';
 import {IRoutableProps} from '../contract';
 import {ActionData} from './ActionData/ActionData';
-import {getPreviousActionData, useDocumentTitle} from '../globals';
+import {getPreviousActionData} from '../globals';
+import {useDocumentTitle} from '../hooks/useDocumentTitle';
 
 export const NotFound = (props: IRoutableProps) => {
   useDocumentTitle(props)
