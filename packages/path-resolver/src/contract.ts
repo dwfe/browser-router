@@ -1,9 +1,5 @@
 export type Routes = Route[];
 
-export type RouteContext = {
-  previous?: IActionData<RouteContext>;
-} | null // because history type 'State' = object | null
-
 
 export interface Route<TComponent = any,
   TContext extends RouteContext = RouteContext,
@@ -13,7 +9,7 @@ export interface Route<TComponent = any,
 
   path: string; // See syntax here: https://github.com/pillarjs/path-to-regexp#readme
 
-  // extends from RoutingResult part:
+  // part extended from RoutingResult:
   //   redirectTo?: string;
   //   customTo?: ICustomTo<TContext>;
   //   component?: TComponent;
@@ -23,8 +19,14 @@ export interface Route<TComponent = any,
   children?: Routes;
 
   note?: TNote;
-
+  
+  name?: string;
 }
+
+export type RouteContext = {
+  previousActionData?: IActionData<RouteContext>;
+} | null // because history package type 'State' = object | null
+
 
 export interface RoutingResult<TComponent = any, TContext extends RouteContext = RouteContext> {
   redirectTo?: string;
@@ -36,25 +38,26 @@ export interface ICustomTo<TContext extends RouteContext = RouteContext> {
   pathname: string;
   search?: string;
   hash?: string;
-  isRedirect?: boolean;
-  actionData?: IActionData<TContext>; // to pass as IRouteContext.previous
+  isRedirect?: boolean; // if not set, it equals 'true'
 }
 
 export interface IActionData<TContext extends RouteContext = RouteContext, TNote = any> {
-  targetGoTo: GoTo;
 
-  data: {
-    /**
-     * Context data passed at click time.
-     * Context is unreliable!, because context will be null when:
-     *   - the user manually changes link in the browser line, then follows it (go to initial location);
-     *   - the user follows an uncontrolled direct link (I mean, you can't set the context when you click).
-     * better use GoTo.search or route.note field
-     */
-    ctx: TContext;
+  target: GoTo;
 
-    note?: TNote; // note field defined in the route
-  }
+  /**
+   * Context data passed at click time.
+   * Context is unreliable!, because context will be null when:
+   *   - the user manually changes link in the browser line, then follows it (go to initial location);
+   *   - the user follows an uncontrolled direct link (I mean, you can't set the context when you click).
+   * better use GoTo.search or route.note field
+   */
+  ctx: TContext;
+
+  note?: TNote; // note field defined in the route
+
+  previous?: IActionData<TContext>;
+
 }
 
 export interface PathResolveResult {

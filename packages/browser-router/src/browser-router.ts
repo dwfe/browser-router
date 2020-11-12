@@ -2,6 +2,8 @@ import {convertGoToFromStr, getLocalRoute, getUrl, IActionData, isGoAway, PathRe
 import {BrowserHistory, createBrowserHistory, Location, State, Update} from 'history'
 import {Observable, Subject} from 'rxjs'
 import {filter, shareReplay} from 'rxjs/operators'
+import React = require('react');
+import {excludeFirstSymbol} from './globals';
 
 export class BrowserRouter<TComponent = any,
   TContext extends RouteContext = RouteContext,
@@ -20,53 +22,54 @@ export class BrowserRouter<TComponent = any,
     const resolved = this.pathResolver.resolve(location.pathname)
     if (resolved) {
       const {route} = resolved
-      const data = getActionData(location, resolved)
-      if (this.processResult(route)
-        || await this.processRouteAction(route as Route<TComponent, TContext, TActionResult, TNote>, data, url))
+      const currentActionData = getCurrentActionData(location, resolved)
+
+      if (this.processResult(route, currentActionData)
+        || await this.processRouteAction(route as Route<TComponent, TContext, TActionResult, TNote>, currentActionData, url))
         return;
+
       throw new Error(`Impossible to process of route resolve for ${url}`)
     } else {
       throw new Error(`Cannot match any routes for ${url}`)
     }
   }
 
-  private processResult({redirectTo, customTo, component}: RoutingResult<TComponent>): boolean {
+  private processResult({redirectTo, customTo, component}: RoutingResult<TComponent>, currentActionData: IActionData<TContext>): boolean {
+    const context_for_To_or_Go = {previousActionData: currentActionData} as RouteContext as TContext
     if (redirectTo) {
-      this.redirect(redirectTo)
+      this.redirect(redirectTo, context_for_To_or_Go)
       return true
     } else if (customTo) {
-      const {pathname, search, hash, isRedirect, actionData} = customTo
+      let {pathname, search, hash, isRedirect} = customTo
       const to = {pathname, search, hash}
-      const ctx: RouteContext | undefined = actionData
-        ? {previous: actionData} as RouteContext
-        : undefined
-
+      isRedirect = isRedirect === undefined || isRedirect === true
       if (isRedirect) {
-        this.redirect(to, ctx as TContext)
+        this.redirect(to, context_for_To_or_Go)
         return true
       } else {
-        this.go(to, ctx as TContext)
+        this.go(to, context_for_To_or_Go)
         return true
       }
     } else if (component) {
+      component = injectProps(component, {currentActionData})
       this.component.next(component)
       return true
     }
     return false
   }
 
-  private async processRouteAction({action}: Route<TComponent, TContext, TActionResult, TNote>, data: IActionData<TContext>, url): Promise<boolean> {
+  private async processRouteAction({action}: Route<TComponent, TContext, TActionResult, TNote>, currentActionData: IActionData<TContext>, url): Promise<boolean> {
     if (!action)
       return false;
 
     let actionResult: TActionResult
     try {
-      actionResult = await action(data)
+      actionResult = await action(currentActionData)
     } catch (e) {
       throw new Error(`Error in route action(...) for ${url}. ${e}`)
     }
-    if (!this.processResult(actionResult)) {
-      // If the route action does not return one of {redirectTo OR component},
+    if (!this.processResult(actionResult, currentActionData)) {
+      // If the route action does not return one of {redirectTo / customTo / component},
       // so here you need to send the actionResult to the waiting listeners,
       // but why anyone would want to do that - I can't think of a single case...
     }
@@ -119,15 +122,36 @@ export class BrowserRouter<TComponent = any,
 
 }
 
-const getActionData = <TContext extends RouteContext = RouteContext>({pathname, search, hash, state}: Location<TContext>, {route, pathParams}: PathResolveResult): IActionData<TContext> => ({
-  targetGoTo: {
-    pathname,
-    pathParams,
-    search: search && search[0] === '?' ? search.slice(1) : search,
-    hash: hash && hash[0] === '#' ? hash.slice(1) : hash,
-  },
-  data: {
+const getCurrentActionData = <TContext extends RouteContext = RouteContext>({pathname, search, hash, state}: Location<TContext>, {route, pathParams}: PathResolveResult): IActionData<TContext> => {
+  const previous = state?.previousActionData as IActionData<TContext>
+  if (previous) {
+    delete state?.previousActionData
+    if (state && Object.keys(state as object).length === 0) {
+      state = null as TContext
+    }
+  }
+  return {
+    target: {
+      pathname,
+      pathParams,
+      search: excludeFirstSymbol('?', search),
+      hash: excludeFirstSymbol('#', hash),
+    },
     ctx: state,
     note: route.note,
-  },
-})
+    previous,
+  }
+}
+
+const injectProps = (component: any, props): any => {
+  if (typeof component === 'object') {
+    if (component.props) { // condition that component is React component
+      return React.cloneElement(
+        component as any,
+        {...props}
+      )
+    }
+    // else if() {}        // condition and inject for component in Your case
+  }
+  return component
+}

@@ -1,0 +1,19 @@
+
+.ActionData {
+  padding-top: 20px;
+}
+
+.ActionData_listing {
+  width: 50vw;
+  height: 50vh;
+  background-color: lightyellow;
+  border: 1px solid darkgray;
+  border-radius: 2px;
+}
+
+.ActionData_text {
+  margin: 0;
+  padding: 0;
+  padding-left: 5px;
+  font-size: 12px;
+}

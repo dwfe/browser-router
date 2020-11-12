@@ -1,26 +1,20 @@
-import React, {HTMLProps} from 'react';
-import {RouteActionData} from '../contract';
+import React from 'react';
+import {IRoutableProps} from '../contract';
+import {ActionData} from './ActionData/ActionData';
+import {getPreviousActionData, useDocumentTitle} from '../globals';
 
-export const NotFound = ({routeActionData}: IProps) => {
+export const NotFound = (props: IRoutableProps) => {
+  useDocumentTitle(props)
 
-  let notFoundTxt = <span>Not found</span>
-  if (routeActionData) {
-    const {data} = routeActionData
-    if (data.ctx) {
-      const {previous} = data.ctx
-      if (previous) {
-        notFoundTxt = <span><code><b>{previous.targetGoTo.pathname}</b></code> - not found</span>
-      }
-    }
-  }
+  const {currentActionData} = props
+  const previous = getPreviousActionData(currentActionData)
+  const notFoundTxt = previous
+    ? <span><code><b>{previous.target.pathname}</b></code> - not found</span>
+    : <span>Not found</span>
+
   return (<>
     <p>{`404. `}{notFoundTxt}</p>
-    <textarea readOnly={true}
-              style={{width: '50vw', height: '50vh'}}
-              value={JSON.stringify(routeActionData, null, 2)}/>
+    <ActionData actionData={currentActionData}/>
   </>)
 }
 
-interface IProps extends HTMLProps<any> {
-  routeActionData?: RouteActionData;
-}
