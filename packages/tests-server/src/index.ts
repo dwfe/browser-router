@@ -1,19 +1,24 @@
 import * as express from 'express'
+import * as path from 'path'
+import * as fs from 'fs'
 import * as cors from 'cors'
 import * as bodyParser from 'body-parser'
 
+const SRC_DIR = path.resolve(__dirname, 'src')
+const STATIC_DIR = path.resolve('../tests-manual/build')
+
+const textParser = bodyParser.text()
+const port = 2020
+
 const app = express()
 app.use(cors())
-const port = 2020
-const textParser = bodyParser.text()
+app.use(express.static(STATIC_DIR))
 
-const fs = require('fs')
-
-app.get('/', textParser, (req, res) => {
-  const body = fs.readFileSync('./dist/index.html', 'utf8')
+app.get('/', (req, res) => {
+  const body = fs.readFileSync(path.join(STATIC_DIR, 'index.html'))
   res.send(body)
 })
 
 app.listen(port, () => {
-  console.log(`server run http://localhost:${port}`)
+  console.log(`> the server is running, try http://localhost:${port}`)
 })

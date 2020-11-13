@@ -5,8 +5,8 @@
   "main": "./dist/index.js",
   "typings": "./dist/types",
   "scripts": {
-    "clean": "rimraf ./dist",
-    "server:build": "npm run clean && tsc -b",
+    "server:clean": "rimraf ./dist",
+    "server:build": "npm run server:clean && tsc -b",
     "build watch": "tsc -b -w",
     "sever:run": "node ."
   },
