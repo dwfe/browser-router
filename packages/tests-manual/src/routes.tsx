@@ -18,9 +18,13 @@ export const routes: Route<ReactElement, Ctx, RoutingResult<ReactElement, Ctx>, 
         path: ':page', children: [
           {path: 'pic', component: <PicPage/>, note: {title: 'Pic'}},
           {
-            path: '(.*)', action: async (data: RouteActionData) => ({
-              redirectTo: 'pic'
-            })
+            path: '(.*)', action: (data: RouteActionData) => {
+              return new Promise(resolve => {
+                setTimeout(()=> resolve({
+                  redirectTo: 'pic'
+                }), 5000)
+              })
+            }
           },
         ]
       },

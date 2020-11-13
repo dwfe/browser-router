@@ -3,7 +3,20 @@ import {BrowserHistory, createBrowserHistory, Location, State, Update} from 'his
 import {Observable, Subject} from 'rxjs'
 import {filter, shareReplay} from 'rxjs/operators'
 import {addFirstSymbol, excludeFirstSymbol} from '../globals';
-import React = require('react')
+import {defaultBrowserRouterOptions} from './contract';
+import React = require('react');
+
+interface Task<TComponent = any,
+  TContext extends RouteContext = RouteContext,
+  TActionResult extends RoutingResult<TComponent, TContext> = RoutingResult<TComponent, TContext>,
+  TNote = any> {
+  result?: any;
+  isCanceled?: boolean;
+  location: Location<TContext>;
+  route: Route<TComponent, TContext, TActionResult, TNote>;
+  parentRoute?: Route<TComponent, TContext, TActionResult, TNote>;
+  routeActionData: IActionData<TContext>
+}
 
 export class BrowserRouter<TComponent = any,
   TContext extends RouteContext = RouteContext,
@@ -13,33 +26,85 @@ export class BrowserRouter<TComponent = any,
   private pathResolver: PathResolver
   private history: BrowserHistory<State> = createBrowserHistory()
   private component = new Subject<TComponent>()
+  private lastLocationKey: string = '';
 
-  constructor(routes: Routes) {
+  constructor(routes: Routes, private options = defaultBrowserRouterOptions) {
     this.pathResolver = new PathResolver(routes)
   }
 
+  private trace(location: Location<TContext>, stage = '') {
+    if (this.options.enableTrace)
+      console.log(getUrl(location), stage)
+  }
+
+  private needToStopTaskCycle(task: Task): boolean {
+    task.isCanceled = task.location.key !== this.lastLocationKey
+    return task.isCanceled || task.result
+  }
+
   private async onLocationChange({location}: Update<TContext>) {
-    const url = `'${getUrl(location)}'`
-    const resolved = this.pathResolver.resolve(location.pathname)
-    if (resolved) {
-      const {route, parentRoute} = resolved
-      const routeActionData = getRouteActionData(location, resolved)
-
-      if (this.processResult(route, routeActionData)
-        || await this.processRouteAction(route as any, parentRoute, routeActionData, url))
-        return;
-
-      throw new Error(`Impossible to process of route resolve for ${url}`)
-    } else {
-      throw new Error(`Cannot match any routes for ${url}`)
+    this.trace(location)
+    this.lastLocationKey = location.key
+    const task = await this.runLifecycle(location)
+    if (task.isCanceled) {
+      this.trace(task.location, 'canceled')
+    } else if (task.result) {
+      task.result()
     }
   }
 
-  private processResult({redirectTo, customTo, component}: RoutingResult<TComponent>, routeActionData: IActionData<TContext>): boolean {
+  private runLifecycle(location: Location<TContext>): Promise<Task<TComponent, TContext, TActionResult, TNote>> {
+    return this.stageResolveRoute(location)
+      .then(task => this.stageProcessResult(task.route, task))
+      .then(task => this.stageInvokeRouteAction(task))
+      .then(task => this.stageSummarize(task))
+  }
+
+  private async stageResolveRoute(location: Location<TContext>): Promise<Task<TComponent, TContext, TActionResult, TNote>> {
+    this.trace(location, 'stageResolveRoute')
+    const resolved = this.pathResolver.resolve(location.pathname)
+    if (!resolved)
+      throw new Error(`Cannot match any routes for '${getUrl(location)}'`)
+    return {
+      location,
+      route: resolved.route as Route<TComponent, TContext, TActionResult, TNote>,
+      parentRoute: resolved.parentRoute as Route<TComponent, TContext, TActionResult, TNote>,
+      routeActionData: this.getRouteActionData(resolved, location)
+    }
+  }
+
+  private getRouteActionData({route, pathParams}: PathResolveResult, {pathname, search, hash, state, key}: Location<TContext>): IActionData<TContext> {
+    const previous = state?.previousActionData as IActionData<TContext>
+    if (previous) {
+      delete state?.previousActionData
+      if (state && Object.keys(state as object).length === 0) {
+        state = null as TContext
+      }
+    }
+    return {
+      target: {
+        pathname,
+        pathParams,
+        search: excludeFirstSymbol('?', search),
+        hash: excludeFirstSymbol('#', hash),
+      },
+      ctx: state,
+      note: route.note,
+      previous,
+      key,
+    }
+  }
+
+  private async stageProcessResult({redirectTo, customTo, component}: RoutingResult<TComponent>, task: Task<TComponent, TContext, TActionResult, TNote>): Promise<Task<TComponent, TContext, TActionResult, TNote>> {
+    if (this.needToStopTaskCycle(task))
+      return task;
+    this.trace(task.location, 'stageProcessResult')
+
+    const {routeActionData} = task
     const context_for_To_or_Go = {previousActionData: routeActionData} as RouteContext as TContext
     if (redirectTo) {
-      this.redirect(redirectTo, context_for_To_or_Go)
-      return true
+      task.result = () => this.redirect(redirectTo, context_for_To_or_Go)
+      return task
     } else if (customTo) {
       let {pathname, search, hash, isRedirect} = customTo
       search = addFirstSymbol('?', search)
@@ -48,38 +113,50 @@ export class BrowserRouter<TComponent = any,
       isRedirect = isRedirect === undefined || isRedirect === true
 
       if (isRedirect) {
-        this.redirect(to, context_for_To_or_Go)
-        return true
+        task.result = () => this.redirect(to, context_for_To_or_Go)
+        return task
       } else {
-        this.go(to, context_for_To_or_Go)
-        return true
+        task.result = () => this.go(to, context_for_To_or_Go)
+        return task
       }
     } else if (component) {
-      component = injectProps(component, {routeActionData})
-      this.component.next(component)
-      return true
+      if (this.options.injectRouteActionsDataToComponent)
+        component = injectProps(component, {routeActionData})
+      task.result = () => this.component.next(component)
+      return task
     }
-    return false
+    return task
   }
 
-  private async processRouteAction(route: Route<TComponent, TContext, TActionResult, TNote>, parentRoute: Route | undefined, routeActionData: IActionData<TContext>, url): Promise<boolean> {
+  private async stageInvokeRouteAction(task: Task<TComponent, TContext, TActionResult, TNote>): Promise<Task<TComponent, TContext, TActionResult, TNote>> {
+    if (this.needToStopTaskCycle(task))
+      return task;
+    const {route, parentRoute, routeActionData, location} = task
     const {action} = route
     if (!action)
-      return false;
+      return task;
+    this.trace(task.location, 'stageInvokeRouteAction')
 
     let actionResult: TActionResult
     try {
-      actionResult = await action(routeActionData)
+      actionResult = await action(routeActionData) as TActionResult
     } catch (e) {
-      throw new Error(`Error in route action(...) for ${url}. ${e}`)
+      throw new Error(`Error in route action(...) for ${getUrl(location)}. ${e}`)
     }
-    this.pathResolver.correctResultFromAction(routeActionData.target.pathname as string, actionResult, route, parentRoute)
-    if (!this.processResult(actionResult, routeActionData)) {
+    this.pathResolver.correctResultFromAction(location.pathname, actionResult, route, parentRoute)
+    task = await this.stageProcessResult(actionResult, task)
+    if (!this.needToStopTaskCycle(task)) {
       // If the route action does not return one of {redirectTo / customTo / component},
       // so here you need to send the actionResult to the waiting listeners,
       // but why anyone would want to do that - I can't think of a single case...
     }
-    return true
+    return task
+  }
+
+  private stageSummarize(task: Task<TComponent, TContext, TActionResult, TNote>): Task<TComponent, TContext, TActionResult, TNote> {
+    if (!this.needToStopTaskCycle(task))
+      throw new Error(`Impossible to process of resolved route for '${getUrl(task.location)}'`)
+    return task
   }
 
   component$: Observable<TComponent> = this.component.asObservable().pipe(
@@ -128,27 +205,6 @@ export class BrowserRouter<TComponent = any,
 
 }
 
-const getRouteActionData = <TContext extends RouteContext = RouteContext>({pathname, search, hash, state, key}: Location<TContext>, {route, pathParams}: PathResolveResult): IActionData<TContext> => {
-  const previous = state?.previousActionData as IActionData<TContext>
-  if (previous) {
-    delete state?.previousActionData
-    if (state && Object.keys(state as object).length === 0) {
-      state = null as TContext
-    }
-  }
-  return {
-    target: {
-      pathname,
-      pathParams,
-      search: excludeFirstSymbol('?', search),
-      hash: excludeFirstSymbol('#', hash),
-    },
-    ctx: state,
-    note: route.note,
-    previous,
-    key,
-  }
-}
 
 const injectProps = (component: any, props): any => {
   if (typeof component === 'object') {
