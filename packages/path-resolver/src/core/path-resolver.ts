@@ -1,12 +1,13 @@
 import {compile, match} from 'path-to-regexp'
 import {ICustomTo, PathResolveResult, Route, Routes, RoutingResult} from './contract'
+import {cloneResult, cloneRoute} from '../globals'
 
 export class PathResolver {
   routes: Routes = [];
 
   constructor(routes: Routes) {
     routes.forEach(r => {
-      const route: Route = clone(r)
+      const route = cloneRoute(r)
 
       if (route.path[0] === '/')
         throw errorLeadSlash(route.path)
@@ -33,7 +34,7 @@ export class PathResolver {
       return;
 
     for (let i = 0; i < routes.length; i++) {
-      const route: Route = clone(routes[i])
+      const route = cloneRoute(routes[i])
       const matching = match(route.path)(pathname)
       if (matching && !needToMatchChildren(route)) {
         const pathParams = matching.params
@@ -55,7 +56,7 @@ export class PathResolver {
     if (result.redirectTo === undefined && result.customTo === undefined)
       return;
 
-    const res: RoutingResult = clone(result)
+    const res = cloneResult(result)
 
     const parentPath = parentRoute ? parentRoute.path : '/'
     result.redirectTo = init.calcTo(result.redirectTo, parentPath)
@@ -100,7 +101,7 @@ const init = {
 
     const children: Routes = []
     for (let i = 0; i < routes.length; i++) {
-      const route: Route = clone(routes[i])
+      const route = cloneRoute(routes[i])
       const {path} = route
 
       if (path[0] === '/')
@@ -122,20 +123,10 @@ const init = {
   },
 }
 
-const clone = (r: RoutingResult): any => {
-  const r2 = {...r}
-  if (r2.customTo) {
-    r2.customTo = {...r2.customTo}
-  }
-  return r2
-}
-
-
 const needToMatchChildren = ({redirectTo, component, children}: Route): boolean =>
   redirectTo === undefined && component === undefined // if 'redirectTo' and 'component' are omitted
   && children !== undefined && children.length > 0    // but children are available
 ;
-
 
 const errorLeadSlash = (path: string) =>
   new Error(`Invalid configuration of route '${path}': path cannot start with a slash`)
