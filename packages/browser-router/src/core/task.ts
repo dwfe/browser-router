@@ -72,7 +72,7 @@ export class Task<TComponent = any,
     try {
       actionResult = await this.route.action(this.routeActionData) as TActionResult
     } catch (e) {
-      throw new Error(`Error in route action(...) for ${this.id}. ${e}`)
+      throw new Error(`[ ${this.id} ] Error in route action(...). ${e}`)
     }
     this.router.pathResolver.correctResultFromAction(this.location.pathname, actionResult, this.route, this.parentRoute)
     await this.stageProcessResult(actionResult)
@@ -86,7 +86,7 @@ export class Task<TComponent = any,
 
   private async stageSummarize(): Promise<Task<TComponent, TContext, TActionResult, TNote>> {
     if (!this.needToStopProcess())
-      throw new Error(`Impossible to process of resolved route for '${this.id}'`)
+      throw new Error(`[ ${this.id} ] Impossible to process of resolved route`)
     return this
   }
 

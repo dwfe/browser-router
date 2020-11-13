@@ -51,7 +51,7 @@ export class BrowserRouter<TComponent = any,
     this.trace(taskId, 'stageResolveRoute')
     const resolved = this.pathResolver.resolve(location.pathname)
     if (!resolved)
-      throw new Error(`Cannot match any routes for '${taskId}'`)
+      throw new Error(`[ ${taskId} ] Cannot match any routes`)
     const task = new Task(taskId, location, resolved, this)
     if (!this.addTask(task))
       task.isCanceled = true
@@ -101,6 +101,7 @@ export class BrowserRouter<TComponent = any,
 
 
 //region Handlers
+
   private isTaskExist(taskId: string) {
     return !!this.tasks.get(taskId)
   }
