@@ -1,8 +1,8 @@
 import {RouteActionData} from './contract';
 
-export const getPreviousActionData = (currentActionData?: RouteActionData): RouteActionData | undefined => {
-  if (currentActionData) {
-    return currentActionData.previous
+export const getPreviousRouteActionData = (routeActionData?: RouteActionData): RouteActionData | undefined => {
+  if (routeActionData) {
+    return routeActionData.previous
   }
 }
 

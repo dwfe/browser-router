@@ -7,6 +7,6 @@ export const FirstPage = (props: IRoutableProps) => {
     <p>First works!</p>
     <Link href="/first/world?qwerty=123#asd">world</Link><br/><br/>
     <Link href="/first/to-pic">to pic</Link><br/><br/>
-    <ActionData actionData={props.currentActionData}/>
+    <ActionData actionData={props.routeActionData}/>
   </>);
 }

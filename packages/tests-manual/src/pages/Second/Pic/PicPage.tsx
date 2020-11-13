@@ -7,6 +7,6 @@ export const PicPage = (props: IRoutableProps) => {
   return (<>
     <p>Pic works!</p>
     <img src={pic} alt="Routing" width="200"/><br/><br/>
-    <ActionData actionData={props.currentActionData}/>
+    <ActionData actionData={props.routeActionData}/>
   </>);
 }

@@ -23,10 +23,10 @@ export class BrowserRouter<TComponent = any,
     const resolved = this.pathResolver.resolve(location.pathname)
     if (resolved) {
       const {route, parentRoute} = resolved
-      const currentActionData = getCurrentActionData(location, resolved)
+      const routeActionData = getRouteActionData(location, resolved)
 
-      if (this.processResult(route, currentActionData)
-        || await this.processRouteAction(route as any, parentRoute, currentActionData, url))
+      if (this.processResult(route, routeActionData)
+        || await this.processRouteAction(route as any, parentRoute, routeActionData, url))
         return;
 
       throw new Error(`Impossible to process of route resolve for ${url}`)
@@ -35,8 +35,8 @@ export class BrowserRouter<TComponent = any,
     }
   }
 
-  private processResult({redirectTo, customTo, component}: RoutingResult<TComponent>, currentActionData: IActionData<TContext>): boolean {
-    const context_for_To_or_Go = {previousActionData: currentActionData} as RouteContext as TContext
+  private processResult({redirectTo, customTo, component}: RoutingResult<TComponent>, routeActionData: IActionData<TContext>): boolean {
+    const context_for_To_or_Go = {previousActionData: routeActionData} as RouteContext as TContext
     if (redirectTo) {
       this.redirect(redirectTo, context_for_To_or_Go)
       return true
@@ -55,26 +55,26 @@ export class BrowserRouter<TComponent = any,
         return true
       }
     } else if (component) {
-      component = injectProps(component, {currentActionData})
+      component = injectProps(component, {routeActionData})
       this.component.next(component)
       return true
     }
     return false
   }
 
-  private async processRouteAction(route: Route<TComponent, TContext, TActionResult, TNote>, parentRoute: Route | undefined, currentActionData: IActionData<TContext>, url): Promise<boolean> {
+  private async processRouteAction(route: Route<TComponent, TContext, TActionResult, TNote>, parentRoute: Route | undefined, routeActionData: IActionData<TContext>, url): Promise<boolean> {
     const {action} = route
     if (!action)
       return false;
 
     let actionResult: TActionResult
     try {
-      actionResult = await action(currentActionData)
+      actionResult = await action(routeActionData)
     } catch (e) {
       throw new Error(`Error in route action(...) for ${url}. ${e}`)
     }
-    this.pathResolver.correctResultFromAction(currentActionData.target.pathname as string, actionResult, route, parentRoute)
-    if (!this.processResult(actionResult, currentActionData)) {
+    this.pathResolver.correctResultFromAction(routeActionData.target.pathname as string, actionResult, route, parentRoute)
+    if (!this.processResult(actionResult, routeActionData)) {
       // If the route action does not return one of {redirectTo / customTo / component},
       // so here you need to send the actionResult to the waiting listeners,
       // but why anyone would want to do that - I can't think of a single case...
@@ -128,7 +128,7 @@ export class BrowserRouter<TComponent = any,
 
 }
 
-const getCurrentActionData = <TContext extends RouteContext = RouteContext>({pathname, search, hash, state, key}: Location<TContext>, {route, pathParams}: PathResolveResult): IActionData<TContext> => {
+const getRouteActionData = <TContext extends RouteContext = RouteContext>({pathname, search, hash, state, key}: Location<TContext>, {route, pathParams}: PathResolveResult): IActionData<TContext> => {
   const previous = state?.previousActionData as IActionData<TContext>
   if (previous) {
     delete state?.previousActionData
