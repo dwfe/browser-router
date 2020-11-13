@@ -27,14 +27,19 @@ export class BrowserRouter<TComponent = any,
   private history: BrowserHistory<State> = createBrowserHistory()
   private component = new Subject<TComponent>()
   private lastLocationKey: string = '';
+  private tasks: Map<string, Task<TComponent, TContext, TActionResult, TNote>> = new Map()
 
   constructor(routes: Routes, private options = defaultBrowserRouterOptions) {
     this.pathResolver = new PathResolver(routes)
   }
 
+  private id(location: Location<TContext>): string {
+    return getUrl(location)
+  }
+
   private trace(location: Location<TContext>, stage = '') {
     if (this.options.enableTrace)
-      console.log(getUrl(location), stage)
+      console.log(this.id(location), stage)
   }
 
   private needToStopTaskCycle(task: Task): boolean {
@@ -42,18 +47,45 @@ export class BrowserRouter<TComponent = any,
     return task.isCanceled || task.result
   }
 
-  private async onLocationChange({location}: Update<TContext>) {
-    this.trace(location)
-    this.lastLocationKey = location.key
-    const task = await this.runLifecycle(location)
-    if (task.isCanceled) {
-      this.trace(task.location, 'canceled')
-    } else if (task.result) {
-      task.result()
+  private addTask(task: Task<TComponent, TContext, TActionResult, TNote>): boolean | undefined {
+    const id = this.id(task.location)
+    const existed = this.tasks.get(id)
+    if (!existed) {
+      this.tasks.set(id, task)
+      return true
     }
   }
 
-  private runLifecycle(location: Location<TContext>): Promise<Task<TComponent, TContext, TActionResult, TNote>> {
+  private removeTask(location: Location<TContext>) {
+    this.tasks.delete(this.id(location))
+  }
+
+  private isTaskExist(location: Location<TContext>) {
+    return !!this.tasks.get(this.id(location))
+  }
+
+  private async onLocationChange({location}: Update<TContext>) {
+    if (this.isTaskExist(location))
+      return;
+
+    this.trace(location)
+    this.lastLocationKey = location.key
+
+    try {
+      const task = await this.runLifecycle(location)
+      if (task.isCanceled) {
+        this.trace(location, 'canceled')
+      } else if (task.result) {
+        task.result()
+      }
+      this.removeTask(location)
+    } catch (e) {
+      this.removeTask(location)
+      throw e
+    }
+  }
+
+  private async runLifecycle(location: Location<TContext>): Promise<Task<TComponent, TContext, TActionResult, TNote>> {
     return this.stageResolveRoute(location)
       .then(task => this.stageProcessResult(task.route, task))
       .then(task => this.stageInvokeRouteAction(task))
@@ -64,13 +96,16 @@ export class BrowserRouter<TComponent = any,
     this.trace(location, 'stageResolveRoute')
     const resolved = this.pathResolver.resolve(location.pathname)
     if (!resolved)
-      throw new Error(`Cannot match any routes for '${getUrl(location)}'`)
-    return {
+      throw new Error(`Cannot match any routes for '${this.id(location)}'`)
+    const task = {
       location,
       route: resolved.route as Route<TComponent, TContext, TActionResult, TNote>,
       parentRoute: resolved.parentRoute as Route<TComponent, TContext, TActionResult, TNote>,
       routeActionData: this.getRouteActionData(resolved, location)
-    }
+    } as Task<TComponent, TContext, TActionResult, TNote>
+    if (!this.addTask(task))
+      task.isCanceled = true
+    return task
   }
 
   private getRouteActionData({route, pathParams}: PathResolveResult, {pathname, search, hash, state, key}: Location<TContext>): IActionData<TContext> {
@@ -141,7 +176,7 @@ export class BrowserRouter<TComponent = any,
     try {
       actionResult = await action(routeActionData) as TActionResult
     } catch (e) {
-      throw new Error(`Error in route action(...) for ${getUrl(location)}. ${e}`)
+      throw new Error(`Error in route action(...) for ${this.id(location)}. ${e}`)
     }
     this.pathResolver.correctResultFromAction(location.pathname, actionResult, route, parentRoute)
     task = await this.stageProcessResult(actionResult, task)
@@ -155,7 +190,7 @@ export class BrowserRouter<TComponent = any,
 
   private stageSummarize(task: Task<TComponent, TContext, TActionResult, TNote>): Task<TComponent, TContext, TActionResult, TNote> {
     if (!this.needToStopTaskCycle(task))
-      throw new Error(`Impossible to process of resolved route for '${getUrl(task.location)}'`)
+      throw new Error(`Impossible to process of resolved route for '${this.id(task.location)}'`)
     return task
   }
 
