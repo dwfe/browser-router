@@ -1,3 +1,3 @@
-export * from './contract'
+export * from './core/contract'
+export * from './core/path-resolver'
 export * from './globals'
-export * from './path-resolver'

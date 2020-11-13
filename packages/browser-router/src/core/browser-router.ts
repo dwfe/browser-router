@@ -3,7 +3,7 @@ import {BrowserHistory, createBrowserHistory, Location, State, Update} from 'his
 import {Observable, Subject} from 'rxjs'
 import {filter, shareReplay} from 'rxjs/operators'
 import {addFirstSymbol, excludeFirstSymbol} from '../globals';
-import React = require('react');
+import React = require('react')
 
 export class BrowserRouter<TComponent = any,
   TContext extends RouteContext = RouteContext,
@@ -22,11 +22,11 @@ export class BrowserRouter<TComponent = any,
     const url = `'${getUrl(location)}'`
     const resolved = this.pathResolver.resolve(location.pathname)
     if (resolved) {
-      const {route} = resolved
+      const {route, parentRoute} = resolved
       const currentActionData = getCurrentActionData(location, resolved)
 
       if (this.processResult(route, currentActionData)
-        || await this.processRouteAction(route as Route<TComponent, TContext, TActionResult, TNote>, currentActionData, url))
+        || await this.processRouteAction(route as any, parentRoute, currentActionData, url))
         return;
 
       throw new Error(`Impossible to process of route resolve for ${url}`)
@@ -62,7 +62,8 @@ export class BrowserRouter<TComponent = any,
     return false
   }
 
-  private async processRouteAction({action}: Route<TComponent, TContext, TActionResult, TNote>, currentActionData: IActionData<TContext>, url): Promise<boolean> {
+  private async processRouteAction(route: Route<TComponent, TContext, TActionResult, TNote>, parentRoute: Route | undefined, currentActionData: IActionData<TContext>, url): Promise<boolean> {
+    const {action} = route
     if (!action)
       return false;
 
@@ -72,6 +73,7 @@ export class BrowserRouter<TComponent = any,
     } catch (e) {
       throw new Error(`Error in route action(...) for ${url}. ${e}`)
     }
+    this.pathResolver.correctResultFromAction(currentActionData.target.pathname as string, actionResult, route, parentRoute)
     if (!this.processResult(actionResult, currentActionData)) {
       // If the route action does not return one of {redirectTo / customTo / component},
       // so here you need to send the actionResult to the waiting listeners,

@@ -5,4 +5,6 @@
 
 - CanActivate - https://angular.io/guide/router#preventing-unauthorized-access
 - тесты для поля customGo, проверки аналогичные redirectTo
+- тесты PathResolver.correctResultFromAction
+- тесты BrowserRouter
 - сделать трасер прохождения маршрута

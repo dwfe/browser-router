@@ -1,4 +1,4 @@
-import {GoTo} from './contract'
+import {GoTo} from './core/contract'
 
 export const isGoAway = ({origin, target}: GoTo) =>
   target === '_blank'

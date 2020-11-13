@@ -1,15 +1,15 @@
 import {compile, match} from 'path-to-regexp'
-import {ICustomTo, PathResolveResult, Route, Routes} from './contract'
+import {ICustomTo, PathResolveResult, Route, Routes, RoutingResult} from './contract'
 
 export class PathResolver {
   routes: Routes = [];
 
   constructor(routes: Routes) {
     routes.forEach(r => {
-      const route: Route = {...r} // clone
+      const route: Route = clone(r)
 
       if (route.path[0] === '/')
-        throw errorLeadSlash(route)
+        throw errorLeadSlash(route.path)
 
       // Step 1. All root paths get a prefix '/'
       route.path = '/' + route.path
@@ -28,24 +28,48 @@ export class PathResolver {
     return this.find(pathname, this.routes)
   }
 
-  find(pathname: string, routes: Routes | undefined): PathResolveResult | undefined {
+  find(pathname: string, routes: Routes | undefined, parentRoute?: Route): PathResolveResult | undefined {
     if (!routes)
       return;
 
     for (let i = 0; i < routes.length; i++) {
-      const route = {...routes[i]}
+      const route: Route = clone(routes[i])
       const matching = match(route.path)(pathname)
       if (matching && !needToMatchChildren(route)) {
         const pathParams = matching.params
         if (route.redirectTo) {
           route.redirectTo = compile(route.redirectTo)(pathParams)
         }
-        route.path = pathname
-        return {route, pathParams}
+        if (route.customTo) {
+          route.customTo.pathname = compile(route.customTo.pathname)(pathParams)
+        }
+        return {route, pathParams, parentRoute}
       }
-      const found = this.find(pathname, route.children)
+      const found = this.find(pathname, route.children, route)
       if (found)
         return found
+    }
+  }
+
+  correctResultFromAction(pathname: string, result: RoutingResult, route: Route, parentRoute?: Route) {
+    if (result.redirectTo === undefined && result.customTo === undefined)
+      return;
+
+    const res: RoutingResult = clone(result)
+
+    const parentPath = parentRoute ? parentRoute.path : '/'
+    result.redirectTo = init.calcTo(result.redirectTo, parentPath)
+    result.customTo = init.calcCustomTo(result.customTo, parentPath)
+
+    const matching = match(route.path)(pathname)
+    if (matching) {
+      const pathParams = matching.params
+      if (result.redirectTo !== undefined) {
+        result.redirectTo = compile(result.redirectTo)(pathParams)
+      }
+      if (result.customTo) {
+        result.customTo.pathname = compile(result.customTo.pathname)(pathParams)
+      }
     }
   }
 
@@ -76,11 +100,11 @@ const init = {
 
     const children: Routes = []
     for (let i = 0; i < routes.length; i++) {
-      const route = {...routes[i]} // clone
+      const route: Route = clone(routes[i])
       const {path} = route
 
       if (path[0] === '/')
-        throw errorLeadSlash(route)
+        throw errorLeadSlash(path)
 
       children.push(route)
 
@@ -98,6 +122,14 @@ const init = {
   },
 }
 
+const clone = (r: RoutingResult): any => {
+  const r2 = {...r}
+  if (r2.customTo) {
+    r2.customTo = {...r2.customTo}
+  }
+  return r2
+}
+
 
 const needToMatchChildren = ({redirectTo, component, children}: Route): boolean =>
   redirectTo === undefined && component === undefined // if 'redirectTo' and 'component' are omitted
@@ -105,6 +137,6 @@ const needToMatchChildren = ({redirectTo, component, children}: Route): boolean 
 ;
 
 
-const errorLeadSlash = (route: Route) =>
-  new Error(`Invalid configuration of route '${route.path}': path cannot start with a slash`)
+const errorLeadSlash = (path: string) =>
+  new Error(`Invalid configuration of route '${path}': path cannot start with a slash`)
 ;

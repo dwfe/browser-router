@@ -72,6 +72,7 @@ export interface IActionData<TContext extends RouteContext = RouteContext, TNote
 export interface PathResolveResult {
   route: Route;
   pathParams: PathParams;
+  parentRoute?: Route;
 }
 
 export type PathParams = object | { [key: string]: string; }

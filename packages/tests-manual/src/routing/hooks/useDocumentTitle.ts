@@ -6,6 +6,5 @@ export const useDocumentTitle = ({currentActionData}: IRoutableProps) => {
     const title = currentActionData?.note?.title
     if (title)
       document.title = title
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []) // eslint-disable-line
 }
