@@ -11,14 +11,14 @@ export class Task<TComponent = any,
   TActionResult extends RoutingResult<TComponent, TContext> = RoutingResult<TComponent, TContext>,
   TNote = any> {
 
-  private readonly route: Route<TComponent, TContext, TActionResult, TNote>
-  private readonly parentRoute: Route<TComponent, TContext, TActionResult, TNote>
-  private readonly routeActionData: IActionData<TContext>
+  readonly route: Route<TComponent, TContext, TActionResult, TNote>
+  readonly parentRoute: Route<TComponent, TContext, TActionResult, TNote>
+  readonly routeActionData: IActionData<TContext>
   isCanceled = false
   result: any
 
   constructor(public readonly id: string,
-              private readonly location: Location<TContext>,
+              public readonly location: Location<TContext>,
               private resolved: PathResolveResult,
               private router: BrowserRouter<TComponent, TContext, TActionResult, TNote>) {
     this.route = resolved.route as Route<TComponent, TContext, TActionResult, TNote>

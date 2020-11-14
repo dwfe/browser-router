@@ -24,10 +24,7 @@ export class LocationHandler<TComponent = any,
     return this.resolveRoute({location, taskId})
       .then(data => this.createTask(data))
       .then(task => task.runLifecycle())
-      .catch(e => {
-        this.removeTask(taskId)
-        throw e
-      })
+      .finally(() => this.removeTask(taskId))
   }
 
   private async resolveRoute({location, taskId}) {
@@ -61,7 +58,7 @@ export class LocationHandler<TComponent = any,
     }
   }
 
-  public removeTask(id: string) {
+  private removeTask(id: string): void {
     delete this.tasks[`${id}`]
   }
 

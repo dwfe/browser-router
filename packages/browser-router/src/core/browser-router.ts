@@ -42,7 +42,6 @@ export class BrowserRouter<TComponent = any,
     isCanceled
       ? this.trace(id, 'canceled')
       : result()
-    this.locationHandler.removeTask(id)
   }
 
   component$: Observable<TComponent> = this.componentSubj.asObservable().pipe(
