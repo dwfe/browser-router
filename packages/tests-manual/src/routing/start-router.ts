@@ -12,6 +12,9 @@ export const startRouter = (routes: Routes, root: HTMLElement | null) => {
   const options: IBrowserRouterOptions = {
     enableTrace: true,
     injectRouteActionsDataToComponent: true,
+    pathResolver: {
+      enableTrace: false,
+    }
   }
   container.register(BrowserRouter, {useValue: new BrowserRouter(routes, options)})
   const router = container.resolve<BrowserRouter<ReactElement>>(BrowserRouter)

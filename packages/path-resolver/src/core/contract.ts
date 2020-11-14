@@ -122,3 +122,11 @@ export interface GoTo {
    */
   target?: '_blank' | any;
 }
+
+export interface IPathResolverOptions {
+  enableTrace: boolean;
+}
+
+export const defaultPathResolverOptions: IPathResolverOptions = {
+  enableTrace: false,
+}

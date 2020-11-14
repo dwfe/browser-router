@@ -1,11 +1,11 @@
 import {compile, match} from 'path-to-regexp'
-import {ICustomTo, PathResolveResult, Route, Routes, RoutingResult} from './contract'
+import {defaultPathResolverOptions, ICustomTo, PathResolveResult, Route, Routes, RoutingResult} from './contract'
 import {cloneResult, cloneRoute} from '../globals'
 
 export class PathResolver {
   routes: Routes = [];
 
-  constructor(routes: Routes) {
+  constructor(routes: Routes, public readonly options = defaultPathResolverOptions) {
     routes.forEach(r => {
       const route = cloneRoute(r)
 
@@ -26,6 +26,7 @@ export class PathResolver {
   }
 
   resolve(pathname: string): PathResolveResult | undefined {
+    this.trace(`resolving '${pathname}'`)
     return this.find(pathname, this.routes)
   }
 
@@ -36,6 +37,8 @@ export class PathResolver {
     for (let i = 0; i < routes.length; i++) {
       const route = cloneRoute(routes[i])
       const matching = match(route.path)(pathname)
+      this.trace(`[${!!matching ? 'v' : 'x'}] ${route.path}`)
+
       if (matching && !needToMatchChildren(route)) {
         const pathParams = matching.params
         if (route.redirectTo) {
@@ -72,6 +75,11 @@ export class PathResolver {
         result.customTo.pathname = compile(result.customTo.pathname)(pathParams)
       }
     }
+  }
+
+  private trace(path: string) {
+    if (this.options.enableTrace)
+      console.log(' ', path)
   }
 
 }

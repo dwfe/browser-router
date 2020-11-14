@@ -19,7 +19,7 @@ export class BrowserRouter<TComponent = any,
   public lastLocationKey: string = '' // unique string on every new location
 
   constructor(routes: Routes, public readonly options = defaultBrowserRouterOptions) {
-    this.pathResolver = new PathResolver(routes)
+    this.pathResolver = new PathResolver(routes, options.pathResolver)
     this.locationHandler = new LocationHandler(this)
   }
 
@@ -86,9 +86,9 @@ export class BrowserRouter<TComponent = any,
   }
 
 
-  public trace(taskId: string, stage: string) {
+  public trace(id: string, stage: string) {
     if (this.options.enableTrace)
-      console.log(`[ ${taskId} ]`, stage)
+      console.log(`[ ${id} ]`, stage)
   }
 
 }
