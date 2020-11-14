@@ -22,7 +22,7 @@ export const routes: Route<ReactElement, Ctx, RoutingResult<ReactElement, Ctx>, 
               return new Promise(resolve => {
                 setTimeout(()=> resolve({
                   redirectTo: 'pic'
-                }), 5000)
+                }), 5_000)
               })
             }
           },

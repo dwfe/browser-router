@@ -28,34 +28,12 @@ export class BrowserRouter<TComponent = any,
 
   private async onLocationChange({location}: Update<TContext>) {
     const taskId = Task.id(location)
-    if (this.isTaskExist(taskId))
+    if (this.isTaskExist(taskId)) {
+      this.trace(taskId, 'duplicate, skipped')
       return;
-
-    this.trace(taskId, 'start')
-    this.lastLocationKey = location.key
-    const task = await this.stageResolveRoute(location, taskId)
-
-    try {
-      await task.runLifecycle()
-      task.isCanceled
-        ? this.trace(taskId, 'canceled')
-        : task.result()
-      this.removeTask(taskId)
-    } catch (e) {
-      this.removeTask(taskId)
-      throw e
     }
-  }
-
-  private async stageResolveRoute(location: Location<TContext>, taskId: string): Promise<Task<TComponent, TContext, TActionResult, TNote>> {
-    this.trace(taskId, 'stageResolveRoute')
-    const resolved = this.pathResolver.resolve(location.pathname)
-    if (!resolved)
-      throw new Error(`[ ${taskId} ] Cannot match any routes`)
-    const task = new Task(taskId, location, resolved, this)
-    if (!this.addTask(task))
-      task.isCanceled = true
-    return task
+    const task = await this.createAndRunTask(location, taskId)
+    this.routeActivation(task)
   }
 
   component$: Observable<TComponent> = this.componentSubj.asObservable().pipe(
@@ -100,26 +78,59 @@ export class BrowserRouter<TComponent = any,
   }
 
 
-//region Handlers
+  private trace(taskId: string, stage = '') {
+    if (this.options.enableTrace)
+      console.log(`[ ${taskId} ]`, stage)
+  }
 
-  private isTaskExist(taskId: string) {
-    return !!this.tasks.get(taskId)
+//region Task
+
+  private async createAndRunTask(location: Location<TContext>, taskId: string): Promise<Task<TComponent, TContext, TActionResult, TNote>> {
+    const task = await this.stageResolveRoute(location, taskId)
+    this.lastLocationKey = location.key
+    try {
+      return await task.runLifecycle()
+    } catch (e) {
+      this.removeTask(taskId)
+      throw e
+    }
+  }
+
+  private async stageResolveRoute(location: Location<TContext>, taskId: string): Promise<Task<TComponent, TContext, TActionResult, TNote>> {
+    this.trace(taskId, 'resolve route')
+    const resolved = this.pathResolver.resolve(location.pathname)
+    if (!resolved)
+      throw new Error(`Cannot match any routes for [ ${taskId} ]`)
+    const task = new Task(taskId, location, resolved, this)
+    if (!this.addTask(task))
+      task.isCanceled = true
+    return task
+  }
+
+  private routeActivation({id, isCanceled, result}: Task<TComponent, TContext, TActionResult, TNote>) {
+    isCanceled
+      ? this.trace(id, 'canceled')
+      : result()
+    this.removeTask(id)
+  }
+
+  private isTaskExist(id: string) {
+    return !!this.getTask(id)
+  }
+
+  private getTask(id: string): Task<TComponent, TContext, TActionResult, TNote> | undefined {
+    return this.tasks.get(id)
   }
 
   private addTask(task: Task<TComponent, TContext, TActionResult, TNote>): boolean | undefined {
-    if (!this.tasks.get(task.id)) {
+    if (!this.isTaskExist(task.id)) {
       this.tasks.set(task.id, task)
       return true
     }
   }
 
-  private removeTask(taskId: string) {
-    this.tasks.delete(taskId)
-  }
-
-  private trace(taskId: string, stage = '') {
-    if (this.options.enableTrace)
-      console.log(`[ ${taskId} ]`, stage)
+  private removeTask(id: string) {
+    this.tasks.delete(id)
   }
 
 //endregion

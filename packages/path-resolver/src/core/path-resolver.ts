@@ -129,5 +129,5 @@ const needToMatchChildren = ({redirectTo, component, children}: Route): boolean 
 ;
 
 const errorLeadSlash = (path: string) =>
-  new Error(`Invalid configuration of route '${path}': path cannot start with a slash`)
+  new Error(`Invalid configuration of route, because path [ ${path} ] cannot start with a slash`)
 ;
