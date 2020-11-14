@@ -1,7 +1,8 @@
-import {convertGoToFromStr, getLocalRoute, getUrl, isGoAway, PathResolver, RouteContext, Routes, RoutingResult, ToType} from '@do-while-for-each/path-resolver'
+import {PathResolver, RouteContext, Routes, RoutingResult, ToType} from '@do-while-for-each/path-resolver'
 import {BrowserHistory, createBrowserHistory, Location, State, Update} from 'history'
 import {Observable, Subject} from 'rxjs'
 import {distinctUntilChanged, filter, shareReplay} from 'rxjs/operators'
+import {convertGoToFromStr, getLocalRoute, getUrl, isGoAway} from '../globals'
 import {defaultBrowserRouterOptions} from './contract';
 import {Task} from './task'
 
@@ -15,7 +16,7 @@ export class BrowserRouter<TComponent = any,
   public readonly componentSubj = new Subject<TComponent>()
 
   public lastLocationKey: string = ''
-  private tasks: Map<string, Task<TComponent, TContext, TActionResult, TNote>> = new Map()
+  private tasks: { [id: string]: true } = {}
 
   constructor(routes: Routes, public readonly options = defaultBrowserRouterOptions) {
     this.pathResolver = new PathResolver(routes)
@@ -27,6 +28,8 @@ export class BrowserRouter<TComponent = any,
   }
 
   private async onLocationChange({location}: Update<TContext>) {
+    this.lastLocationKey = location.key
+
     const taskId = Task.id(location)
     if (this.isTaskExist(taskId)) {
       this.trace(taskId, 'duplicate, skipped')
@@ -87,7 +90,6 @@ export class BrowserRouter<TComponent = any,
 
   private async createAndRunTask(location: Location<TContext>, taskId: string): Promise<Task<TComponent, TContext, TActionResult, TNote>> {
     const task = await this.stageResolveRoute(location, taskId)
-    this.lastLocationKey = location.key
     try {
       return await task.runLifecycle()
     } catch (e) {
@@ -97,12 +99,12 @@ export class BrowserRouter<TComponent = any,
   }
 
   private async stageResolveRoute(location: Location<TContext>, taskId: string): Promise<Task<TComponent, TContext, TActionResult, TNote>> {
-    this.trace(taskId, 'resolve route')
+    this.trace(taskId, 'resolving route...')
     const resolved = this.pathResolver.resolve(location.pathname)
     if (!resolved)
       throw new Error(`Cannot match any routes for [ ${taskId} ]`)
     const task = new Task(taskId, location, resolved, this)
-    if (!this.addTask(task))
+    if (!this.addTask(taskId))
       task.isCanceled = true
     return task
   }
@@ -114,23 +116,24 @@ export class BrowserRouter<TComponent = any,
     this.removeTask(id)
   }
 
+
   private isTaskExist(id: string) {
     return !!this.getTask(id)
   }
 
-  private getTask(id: string): Task<TComponent, TContext, TActionResult, TNote> | undefined {
-    return this.tasks.get(id)
+  private getTask(id: string): true | undefined {
+    return this.tasks[`${id}`]
   }
 
-  private addTask(task: Task<TComponent, TContext, TActionResult, TNote>): boolean | undefined {
-    if (!this.isTaskExist(task.id)) {
-      this.tasks.set(task.id, task)
+  private addTask(id: string): true | undefined {
+    if (!this.isTaskExist(id)) {
+      this.tasks[`${id}`] = true
       return true
     }
   }
 
   private removeTask(id: string) {
-    this.tasks.delete(id)
+    delete this.tasks[`${id}`]
   }
 
 //endregion

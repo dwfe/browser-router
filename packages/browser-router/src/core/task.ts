@@ -1,9 +1,9 @@
-import {getUrl, IActionData, PathResolveResult, Route, RouteContext, RoutingResult} from '@do-while-for-each/path-resolver'
+import {IActionData, PathResolveResult, Route, RouteContext, RoutingResult} from '@do-while-for-each/path-resolver'
 import {Location} from 'history'
-import {addFirstSymbol, excludeFirstSymbol} from '../globals'
+import React = require('react')
+import {addFirstSymbol, excludeFirstSymbol, getUrl} from '../globals'
 import {BrowserRouter} from './browser-router'
 import {IBrowserRouterOptions} from './contract'
-import React = require('react')
 
 
 export class Task<TComponent = any,
@@ -35,6 +35,7 @@ export class Task<TComponent = any,
   private async stageProcessResult({redirectTo, customTo, component}: RoutingResult<TComponent>) {
     if (this.isCompleted())
       return;
+    this.trace('process result')
     const stage = '->'
 
     const context_for_To_or_Go = {previousActionData: this.routeActionData} as RouteContext as TContext
@@ -97,7 +98,6 @@ export class Task<TComponent = any,
   }
 
   private async stageSummarize(): Promise<Task<TComponent, TContext, TActionResult, TNote>> {
-    this.trace('summarize')
     if (!this.isCompleted())
       throw new Error(`Impossible to process of resolved route [ ${this.id} ]`)
     return this
