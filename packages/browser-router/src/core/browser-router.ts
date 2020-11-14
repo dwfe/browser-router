@@ -38,7 +38,7 @@ export class BrowserRouter<TComponent = any,
   private routeActivation(task?: Task) {
     if (!task)
       return;
-    const {id, isCanceled, result} = task
+    const {isCanceled, result, id} = task
     isCanceled
       ? this.trace(id, 'canceled')
       : result()

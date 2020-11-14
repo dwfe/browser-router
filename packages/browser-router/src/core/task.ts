@@ -14,7 +14,7 @@ export class Task<TComponent = any,
   readonly route: Route<TComponent, TContext, TActionResult, TNote>
   readonly parentRoute: Route<TComponent, TContext, TActionResult, TNote>
   readonly routeActionData: IActionData<TContext>
-  isCanceled = false
+  isCanceled = false // the task can be canceled if the user changed the location while the current one was being processed
   result: any
 
   constructor(public readonly id: string,
