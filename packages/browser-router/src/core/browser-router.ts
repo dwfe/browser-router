@@ -1,10 +1,11 @@
 import {PathResolver, RouteContext, Routes, RoutingResult, ToType} from '@do-while-for-each/path-resolver'
-import {BrowserHistory, createBrowserHistory, Location, State, Update} from 'history'
+import {BrowserHistory, createBrowserHistory, State, Update} from 'history'
 import {Observable, Subject} from 'rxjs'
 import {distinctUntilChanged, filter, shareReplay} from 'rxjs/operators'
 import {convertGoToFromStr, getLocalRoute, getUrl, isGoAway} from '../globals'
 import {defaultBrowserRouterOptions} from './contract';
 import {Task} from './task'
+import {TaskContainer} from './task-container'
 
 export class BrowserRouter<TComponent = any,
   TContext extends RouteContext = RouteContext,
@@ -13,13 +14,13 @@ export class BrowserRouter<TComponent = any,
 
   public readonly pathResolver: PathResolver
   private readonly history: BrowserHistory<State> = createBrowserHistory()
-  public readonly componentSubj = new Subject<TComponent>()
-
-  public lastLocationKey: string = ''
-  private tasks: { [id: string]: true } = {}
+  private taskContainer: TaskContainer // the location change is processed in a separate task
+  public readonly componentSubj = new Subject<TComponent>() // routing result is component
+  public lastLocationKey: string = '' // unique string on every new location
 
   constructor(routes: Routes, public readonly options = defaultBrowserRouterOptions) {
     this.pathResolver = new PathResolver(routes)
+    this.taskContainer = new TaskContainer(this)
   }
 
   start(initTo: ToType = '') {
@@ -29,14 +30,19 @@ export class BrowserRouter<TComponent = any,
 
   private async onLocationChange({location}: Update<TContext>) {
     this.lastLocationKey = location.key
+    this.taskContainer
+      .startProcessingLocation(location)
+      .then(task => this.routeActivation(task))
+  }
 
-    const taskId = Task.id(location)
-    if (this.isTaskExist(taskId)) {
-      this.trace(taskId, 'duplicate, skipped')
+  private routeActivation(task?: Task) {
+    if (!task)
       return;
-    }
-    const task = await this.createAndRunTask(location, taskId)
-    this.routeActivation(task)
+    const {id, isCanceled, result} = task
+    isCanceled
+      ? this.trace(id, 'canceled')
+      : result()
+    this.taskContainer.removeTask(id)
   }
 
   component$: Observable<TComponent> = this.componentSubj.asObservable().pipe(
@@ -81,61 +87,9 @@ export class BrowserRouter<TComponent = any,
   }
 
 
-  private trace(taskId: string, stage = '') {
+  public trace(taskId: string, stage: string) {
     if (this.options.enableTrace)
       console.log(`[ ${taskId} ]`, stage)
   }
-
-//region Task
-
-  private async createAndRunTask(location: Location<TContext>, taskId: string): Promise<Task<TComponent, TContext, TActionResult, TNote>> {
-    const task = await this.stageResolveRoute(location, taskId)
-    try {
-      return await task.runLifecycle()
-    } catch (e) {
-      this.removeTask(taskId)
-      throw e
-    }
-  }
-
-  private async stageResolveRoute(location: Location<TContext>, taskId: string): Promise<Task<TComponent, TContext, TActionResult, TNote>> {
-    this.trace(taskId, 'resolving route...')
-    const resolved = this.pathResolver.resolve(location.pathname)
-    if (!resolved)
-      throw new Error(`Cannot match any routes for [ ${taskId} ]`)
-    const task = new Task(taskId, location, resolved, this)
-    if (!this.addTask(taskId))
-      task.isCanceled = true
-    return task
-  }
-
-  private routeActivation({id, isCanceled, result}: Task<TComponent, TContext, TActionResult, TNote>) {
-    isCanceled
-      ? this.trace(id, 'canceled')
-      : result()
-    this.removeTask(id)
-  }
-
-
-  private isTaskExist(id: string) {
-    return !!this.getTask(id)
-  }
-
-  private getTask(id: string): true | undefined {
-    return this.tasks[`${id}`]
-  }
-
-  private addTask(id: string): true | undefined {
-    if (!this.isTaskExist(id)) {
-      this.tasks[`${id}`] = true
-      return true
-    }
-  }
-
-  private removeTask(id: string) {
-    delete this.tasks[`${id}`]
-  }
-
-//endregion
 
 }

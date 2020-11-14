@@ -1,9 +1,9 @@
-import {IActionData, PathResolveResult, Route, RouteContext, RoutingResult} from '@do-while-for-each/path-resolver'
+import {IActionData, PathResolver, PathResolveResult, Route, RouteContext, RoutingResult} from '@do-while-for-each/path-resolver'
 import {Location} from 'history'
-import React = require('react')
 import {addFirstSymbol, excludeFirstSymbol, getUrl} from '../globals'
 import {BrowserRouter} from './browser-router'
 import {IBrowserRouterOptions} from './contract'
+import React = require('react')
 
 
 export class Task<TComponent = any,
@@ -18,7 +18,7 @@ export class Task<TComponent = any,
   result: any
 
   constructor(public readonly id: string,
-              public readonly location: Location<TContext>,
+              private readonly location: Location<TContext>,
               private resolved: PathResolveResult,
               private router: BrowserRouter<TComponent, TContext, TActionResult, TNote>) {
     this.route = resolved.route as Route<TComponent, TContext, TActionResult, TNote>
@@ -62,21 +62,20 @@ export class Task<TComponent = any,
         }
       return;
     } else if (component) {
-      if (this.options.injectRouteActionsDataToComponent)
-        component = injectProps(component, {routeActionData: this.routeActionData})
+      component = this.injectRoutingProps(component)
       this.result = () => {
         this.trace(`${stage} component`)
         this.router.componentSubj.next(component)
       }
       return;
     }
-    this.trace(`result unprocessed`)
+    this.trace(`  unprocessed`)
   }
 
   private async stageInvokeRouteAction() {
     if (this.isCompleted() || !this.route.action)
       return;
-    const stage = 'invoke action'
+    const stage = 'invoke route action'
     this.trace(stage)
 
     let actionResult: TActionResult
@@ -85,21 +84,22 @@ export class Task<TComponent = any,
     } catch (e) {
       throw new Error(`Error in route action(...) for [ ${this.id} ]. ${e}`)
     }
-    this.router.pathResolver.correctResultFromAction(this.location.pathname, actionResult, this.route, this.parentRoute)
+    this.pathResolver.correctResultFromAction(this.location.pathname, actionResult, this.route, this.parentRoute)
     await this.stageProcessResult(actionResult)
     if (!this.isCompleted()) {
       // If the route action does not return one of {redirectTo / customTo / component},
       // so here you need to send the actionResult to the waiting listeners,
       // but why anyone would want to do that - I can't think of a single case...
       this.isCanceled = true
-      this.trace(`${stage} => unknown result`)
+      this.trace(`${stage} -> unknown result`)
     }
     return;
   }
 
   private async stageSummarize(): Promise<Task<TComponent, TContext, TActionResult, TNote>> {
+    this.trace('location processed')
     if (!this.isCompleted())
-      throw new Error(`Impossible to process of resolved route [ ${this.id} ]`)
+      throw new Error(`Impossible to process of resolved route for [ ${this.id} ]`)
     return this
   }
 
@@ -108,9 +108,9 @@ export class Task<TComponent = any,
 
   static id = (location: Location): string => getUrl(location)
 
-  public isCompleted(): boolean {
+  private isCompleted(): boolean {
     if (!this.isCanceled)
-      this.isCanceled = this.location.key !== this.router.lastLocationKey
+      this.isCanceled = this.location.key !== this.lastLocationKey
     return this.isCanceled || this.result
   }
 
@@ -137,28 +137,40 @@ export class Task<TComponent = any,
     }
   }
 
+  private injectRoutingProps(component): any {
+    if (!this.options.injectRouteActionsDataToComponent)
+      return component
+
+    if (typeof component === 'object') {
+      this.trace('  inject routing props to component')
+      const props = {routeActionData: this.routeActionData}
+      if (component.props) { // condition that component is React component
+        return React.cloneElement(
+          component as any,
+          props
+        )
+      }
+      // else if() {}        // condition and inject for component in Your case
+    }
+    return component
+  }
+
+  private get lastLocationKey(): string {
+    return this.router.lastLocationKey
+  }
+
   private get options(): IBrowserRouterOptions {
     return this.router.options
   }
 
-  private trace(stage) {
-    if (this.options.enableTrace)
-      console.log(`[ ${this.id} ]`, stage)
+  private get pathResolver(): PathResolver {
+    return this.router.pathResolver
+  }
+
+  private trace(stage: string) {
+    this.router.trace(this.id, stage)
   }
 
 //endregion
 
-}
-
-const injectProps = (component: any, props): any => {
-  if (typeof component === 'object') {
-    if (component.props) { // condition that component is React component
-      return React.cloneElement(
-        component as any,
-        {...props}
-      )
-    }
-    // else if() {}        // condition and inject for component in Your case
-  }
-  return component
 }
