@@ -3,7 +3,7 @@ import {Location} from 'history'
 import {Task} from './task'
 import {BrowserRouter} from './browser-router'
 
-export class TaskContainer<TComponent = any,
+export class LocationHandler<TComponent = any,
   TContext extends RouteContext = RouteContext,
   TActionResult extends RoutingResult<TComponent, TContext> = RoutingResult<TComponent, TContext>,
   TNote = any> {
@@ -13,7 +13,7 @@ export class TaskContainer<TComponent = any,
   constructor(private router: BrowserRouter<TComponent, TContext, TActionResult, TNote>) {
   }
 
-  public async startProcessingLocation(location: Location<TContext>): Promise<Task<TComponent, TContext, TActionResult, TNote> | undefined> {
+  public async processLocation(location: Location<TContext>): Promise<Task<TComponent, TContext, TActionResult, TNote> | undefined> {
     const taskId = Task.id(location)
     this.trace(taskId, 'start processing location')
 

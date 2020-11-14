@@ -26,11 +26,11 @@ export class Task<TComponent = any,
     this.routeActionData = this.getRouteActionData()
   }
 
-  public async runLifecycle(): Promise<Task<TComponent, TContext, TActionResult, TNote>> {
-    return this.stageProcessResult(this.route)
+  runLifecycle = async (): Promise<Task<TComponent, TContext, TActionResult, TNote>> =>
+    this.stageProcessResult(this.route)
       .then(() => this.stageInvokeRouteAction())
       .then(() => this.stageSummarize())
-  }
+  ;
 
   private async stageProcessResult({redirectTo, customTo, component}: RoutingResult<TComponent>) {
     if (this.isCompleted())

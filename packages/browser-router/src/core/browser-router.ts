@@ -5,7 +5,7 @@ import {distinctUntilChanged, filter, shareReplay} from 'rxjs/operators'
 import {convertGoToFromStr, getLocalRoute, getUrl, isGoAway} from '../globals'
 import {defaultBrowserRouterOptions} from './contract';
 import {Task} from './task'
-import {TaskContainer} from './task-container'
+import {LocationHandler} from './location-handler'
 
 export class BrowserRouter<TComponent = any,
   TContext extends RouteContext = RouteContext,
@@ -14,13 +14,13 @@ export class BrowserRouter<TComponent = any,
 
   public readonly pathResolver: PathResolver
   private readonly history: BrowserHistory<State> = createBrowserHistory()
-  private taskContainer: TaskContainer // the location change is processed in a separate task
+  private locationHandler: LocationHandler // the location change is processed in a separate task
   public readonly componentSubj = new Subject<TComponent>() // routing result is component
   public lastLocationKey: string = '' // unique string on every new location
 
   constructor(routes: Routes, public readonly options = defaultBrowserRouterOptions) {
     this.pathResolver = new PathResolver(routes)
-    this.taskContainer = new TaskContainer(this)
+    this.locationHandler = new LocationHandler(this)
   }
 
   start(initTo: ToType = '') {
@@ -30,8 +30,8 @@ export class BrowserRouter<TComponent = any,
 
   private async onLocationChange({location}: Update<TContext>) {
     this.lastLocationKey = location.key
-    this.taskContainer
-      .startProcessingLocation(location)
+    this.locationHandler
+      .processLocation(location)
       .then(task => this.routeActivation(task))
   }
 
@@ -42,7 +42,7 @@ export class BrowserRouter<TComponent = any,
     isCanceled
       ? this.trace(id, 'canceled')
       : result()
-    this.taskContainer.removeTask(id)
+    this.locationHandler.removeTask(id)
   }
 
   component$: Observable<TComponent> = this.componentSubj.asObservable().pipe(
