@@ -127,6 +127,6 @@ export interface IPathResolverOptions {
   enableTrace: boolean;
 }
 
-export const defaultPathResolverOptions: IPathResolverOptions = {
+export const defaultOptions: IPathResolverOptions = {
   enableTrace: false,
 }

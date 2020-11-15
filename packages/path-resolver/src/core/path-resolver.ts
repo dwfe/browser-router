@@ -1,11 +1,11 @@
 import {compile, match} from 'path-to-regexp'
-import {defaultPathResolverOptions, ICustomTo, PathResolveResult, Route, Routes, RoutingResult} from './contract'
+import {defaultOptions, ICustomTo, PathResolveResult, Route, Routes, RoutingResult} from './contract'
 import {cloneResult, cloneRoute} from '../globals'
 
 export class PathResolver {
   routes: Routes = [];
 
-  constructor(routes: Routes, public readonly options = defaultPathResolverOptions) {
+  constructor(routes: Routes, public readonly options = defaultOptions) {
     routes.forEach(r => {
       const route = cloneRoute(r)
 

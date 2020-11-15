@@ -6,7 +6,7 @@ export interface IBrowserRouterOptions {
   pathResolver?: IPathResolverOptions;
 }
 
-export const defaultBrowserRouterOptions: IBrowserRouterOptions = {
+export const defaultOptions: IBrowserRouterOptions = {
   enableTrace: false,
   injectRouteActionsDataToComponent: false,
   pathResolver: {

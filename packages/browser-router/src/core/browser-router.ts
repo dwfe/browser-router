@@ -3,7 +3,7 @@ import {BrowserHistory, createBrowserHistory, State, Update} from 'history'
 import {Observable, Subject} from 'rxjs'
 import {distinctUntilChanged, filter, shareReplay} from 'rxjs/operators'
 import {convertGoToFromStr, getLocalRoute, getUrl, isGoAway} from '../globals'
-import {defaultBrowserRouterOptions} from './contract';
+import {defaultOptions} from './contract';
 import {Task} from './task'
 import {LocationHandler} from './location-handler'
 
@@ -13,12 +13,12 @@ export class BrowserRouter<TComponent = any,
   TNote = any> {
 
   public readonly pathResolver: PathResolver
-  private readonly history: BrowserHistory<State> = createBrowserHistory()
+  private readonly history: BrowserHistory<State> = createBrowserHistory() // https://github.com/ReactTraining/history#readme
   private locationHandler: LocationHandler // the location change is processed in a separate task
   public readonly componentSubj = new Subject<TComponent>() // routing result is component
   public lastLocationKey: string = '' // unique string on every new location
 
-  constructor(routes: Routes, public readonly options = defaultBrowserRouterOptions) {
+  constructor(routes: Routes, public readonly options = defaultOptions) {
     this.pathResolver = new PathResolver(routes, options.pathResolver)
     this.locationHandler = new LocationHandler(this)
   }
