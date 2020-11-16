@@ -5,14 +5,13 @@ import {routes} from './routes'
 import {routesFlat, Traverse} from '../globals'
 import {lengthCheck} from './common'
 
-describe(`path`, () => {
+describe(`redirectTo`, () => {
   const pathResolver = new PathResolver(routes)
   const flatRoutes = routesFlat(routes, true)
   const flatPathResolverRoutes = routesFlat(pathResolver.routes, true)
   const flatRoutesCheck = routesFlat(routesCheck, true)
 
-
-  test('redirectTo', () => {
+  test('.', () => {
     lengthCheck(flatRoutes, flatPathResolverRoutes, flatRoutesCheck)
 
     new Traverse().run(flatPathResolverRoutes, (route: Route, totalCount) => {

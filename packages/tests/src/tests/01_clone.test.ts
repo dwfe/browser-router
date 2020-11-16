@@ -11,7 +11,7 @@ describe(`clone`, () => {
   const flatPathResolverRoutes = routesFlat(pathResolver.routes, false)
   const flatRoutesCheck = routesFlat(routesCheck, false)
 
-  test('test', () => {
+  test('.', () => {
     lengthCheck(flatRoutes, flatPathResolverRoutes, flatRoutesCheck)
 
     new Traverse().run(routes, (route: Route, totalCount) => {

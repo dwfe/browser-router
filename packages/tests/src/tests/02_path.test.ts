@@ -11,7 +11,7 @@ describe(`path`, () => {
   const flatPathResolverRoutes = routesFlat(pathResolver.routes, true)
   const flatRoutesCheck = routesFlat(routesCheck, true)
 
-  test('test', () => {
+  test('.', () => {
     lengthCheck(flatRoutes, flatPathResolverRoutes, flatRoutesCheck)
 
     new Traverse().run(flatPathResolverRoutes, (route: Route, totalCount) => {
