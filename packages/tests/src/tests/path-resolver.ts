@@ -1,5 +1,6 @@
 import {describe, expect} from '@jest/globals'
 import {PathResolver, PathResolveResult, Route, Routes} from '@do-while-for-each/path-resolver'
+import {traverse} from '../globals'
 
 const routes: Routes = [
   {
@@ -126,13 +127,3 @@ describe(`tests`, () => {
   })
 })
 
-const traverse = (routes: Routes | undefined, fn) => {
-  if (!routes)
-    return;
-
-  for (let i = 0; i < routes.length; i++) {
-    const route = routes[i]
-    fn(route,)
-    traverse(route.children, fn)
-  }
-}
