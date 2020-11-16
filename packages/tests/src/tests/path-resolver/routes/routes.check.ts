@@ -2,7 +2,7 @@ import {Routes} from '@do-while-for-each/path-resolver'
 
 export const routesCheck: Routes = [
   {path: '/', children: [
-      {path: '/', component: ''},
+      {path: '/', component: '', note:{ title: 'Index page'}},
       {path: '/books', component: '', children: [
           {path: '/books/:year/:genre', component: ''},
           {path: '/books/(.*)', redirectTo: '/auto'}
@@ -16,7 +16,7 @@ export const routesCheck: Routes = [
       {path: '/team/:id/(.*)', customTo: {pathname: '/books/2020/comics'}}
     ]},
   {path: '/auto', children: [
-      {path: '/auto', component: ''},
+      {path: '/auto', component: 'z', note:{ head: 'Auto'}},
       {path: '/auto/:color', component: ''},
       {path: '/auto/check/redirect', customTo:{ pathname: '/auto/aqua', search: 'hello=12', hash: 'qwe'}}
     ]},

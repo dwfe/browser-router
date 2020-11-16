@@ -1,4 +1,6 @@
-import {Routes} from '@do-while-for-each/path-resolver'
+import {expect} from '@jest/globals'
+import {Routes} from '@do-while-for-each/path-resolver';
+import {routesTotalCount} from '../routes/routes'
 
 export const routesFlat = (routes: Routes, deleteChildren: boolean, parentRoute: any = null, res: Routes = []): Routes => {
   for (let i = 0; i < routes.length; i++) {
@@ -50,4 +52,10 @@ export class Traverse {
       this.run(route.children, fn)
     }
   }
+}
+
+export const lengthCheck = (flatRoutes, flatPathResolverRoutes, flatRoutesCheck) => {
+  expect(flatRoutes.length).toEqual(routesTotalCount)
+  expect(flatPathResolverRoutes.length).toEqual(routesTotalCount)
+  expect(flatRoutesCheck.length).toEqual(routesTotalCount)
 }

@@ -1,15 +1,10 @@
-import {describe, expect} from '@jest/globals'
-import {init, PathResolver, Route} from '@do-while-for-each/path-resolver'
-import {routesCheck} from './routes.check'
-import {routes} from './routes'
-import {routesFlat, Traverse} from '../globals'
-import {lengthCheck} from './common'
+import {describe, expect, test} from '@jest/globals'
+import {init, Route} from '@do-while-for-each/path-resolver'
+import {lengthCheck, Traverse} from './common/common'
+import {initFlat} from './common/environment';
 
 describe(`to`, () => {
-  const pathResolver = new PathResolver(routes)
-  const flatRoutes = routesFlat(routes, true)
-  const flatPathResolverRoutes = routesFlat(pathResolver.routes, true)
-  const flatRoutesCheck = routesFlat(routesCheck, true)
+  const {flatRoutes, flatPathResolverRoutes, flatRoutesCheck} = initFlat()
 
   test('redirectTo', () => {
     lengthCheck(flatRoutes, flatPathResolverRoutes, flatRoutesCheck)
