@@ -27,12 +27,22 @@ export class Task<TComponent = any,
   }
 
   runLifecycle = async (): Promise<Task<TComponent, TContext, TActionResult, TNote>> =>
-    this.stageProcessResult(this.route)
+    this.stageCanActivate()
+      .then(() => this.stageProcessResult(this.route))
       .then(() => this.stageInvokeRouteAction())
       .then(() => this.stageSummarize())
   ;
 
-  private async stageProcessResult({redirectTo, customTo, component}: RoutingResult<TComponent>) {
+  private async stageCanActivate(): Promise<void> {
+    if (this.isCompleted() || !this.route.canActivate)
+      return;
+    const stage = `invoke route 'canActivate' action`
+    this.trace(stage)
+    await this.invokeAction(this.route.canActivate, 'canActivate', stage)
+    return;
+  }
+
+  private async stageProcessResult({redirectTo, customTo, component, skip}: RoutingResult<TComponent>): Promise<boolean | undefined> {
     if (this.isCompleted())
       return;
     this.trace('process result')
@@ -68,31 +78,18 @@ export class Task<TComponent = any,
         this.router.componentSubj.next(component)
       }
       return;
+    } else if (skip) {
+      return skip
     }
     this.trace(`  unprocessed`)
   }
 
-  private async stageInvokeRouteAction() {
+  private async stageInvokeRouteAction(): Promise<void> {
     if (this.isCompleted() || !this.route.action)
       return;
     const stage = 'invoke route action'
     this.trace(stage)
-
-    let actionResult: TActionResult
-    try {
-      actionResult = await this.route.action(this.routeActionData) as TActionResult
-    } catch (e) {
-      throw new Error(`Error in route action(...) for [ ${this.id} ]. ${e}`)
-    }
-    this.pathResolver.correctResultFromAction(this.location.pathname, actionResult, this.route, this.parentRoute)
-    await this.stageProcessResult(actionResult)
-    if (!this.isCompleted()) {
-      // If the route action does not return one of {redirectTo / customTo / component},
-      // so here you need to send the actionResult to the waiting listeners,
-      // but why anyone would want to do that - I can't think of a single case...
-      this.isCanceled = true
-      this.trace(`${stage} -> unknown result`)
-    }
+    await this.invokeAction(this.route.action, 'action', stage)
     return;
   }
 
@@ -153,6 +150,24 @@ export class Task<TComponent = any,
       // else if() {}        // condition and inject for component in Your case
     }
     return component
+  }
+
+  private async invokeAction(action: (data: IActionData<TContext, TNote>) => Promise<TActionResult>, name: string, stage: string): Promise<void> {
+    let actionResult: TActionResult
+    try {
+      actionResult = await action(this.routeActionData) as TActionResult
+    } catch (e) {
+      throw new Error(`Error in route ${name}(...) for [ ${this.id} ]. ${e}`)
+    }
+    this.pathResolver.correctResultFromAction(this.location.pathname, actionResult, this.route, this.parentRoute)
+    const skip = await this.stageProcessResult(actionResult)
+    if (!skip && !this.isCompleted()) {
+      // If the route action does not return one of {redirectTo / customTo / component},
+      // so here you need to send the actionResult to the waiting listeners,
+      // but why anyone would want to do that - I can't think of a single case...
+      this.isCanceled = true
+      this.trace(`${stage} -> unknown result`)
+    }
   }
 
   private get lastLocationKey(): string {

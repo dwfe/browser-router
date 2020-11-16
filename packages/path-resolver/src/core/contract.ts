@@ -8,6 +8,8 @@ export interface Route<TComponent = any,
 
   path: string; // See syntax here: https://github.com/pillarjs/path-to-regexp#readme
 
+  canActivate?: (data: IActionData<TContext, TNote>) => Promise<TActionResult>;
+
   // part extended from RoutingResult:
   //   redirectTo?: string;
   //   customTo?: ICustomTo<TContext>;
@@ -31,6 +33,7 @@ export interface RoutingResult<TComponent = any, TContext extends RouteContext =
   redirectTo?: string;
   customTo?: ICustomTo<TContext>;
   component?: TComponent;
+  skip?: boolean; // if 'true' then 'stageCanActivate' will skip the processing to next stage
 }
 
 export interface ICustomTo<TContext extends RouteContext = RouteContext> {

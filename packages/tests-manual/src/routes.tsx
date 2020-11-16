@@ -1,7 +1,8 @@
-import React, {ReactElement} from 'react'
+import {container} from 'tsyringe'
 import {Route, RoutingResult} from '@do-while-for-each/path-resolver'
-import {FirstPage, MainPage, PicPage, SecondPage} from './pages';
-import {Ctx, IRouteNote, NotFound, RouteActionData} from './routing';
+import React, {ReactElement} from 'react'
+import {Auth, FirstPage, LoginPage, MainPage, PicPage, ProtectedByAuthorization, SecondPage} from './pages'
+import {Ctx, IRouteNote, NotFound, RouteActionData} from './routing'
 
 
 export const routes: Route<ReactElement, Ctx, RoutingResult<ReactElement, Ctx>, IRouteNote>[] = [
@@ -17,20 +18,30 @@ export const routes: Route<ReactElement, Ctx, RoutingResult<ReactElement, Ctx>, 
       {
         path: ':page', children: [
           {path: 'pic', component: <PicPage/>, note: {title: 'Pic'}},
-          {
-            path: '(.*)', action: (data: RouteActionData) => {
-              return new Promise(resolve => {
-                setTimeout(()=> resolve({
-                  redirectTo: 'pic'
-                }), 5_000)
-              })
-            }
-          },
+          {path: '(.*)', action: longAction},
         ]
       },
     ]
   },
+  {path: 'protected-by-authorization', canActivate: passIfLoggedIn, component: <ProtectedByAuthorization/>},
+  {path: 'login', component: <LoginPage/>},
   {path: 'not-found', component: <NotFound/>, note: {title: 'Not found page'}},
   {path: '(.*)', redirectTo: '/not-found'}
 ]
 
+
+function longAction(data: RouteActionData): Promise<RoutingResult<ReactElement, Ctx>> {
+  return new Promise(resolve => {
+    setTimeout(() => resolve({redirectTo: 'pic'}), 5_000)
+  })
+}
+
+async function passIfLoggedIn(data: RouteActionData): Promise<RoutingResult<ReactElement, Ctx>> {
+  const auth = container.resolve(Auth)
+  if (auth.isLoggedIn())
+    return {skip: true}
+  else {
+    auth.redirectTo = data.target // the user will be redirected here after successful login
+    return {redirectTo: 'login'}
+  }
+}
