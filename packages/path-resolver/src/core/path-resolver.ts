@@ -84,7 +84,7 @@ export class PathResolver {
 
 }
 
-const init = {
+export const init = {
   calcTo: (to, parentPath): string | undefined => {
     if (typeof to === 'string') {
       if (to === '')

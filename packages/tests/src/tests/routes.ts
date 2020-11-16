@@ -18,6 +18,8 @@ export const routes: Routes = [
   {path: 'auto', children: [
       {path: '', component: ''},
       {path: ':color', component: ''},
-      {path: 'check/redirect', redirectTo: 'aqua', component: ''}
+      {path: 'check/redirect', customTo:{ pathname: 'aqua', search: 'hello=12', hash: 'qwe'}, component: ''}
   ]},
 ]
+
+export const routesTotalCount = 15

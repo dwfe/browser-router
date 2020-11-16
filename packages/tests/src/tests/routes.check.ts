@@ -18,6 +18,6 @@ export const routesCheck: Routes = [
   {path: '/auto', children: [
       {path: '/auto', component: ''},
       {path: '/auto/:color', component: ''},
-      {path: '/auto/check/redirect', redirectTo: 'aqua', component: ''}
+      {path: '/auto/check/redirect', customTo:{ pathname: '/auto/aqua', search: 'hello=12', hash: 'qwe'}, component: ''}
     ]},
 ]
