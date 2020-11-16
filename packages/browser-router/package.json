@@ -23,5 +23,9 @@
     "history": "5",
     "rxjs": "6"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/wizards-lab/routing.git"
+  },
   "gitHead": "ba5aa382e029d28b722b620c1d7ff909a63508ec"
 }
