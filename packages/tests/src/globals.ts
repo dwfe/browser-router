@@ -1,12 +1,17 @@
 import {Routes} from '@do-while-for-each/path-resolver'
 
-export const routesFlat = (routes: Routes, res: Routes = []): Routes => {
+export const routesFlat = (routes: Routes, deleteChildren: boolean, res: Routes = []): Routes => {
   for (let i = 0; i < routes.length; i++) {
-    const route = routes[i]
+    let route = routes[i]
+    if (deleteChildren) {
+      route = {...routes[i]}
+      route.customTo = route.customTo ? {...route.customTo} : route.customTo
+    }
     res.push(route)
     if (route.children) {
-      routesFlat(route.children, res)
-      // delete route.children
+      routesFlat(route.children, deleteChildren, res)
+      if (deleteChildren)
+        delete route.children
     }
   }
   return res
