@@ -1,7 +1,7 @@
 import {container} from 'tsyringe'
 import {Route, RoutingResult} from '@do-while-for-each/path-resolver'
 import React, {ReactElement} from 'react'
-import {Auth, FirstPage, LoginPage, MainPage, PicPage, ProtectedByAuthorization, SecondPage} from './pages'
+import {AuthService, FirstPage, LoginPage, MainPage, PicPage, ProtectedByAuthorization, SecondPage} from './pages'
 import {Ctx, IRouteNote, NotFound, RouteActionData} from './routing'
 
 
@@ -37,7 +37,7 @@ function longAction(data: RouteActionData): Promise<RoutingResult<ReactElement, 
 }
 
 async function passIfLoggedIn(data: RouteActionData): Promise<RoutingResult<ReactElement, Ctx>> {
-  const auth = container.resolve(Auth)
+  const auth = container.resolve(AuthService)
   if (auth.isLoggedIn())
     return {skip: true}
   else {

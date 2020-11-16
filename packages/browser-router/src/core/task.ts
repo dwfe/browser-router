@@ -79,6 +79,7 @@ export class Task<TComponent = any,
       }
       return;
     } else if (skip) {
+      this.trace(`${stage} go to the next stage`)
       return skip
     }
     this.trace(`  unprocessed`)

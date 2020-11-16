@@ -1,7 +1,7 @@
 import {container} from 'tsyringe'
 import {BrowserRouter, IBrowserRouterOptions} from '@do-while-for-each/browser-router'
-import {routes} from './routes'
-import {Auth} from './pages'
+import {routes} from '../routes'
+import {AuthService} from '../pages'
 
 export const initServices = () => {
   const options: IBrowserRouterOptions = {
@@ -12,5 +12,5 @@ export const initServices = () => {
     }
   }
   container.register(BrowserRouter, {useValue: new BrowserRouter(routes, options)}) // singleton
-  container.register(Auth, {useValue: new Auth()}) // singleton
+  container.register(AuthService, {useValue: new AuthService()}) // singleton
 }

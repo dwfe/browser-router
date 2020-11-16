@@ -4,7 +4,7 @@ import {container} from 'tsyringe'
 
 export const LOGGED_KEY = 'logged-key'
 
-export class Auth {
+export class AuthService {
 
   redirectTo: GoTo = {pathname: ''}
 

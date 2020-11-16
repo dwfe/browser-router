@@ -1,9 +1,10 @@
 import React, {useState} from 'react'
 import {ActionData, IRoutableProps} from '../../routing'
-import {useAuth} from './useAuth'
+import {useDIInstance} from '../../di/useDIInstance'
+import {AuthService} from './auth.service'
 
 export const LoginPage = (props: IRoutableProps) => {
-  const [auth] = useAuth()
+  const [auth] = useDIInstance(AuthService)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
