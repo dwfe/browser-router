@@ -4,7 +4,7 @@ import {initFlat} from './common/environment';
 import {Traverse} from './common/common';
 
 describe(`resolve`, () => {
-  const {pathResolver, flatRoutes, flatPathResolverRoutes, flatRoutesCheck} = initFlat()
+  const {pathResolver, flatPathResolverRoutes, flatRoutesCheck} = initFlat()
 
   test('.', () => {
     let res: PathResolveResult, params, note
