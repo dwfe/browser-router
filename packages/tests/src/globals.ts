@@ -1,12 +1,12 @@
 import {Routes} from '@do-while-for-each/path-resolver'
 
-export const routesFlat = (routes: Routes, deleteChildren: boolean, parent: any = null, res: Routes = []): Routes => {
+export const routesFlat = (routes: Routes, deleteChildren: boolean, parentRoute: any = null, res: Routes = []): Routes => {
   for (let i = 0; i < routes.length; i++) {
     let route = routes[i]
     if (deleteChildren) {
       route = {...routes[i]}
       route.customTo = route.customTo ? {...route.customTo} : route.customTo
-      route['parent'] = parent
+      route['parentRoute'] = parentRoute
     }
     res.push(route)
     if (route.children) {
@@ -37,7 +37,7 @@ export const traverse = (routes: Routes | undefined, fn) => {
 }
 
 export class Traverse {
-  totalCount = -1
+  private totalCount = -1
 
   run(routes: Routes | undefined, fn) {
     if (!routes)

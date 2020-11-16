@@ -13,7 +13,7 @@ export class PathResolver {
         throw errorLeadSlash(route.path)
 
       // Step 1. All root paths get a prefix '/'
-      route.path = '/' + route.path
+      route.path = init.calcPath(route.path, '/')
       route.redirectTo = init.calcTo(route.redirectTo, '/')
       route.customTo = init.calcCustomTo(route.customTo, '/')
 
@@ -85,6 +85,14 @@ export class PathResolver {
 }
 
 export const init = {
+  calcPath: (path, parentPath): string => {
+    if (path === '') {
+      return parentPath
+    } else {
+      const prefix = parentPath === '/' ? '' : parentPath
+      return prefix + '/' + path
+    }
+  },
   calcTo: (to, parentPath): string | undefined => {
     if (typeof to === 'string') {
       if (to === '')
@@ -117,12 +125,7 @@ export const init = {
 
       children.push(route)
 
-      if (path === '') {
-        route.path = parentPath
-      } else {
-        const prefix = parentPath === '/' ? '' : parentPath
-        route.path = prefix + '/' + path
-      }
+      route.path = this.calcPath(path, parentPath)
       route.redirectTo = this.calcTo(route.redirectTo, parentPath)
       route.customTo = this.calcCustomTo(route.customTo, parentPath)
       route.children = this.children(route)
