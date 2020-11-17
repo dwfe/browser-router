@@ -56,7 +56,7 @@ return this.resolveRoute({location, taskId})
   
 The every location change is processed in a separate task:
 ```
-runLifecycle = async (): Promise<Task<TComponent, TContext, TActionResult, TNote>> =>
+runLifecycle = (): Promise<Task<TComponent, TContext, TActionResult, TNote>> =>
   this.stageCanActivate()
     .then(() => this.stageProcessResult(this.route))
     .then(() => this.stageInvokeRouteAction())
