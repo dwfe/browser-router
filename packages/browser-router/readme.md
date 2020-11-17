@@ -88,6 +88,7 @@ export interface RoutingResult<TComponent = any, TContext extends RouteContext =
 
 
 #### TODO
+- option: collecting statistics on the frequency of routes usage
 - tests for BrowserRouter
 - tests for PathResolver.correctResultFromAction
 
