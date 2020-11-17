@@ -7,7 +7,7 @@ export const SecondPage = (props: IRoutableProps) => {
     <p>Second works!</p>
     <Link href="/second/pic/pic">Pic component</Link><br/><br/>
     <Link href="/second/hello/world">hello / world</Link><br/><br/>
-    <Link href="/first">first</Link><br/><br/>
+    <Link href="/first#warning">first</Link><br/><br/>
     <ActionData actionData={props.routeActionData}/>
   </>);
 }

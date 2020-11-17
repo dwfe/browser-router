@@ -6,14 +6,16 @@ export interface Route<TComponent = any,
   TNote = any>
   extends RoutingResult<TComponent, TContext> {
 
-  path: string; // See syntax here: https://github.com/pillarjs/path-to-regexp#readme
+  path: string; // see syntax here: https://github.com/pillarjs/path-to-regexp#readme
 
   canActivate?: (data: IActionData<TContext, TNote>) => Promise<TActionResult>;
 
-  // part extended from RoutingResult:
-  //   redirectTo?: string;
-  //   customTo?: ICustomTo<TContext>;
-  //   component?: TComponent;
+  /**
+   * part extended from RoutingResult:
+   *  - redirectTo?: string;
+   *  - customTo?: ICustomTo<TContext>;
+   *  - component?: TComponent;
+   */
 
   action?: (data: IActionData<TContext, TNote>) => Promise<TActionResult>;
 
@@ -33,7 +35,7 @@ export interface RoutingResult<TComponent = any, TContext extends RouteContext =
   redirectTo?: string;
   customTo?: ICustomTo<TContext>;
   component?: TComponent;
-  skip?: boolean; // if 'true' then 'stageCanActivate' will skip the processing to next stage
+  skip?: boolean; // if 'true' then stage 'CanActivate' will skip the processing to next stage
 }
 
 export interface ICustomTo<TContext extends RouteContext = RouteContext> {
@@ -107,7 +109,6 @@ export interface GoTo {
 
   pathParams?: PathParams;
 
-
   /**
    * Returns the Location object's URL's origin.
    */
@@ -127,7 +128,7 @@ export interface GoTo {
 }
 
 export interface IPathResolverOptions {
-  enableTrace: boolean;
+  enableTrace?: boolean;
 }
 
 export const defaultOptions: IPathResolverOptions = {

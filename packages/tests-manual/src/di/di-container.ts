@@ -8,7 +8,7 @@ export const initServices = () => {
     enableTrace: true,
     injectRouteActionsDataToComponent: true,
     pathResolver: {
-      enableTrace: false,
+      enableTrace: true,
     }
   }
   container.register(BrowserRouter, {useValue: new BrowserRouter(routes, options)}) // singleton

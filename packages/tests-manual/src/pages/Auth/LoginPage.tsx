@@ -8,7 +8,12 @@ export const LoginPage = (props: IRoutableProps) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const checkAuth = () => auth.logIn(username, password)
+  const checkAuth = () => {
+    if (!(username && password))
+      alert('fill fields with something')
+    else
+      auth.logIn(username, password)
+  }
 
   return (<>
     <h3>Please log in</h3>
