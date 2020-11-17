@@ -26,12 +26,12 @@ export class Task<TComponent = any,
     this.routeActionData = this.getRouteActionData()
   }
 
-  runLifecycle = async (): Promise<Task<TComponent, TContext, TActionResult, TNote>> =>
-    this.stageCanActivate()
-      .then(() => this.stageProcessResult(this.route))
-      .then(() => this.stageInvokeRouteAction())
-      .then(() => this.stageSummarize())
-  ;
+runLifecycle = async (): Promise<Task<TComponent, TContext, TActionResult, TNote>> =>
+  this.stageCanActivate()
+    .then(() => this.stageProcessResult(this.route))
+    .then(() => this.stageInvokeRouteAction())
+    .then(() => this.stageSummarize())
+;
 
   private async stageCanActivate(): Promise<void> {
     if (this.isCompleted() || !this.route.canActivate)
