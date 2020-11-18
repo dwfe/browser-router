@@ -1,9 +1,9 @@
 import {IActionData, PathResolver, PathResolveResult, Route, RouteContext, RoutingResult} from '@do-while-for-each/path-resolver'
 import {Location} from 'history'
+import React from 'react'
 import {addFirstSymbol, excludeFirstSymbol, getUrl} from '../globals'
 import {BrowserRouter} from './browser-router'
 import {IBrowserRouterOptions} from './contract'
-import React = require('react')
 
 
 export class Task<TComponent = any,
@@ -142,7 +142,7 @@ export class Task<TComponent = any,
     if (typeof component === 'object') {
       this.trace('  inject routing props to component')
       const props = {routeActionData: this.routeActionData}
-      if (component.props) { // condition that component is React component
+      if (React.isValidElement(component)) {
         return React.cloneElement(
           component as any,
           props
