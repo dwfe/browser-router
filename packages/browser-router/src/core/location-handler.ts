@@ -1,5 +1,5 @@
-import {RouteContext, RoutingResult} from '@do-while-for-each/path-resolver'
-import {Location} from 'history'
+import {Route, RouteContext, RoutingResult} from '@do-while-for-each/path-resolver'
+import {Blocker, Location, Transition} from 'history'
 import {Task} from './task'
 import {BrowserRouter} from './browser-router'
 
@@ -9,6 +9,8 @@ export class LocationHandler<TComponent = any,
   TNote = any> {
 
   private tasks: { [id: string]: true } = {}
+
+  private unblock: any // unblock function for canDeactivate
 
   constructor(private router: BrowserRouter<TComponent, TContext, TActionResult, TNote>) {
   }
@@ -22,9 +24,19 @@ export class LocationHandler<TComponent = any,
       return;
     }
     return this.resolveRoute({location, taskId})
-      .then(data => this.createTask(data))
+      .then(data => {
+        const task = this.createTask(data)
+        this.blockNavigation(task, data)
+        return task
+      })
       .then(task => task.runLifecycle())
-      .finally(() => this.removeTask(taskId))
+      .catch(err => {
+        this.unblockNavigation()
+        throw err
+      })
+      .finally(() => {
+        this.removeTask(taskId)
+      })
   }
 
   private async resolveRoute({location, taskId}) {
@@ -40,6 +52,27 @@ export class LocationHandler<TComponent = any,
     if (!this.addTask(taskId))
       task.isCanceled = true
     return task
+  }
+
+  private blockNavigation(task, {resolved}) {
+    const canDeactivate = (resolved.route as Route<TComponent, TContext, TActionResult, TNote>).canDeactivate
+    if (canDeactivate && !task.isCompleted()) {
+      const routeActionData = task.getRouteActionData()
+      const blockHandler: Blocker = async (tx: Transition<TContext>) => {
+        if (await canDeactivate(tx.location, routeActionData)) {
+          this.unblockNavigation()
+          tx.retry()
+        }
+      }
+      this.unblock = this.router.block(blockHandler)
+    }
+  }
+
+  private unblockNavigation() {
+    if (this.unblock) {
+      this.unblock()
+      this.unblock = null
+    }
   }
 
 

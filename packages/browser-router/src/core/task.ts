@@ -107,13 +107,13 @@ export class Task<TComponent = any,
 
   static id = (location: Location): string => getUrl(location)
 
-  private isCompleted(): boolean {
+  public isCompleted(): boolean {
     if (!this.isCanceled)
       this.isCanceled = this.router.isLocationChanged(this.location)
     return this.isCanceled || this.result
   }
 
-  private getRouteActionData(): IActionData<TContext> {
+  public getRouteActionData(): IActionData<TContext> {
     let {pathname, search, hash, state, key} = this.location
     const previous = state?.previousActionData as IActionData<TContext>
     if (previous) {

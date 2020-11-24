@@ -1,3 +1,5 @@
+import {Location} from 'history'
+
 export type Routes = Route[];
 
 export interface Route<TComponent = any,
@@ -9,6 +11,7 @@ export interface Route<TComponent = any,
   path: string; // see syntax here: https://github.com/pillarjs/path-to-regexp#readme
 
   canActivate?: (data: IActionData<TContext, TNote>) => Promise<TActionResult>;
+  canDeactivate?: (tryRelocation: Location<TContext>, data: IActionData<TContext, TNote>) => Promise<boolean>;
 
   /**
    * part extended from RoutingResult:
