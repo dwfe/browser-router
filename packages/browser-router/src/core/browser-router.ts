@@ -15,8 +15,9 @@ export class BrowserRouter<TComponent = any,
   public readonly pathResolver: PathResolver
   private readonly history: BrowserHistory<State> = createBrowserHistory() // https://github.com/ReactTraining/history#readme
   private locationHandler: LocationHandler // the every location change is processed in a separate task
-  public readonly componentSubj = new Subject<TComponent>() // routing result is component
-  public lastLocationKey: string = '' // unique string on every new location
+  private lastLocationKey: string = '' // unique string on every new location
+
+  public readonly componentSubj = new Subject<TComponent>() // if routing result is component
 
   constructor(routes: Routes, public readonly options = defaultOptions) {
     this.pathResolver = new PathResolver(routes, options.pathResolver)
