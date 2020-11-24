@@ -39,7 +39,6 @@ export class Task<TComponent = any,
     const stage = `invoke route 'canActivate' action`
     this.trace(stage)
     await this.invokeAction(this.route.canActivate, 'canActivate', stage)
-    return;
   }
 
   private async stageProcessResult({redirectTo, customTo, component, skip}: RoutingResult<TComponent>): Promise<boolean | undefined> {
@@ -48,11 +47,16 @@ export class Task<TComponent = any,
     this.trace('process result')
     const stage = '->'
 
-    const context_for_To_or_Go = {previousActionData: this.routeActionData} as RouteContext as TContext
+    if (skip) {
+      this.trace(`${stage} go to the next stage`)
+      return skip
+    }
+
+    const context_for_Redirect_or_Go = {previousActionData: this.routeActionData} as RouteContext as TContext
     if (redirectTo) {
       this.result = () => {
         this.trace(`${stage} redirectTo`)
-        this.router.redirect(redirectTo, context_for_To_or_Go)
+        this.router.redirect(redirectTo, context_for_Redirect_or_Go)
       }
       return;
     } else if (customTo) {
@@ -64,11 +68,11 @@ export class Task<TComponent = any,
       this.result = isRedirect
         ? () => {
           this.trace(`${stage} redirectTo`)
-          this.router.redirect(to, context_for_To_or_Go)
+          this.router.redirect(to, context_for_Redirect_or_Go)
         }
         : () => {
           this.trace(`${stage} goTo`)
-          this.router.go(to, context_for_To_or_Go)
+          this.router.go(to, context_for_Redirect_or_Go)
         }
       return;
     } else if (component) {
@@ -78,9 +82,6 @@ export class Task<TComponent = any,
         this.router.componentSubj.next(component)
       }
       return;
-    } else if (skip) {
-      this.trace(`${stage} go to the next stage`)
-      return skip
     }
     this.trace(`  unprocessed`)
   }
