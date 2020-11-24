@@ -109,7 +109,7 @@ export class Task<TComponent = any,
 
   private isCompleted(): boolean {
     if (!this.isCanceled)
-      this.isCanceled = this.location.key !== this.lastLocationKey
+      this.isCanceled = this.router.isLocationChanged(this.location)
     return this.isCanceled || this.result
   }
 
@@ -170,10 +170,6 @@ export class Task<TComponent = any,
       this.isCanceled = true
       this.trace(`${stage} -> unknown result`)
     }
-  }
-
-  private get lastLocationKey(): string {
-    return this.router.lastLocationKey
   }
 
   private get options(): IBrowserRouterOptions {

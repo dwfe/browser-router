@@ -1,5 +1,5 @@
 import {PathResolver, RouteContext, Routes, RoutingResult, ToType} from '@do-while-for-each/path-resolver'
-import {BrowserHistory, createBrowserHistory, State, Update} from 'history'
+import {Blocker, BrowserHistory, createBrowserHistory, Location, State, Update} from 'history'
 import {Observable, Subject} from 'rxjs'
 import {distinctUntilChanged, filter, shareReplay} from 'rxjs/operators'
 import {convertGoToFromStr, getLocalRoute, getUrl, isGoAway} from '../globals'
@@ -85,8 +85,16 @@ export class BrowserRouter<TComponent = any,
     this.history.replace(to, ctx)
   }
 
+  block(blocker: Blocker<TContext>): any {
+    return this.history.block(blocker)
+  }
 
-  public trace(id: string, stage: string) {
+
+  isLocationChanged({key}: Location) {
+    return this.lastLocationKey !== key
+  }
+
+  trace(id: string, stage: string) {
     if (this.options.enableTrace)
       console.log(`[ ${id} ]`, stage)
   }
