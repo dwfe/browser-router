@@ -47,7 +47,7 @@ export class LocationHandler<TComponent = any,
     return {taskId, location, resolved}
   }
 
-  private async createTask({taskId, location, resolved}): Promise<Task<TComponent, TContext, TActionResult, TNote>> {
+  private createTask({taskId, location, resolved}): Task<TComponent, TContext, TActionResult, TNote> {
     const task = new Task(taskId, location, resolved, this.router)
     if (!this.addTask(taskId))
       task.isCanceled = true
