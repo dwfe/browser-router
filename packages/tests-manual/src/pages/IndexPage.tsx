@@ -1,7 +1,7 @@
 import React from 'react'
 import {ActionData, IRoutableProps, Link, useDocumentTitle} from '../routing'
 
-export const MainPage = (props: IRoutableProps) => {
+export const IndexPage = (props: IRoutableProps) => {
   useDocumentTitle(props)
 
   return (<div>

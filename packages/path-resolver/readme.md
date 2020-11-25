@@ -34,7 +34,7 @@ export interface Route<TComponent = any,
 Define your routes in your `Routes` array, for example:
 ```
 export const routes: Route<ReactElement, Ctx, RoutingResult<ReactElement, Ctx>, IRouteNote>[] = [
-  {path: '', component: <MainPage/>, note: {title: 'Index'}},
+  {path: '', component: <IndexPage/>, note: {title: 'Index'}},
   {
     path: 'first', component: <FirstPage/>, note: {title: 'First page'}, children: [
       {path: 'to-pic', customTo: {pathname: '/second/12/pic', search: 'hello=world', hash: 'pic'}},
