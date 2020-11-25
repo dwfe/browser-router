@@ -58,10 +58,14 @@ The every location change is processed in a separate task:
 ```
 runLifecycle = (): Promise<Task<TComponent, TContext, TActionResult, TNote>> =>
   this.stageCanActivate()
+    .then(() => this.blockNavigation()) // if 'canDeactivate' is defined in the route
     .then(() => this.stageProcessResult(this.route))
-    .then(() => this.stageInvokeRouteAction())
+    .then(() => this.stageInvokeRoutesAction())
     .then(() => this.stageSummarize())
-;
+    .catch(err => {
+      this.unblockNavigation()
+      throw err
+    })
 ```
 If any of the stages calculated the result, then all subsequent stages will be skipped.
   
@@ -88,12 +92,11 @@ export interface RoutingResult<TComponent = any, TContext extends RouteContext =
 
 
 #### TODO
+- обернуть тестовые компоненты в шапку с кнопками навигаций вперед/назад
 - option: collecting statistics on the frequency of routes usage
 - tests for BrowserRouter
 - tests for PathResolver.correctResultFromAction
 
-- CanDeactivate - https://angular.io/guide/router-tutorial-toh#candeactivate-handling-unsaved-changes 
-                - https://angular.io/guide/router#preventing-unauthorized-access
 - ActivatedRoute - https://angular.io/guide/router#getting-route-information
                  - https://angular.io/guide/router#activated-route
 - Lazy Loading route - https://angular.io/guide/router-tutorial-toh#lazy-loading-route-configuration

@@ -12,6 +12,7 @@ export interface Route<TComponent = any,
   path: string; // see syntax here: https://github.com/pillarjs/path-to-regexp#readme
 
   canActivate?: (data: IActionData<TContext, TNote>) => Promise<TActionResult>;
+  canDeactivate?: (tryRelocation: Location<TContext>, data: IActionData<TContext, TNote>) => Promise<boolean>;
 
   /**
    * part extended from RoutingResult:
@@ -51,10 +52,12 @@ export const routes: Route<ReactElement, Ctx, RoutingResult<ReactElement, Ctx>, 
     ]
   },
   {path: 'protected-by-authorization', canActivate: passIfLoggedIn, component: <ProtectedByAuthorization/>},
+  {path: 'can-deactivate-check', canDeactivate: canDeactivateFn, component: <CanDeactivateCheckPage/>},
   {path: 'login', component: <LoginPage/>},
   {path: 'not-found', component: <NotFound/>, note: {title: 'Not found page'}},
   {path: '(.*)', redirectTo: '/not-found'}
 ]
+
 
 function longTimeGettingOfActionResult(data: RouteActionData): Promise<RoutingResult<ReactElement, Ctx>> {
   return new Promise(resolve => {
@@ -70,6 +73,10 @@ async function passIfLoggedIn(data: RouteActionData): Promise<RoutingResult<Reac
     auth.redirectTo = data.target // the user will be redirected here after successful login
     return {redirectTo: 'login'}
   }
+}
+
+async function canDeactivateFn(tryRelocation: Location, data: RouteActionData): Promise<boolean> {
+  return window.confirm(`Are you sure you want to go to ${tryRelocation.pathname}?`)
 }
 ```
 

@@ -1,5 +1,5 @@
 import {IActionData, PathResolver, PathResolveResult, Route, RouteContext, RoutingResult} from '@do-while-for-each/path-resolver'
-import {Location} from 'history'
+import {Blocker, Location, Transition} from 'history'
 import React from 'react'
 import {addFirstSymbol, excludeFirstSymbol, getUrl} from '../globals'
 import {BrowserRouter} from './browser-router'
@@ -15,7 +15,9 @@ export class Task<TComponent = any,
   readonly parentRoute: Route<TComponent, TContext, TActionResult, TNote>
   readonly routeActionData: IActionData<TContext>
   isCanceled = false // the task can be canceled if the user changed the location while the current one was being processed
-  result: any
+  result: any // task result is either a redirect to another location, or a component for rendering
+
+  private unblockNavigationFn: any // unblock function if 'canDeactivate' action is defined
 
   constructor(public readonly id: string,
               public readonly location: Location<TContext>,
@@ -28,15 +30,20 @@ export class Task<TComponent = any,
 
   runLifecycle = (): Promise<Task<TComponent, TContext, TActionResult, TNote>> =>
     this.stageCanActivate()
+      .then(() => this.blockNavigation()) // if 'canDeactivate' action is defined
       .then(() => this.stageProcessResult(this.route))
-      .then(() => this.stageInvokeRouteAction())
+      .then(() => this.stageInvokeRoutesAction())
       .then(() => this.stageSummarize())
+      .catch(err => {
+        this.unblockNavigation()
+        throw err
+      })
   ;
 
   private async stageCanActivate(): Promise<void> {
     if (this.isCompleted() || !this.route.canActivate)
       return;
-    const stage = `invoke route 'canActivate' action`
+    const stage = `invoke 'canActivate' action`
     this.trace(stage)
     await this.invokeAction(this.route.canActivate, 'canActivate', stage)
   }
@@ -86,13 +93,12 @@ export class Task<TComponent = any,
     this.trace(`  unprocessed`)
   }
 
-  private async stageInvokeRouteAction(): Promise<void> {
+  private async stageInvokeRoutesAction(): Promise<void> {
     if (this.isCompleted() || !this.route.action)
       return;
-    const stage = 'invoke route action'
+    const stage = `invoke 'action'`
     this.trace(stage)
     await this.invokeAction(this.route.action, 'action', stage)
-    return;
   }
 
   private async stageSummarize(): Promise<Task<TComponent, TContext, TActionResult, TNote>> {
@@ -182,6 +188,46 @@ export class Task<TComponent = any,
 
   private trace(stage: string) {
     this.router.trace(this.id, stage)
+  }
+
+//endregion
+
+//region CanDeactivate
+
+  private async blockNavigation(): Promise<void> {
+    const canDeactivate = this.route.canDeactivate
+    if (this.isCompleted() || !canDeactivate)
+      return;
+    this.trace(`block navigation out from [ ${this.id} ]`)
+
+    const routeActionData = this.getRouteActionData()
+
+    /**
+     *  https://github.com/ReactTraining/history/blob/master/docs/blocking-transitions.md
+     */
+    const blockHandler: Blocker = async (tx: Transition<TContext>) => {
+      try {
+        this.trace(`invoke 'canDeactivate' action`)
+        const pass = await canDeactivate(tx.location, routeActionData)
+        this.trace(`${pass ? 'can' : 'cannot'} be deactivated to [ ${Task.id(tx.location)} ]`)
+        if (pass) {
+          this.unblockNavigation()
+          tx.retry()
+        }
+      } catch (e) {
+        this.unblockNavigation()
+        throw new Error(`Error in route 'canDeactivate' action for [ ${this.id} ]. ${e}`)
+      }
+    }
+    this.unblockNavigationFn = this.router.block(blockHandler)
+  }
+
+  private unblockNavigation() {
+    if (!this.unblockNavigationFn)
+      return;
+    this.unblockNavigationFn()
+    this.unblockNavigationFn = null
+    this.trace('unblock navigation')
   }
 
 //endregion
