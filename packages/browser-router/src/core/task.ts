@@ -86,7 +86,10 @@ export class Task<TComponent = any,
       component = this.injectRoutingProps(component)
       this.result = () => {
         this.trace(`${stage} component`)
-        this.router.componentSubj.next(component)
+        this.router.componentSubj.next({
+          component: component as TComponent,
+          routeActionData: this.routeActionData
+        })
       }
       return;
     }
@@ -119,7 +122,7 @@ export class Task<TComponent = any,
     return this.isCanceled || this.result
   }
 
-  public getRouteActionData(): IActionData<TContext> {
+  private getRouteActionData(): IActionData<TContext> {
     let {pathname, search, hash, state, key} = this.location
     const previous = state?.previousActionData as IActionData<TContext>
     if (previous) {

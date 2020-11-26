@@ -12,8 +12,8 @@ export const startRouter = (routes: Routes, root: HTMLElement | null) => {
 
   const router = container.resolve<BrowserRouter<ReactElement>>(BrowserRouter)
 
-  router.component$.pipe(
-    tap(component => {
+  router.componentData$.pipe(
+    tap(({component, routeActionData}) => {
       ReactDOM.render(
         <GeneralTemplate>
           {component}

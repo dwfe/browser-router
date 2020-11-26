@@ -1,6 +1,6 @@
-import {PathResolver, RouteContext, Routes, RoutingResult, ToType} from '@do-while-for-each/path-resolver'
+import {IActionData, PathResolver, RouteContext, Routes, RoutingResult, ToType} from '@do-while-for-each/path-resolver'
 import {Blocker, BrowserHistory, createBrowserHistory, Location, State, Update} from 'history'
-import {Observable, Subject} from 'rxjs'
+import {Subject} from 'rxjs'
 import {distinctUntilChanged, filter, shareReplay} from 'rxjs/operators'
 import {convertGoToFromStr, getLocalRoute, getUrl, isGoAway} from '../globals'
 import {defaultOptions} from './contract';
@@ -17,7 +17,10 @@ export class BrowserRouter<TComponent = any,
   private locationHandler: LocationHandler // the every location change is processed in a separate task
   private lastLocationKey: string = '' // unique string on every new location
 
-  public readonly componentSubj = new Subject<TComponent>() // if routing result is component
+  public readonly componentSubj = new Subject<{ // if routing result is component
+    component: TComponent;
+    routeActionData: IActionData<TContext>
+  }>()
 
   constructor(routes: Routes, public readonly options = defaultOptions) {
     this.pathResolver = new PathResolver(routes, options.pathResolver)
@@ -45,8 +48,8 @@ export class BrowserRouter<TComponent = any,
       : result()
   }
 
-  component$: Observable<TComponent> = this.componentSubj.asObservable().pipe(
-    filter(elem => !!elem),
+  componentData$ = this.componentSubj.asObservable().pipe(
+    filter(elem => !!elem?.component),
     distinctUntilChanged(),
     shareReplay(1),
   )
