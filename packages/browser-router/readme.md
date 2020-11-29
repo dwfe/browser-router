@@ -7,16 +7,20 @@ export interface IBrowserRouterOptions {
   pathResolver?: IPathResolverOptions;
 }
 ```
-And finally, to create the router and start it:
+and finally, to create the router and start it:
 ```
 const router = new BrowserRouter(routes, options)
 
-router.component$.pipe(
-  tap(component => {
-    ReactDOM.render(
-      component,
-      root
-    )
+router.componentData$.pipe(
+  tap(({component, routeActionData}) => {
+
+    const container =
+      <GeneralTemplate>
+        {component}
+      </GeneralTemplate>;
+
+    ReactDOM.render(container, root)
+
   }),
 ).subscribe()
 
@@ -92,7 +96,8 @@ export interface RoutingResult<TComponent = any, TContext extends RouteContext =
 
 
 #### TODO
-- обернуть тестовые компоненты в шапку с кнопками навигаций вперед/назад
+- для навигаций вперед/назад неактивность, если в этом направлении некуда переходить
+- кнопку показать историю
 - option: collecting statistics on the frequency of routes usage
 - tests for BrowserRouter
 - tests for PathResolver.correctResultFromAction

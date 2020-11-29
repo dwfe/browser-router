@@ -4,7 +4,7 @@ import React, {ReactElement} from 'react'
 import ReactDOM from 'react-dom'
 import {container} from 'tsyringe'
 import {tap} from 'rxjs/operators'
-import {GeneralTemplate} from '../templates/GeneralTemplate'
+import {GeneralTemplate} from '../templates/General/GeneralTemplate'
 
 export const startRouter = (routes: Routes, root: HTMLElement | null) => {
   if (!root)
@@ -14,12 +14,14 @@ export const startRouter = (routes: Routes, root: HTMLElement | null) => {
 
   router.componentData$.pipe(
     tap(({component, routeActionData}) => {
-      ReactDOM.render(
+
+      const container =
         <GeneralTemplate>
           {component}
-        </GeneralTemplate>,
-        root
-      )
+        </GeneralTemplate>;
+
+      ReactDOM.render(container, root)
+
     }),
   ).subscribe()
 

@@ -49,5 +49,5 @@ async function passIfLoggedIn(data: RouteActionData): Promise<RoutingResult<Reac
 }
 
 async function canDeactivateFn(tryRelocation: Location, data: RouteActionData): Promise<boolean> {
-  return window.confirm(`Are you sure you want to go to ${tryRelocation.pathname}?`)
+  return window.confirm(`Are you sure you want to go to '${tryRelocation.pathname}' ?`)
 }
