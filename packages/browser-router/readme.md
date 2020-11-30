@@ -96,6 +96,7 @@ export interface RoutingResult<TComponent = any, TContext extends RouteContext =
 
 
 #### TODO
+- why-refresh-added-to-session-history
 - захостить demo
 - для навигаций вперед/назад неактивность, если в этом направлении некуда переходить
 - кнопку показать историю
