@@ -15,6 +15,18 @@
   align-items: center;
 }
 
+.page-header_see-console {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.page-header_see-console p {
+  margin: 0;
+  padding: 0;
+}
+
 .page-header_code {
   display: grid;
 }

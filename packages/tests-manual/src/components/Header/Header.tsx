@@ -20,9 +20,12 @@ export const Header = () => {
         <Link href="/">Index</Link>
         <BtnNavigate isBack={false} onClick={forwardFn}/>
       </nav>
+      <div className="page-header_see-console">
+        <p>Trace output you can see in console</p>
+      </div>
       <div className="page-header_code">
         <GitGetCode href="https://gitlab.com/wizards-lab/routing/-/tree/master/packages/tests-manual"
-                    text='get this demo source'/>
+                    text='get source of this demo'/>
       </div>
     </header>
   )

@@ -23,7 +23,7 @@
     "autosize": "4"
   },
   "scripts": {
-    "clean": "rimraf ./dist",
+    "clean": "rimraf ./build",
     "start": "react-scripts start",
     "build:prod": "npm run clean && react-scripts build",
     "test": "react-scripts test",
