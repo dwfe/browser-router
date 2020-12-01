@@ -15,8 +15,8 @@ export class BrowserRouter<TComponent = any,
   public readonly pathResolver: PathResolver
   private readonly history: BrowserHistory<State> = createBrowserHistory() // https://github.com/ReactTraining/history/blob/master/docs/getting-started.md#basic-usage
   private locationHandler: LocationHandler // the every location change is processed in a separate task
-  private lastLocationKey: string = '' // unique string on every new location
-  private readonly window: (WindowProxy & typeof globalThis) | null
+  private lastLocationKey: string = '' // new unique string when location is changed
+  private readonly window: WindowProxy & typeof globalThis
 
   public readonly componentSubj = new Subject<{ // if routing result is component
     component: TComponent;
@@ -26,12 +26,12 @@ export class BrowserRouter<TComponent = any,
   constructor(routes: Routes, public readonly options = defaultOptions) {
     this.pathResolver = new PathResolver(routes, options.pathResolver)
     this.locationHandler = new LocationHandler(this)
+    if (!document?.defaultView)
+      throw new Error(`Object 'window' must be present, because this is Browser Router`)
     this.window = document.defaultView
   }
 
   get currentLocation(): Path {
-    if (!this.window)
-      throw new Error(`object 'window' is missing`)
     return createPath(this.window.location)
   }
 
@@ -89,7 +89,7 @@ export class BrowserRouter<TComponent = any,
       action: Action.Push,
       location: {
         state: ctx,
-        key: this.window?.history?.state?.key || 'default',
+        key: this.window.history.state?.key || 'default',
         ...this.currentLocation
       }
     }
@@ -110,9 +110,9 @@ export class BrowserRouter<TComponent = any,
     if (!url)
       return;
     if (to.target === '_blank') {
-      this.window?.open(url, '_blank')
+      this.window.open(url, '_blank')
     } else {
-      this.window?.location.assign(url)
+      this.window.location.assign(url)
     }
   }
 
