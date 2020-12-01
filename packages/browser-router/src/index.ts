@@ -1,8 +1,8 @@
-import {Location} from 'history'
+import {Location, PartialPath, Path} from 'history'
 
 export * from './core/contract'
 export * from './core/browser-router'
 
 export {
-  Location
+  Location, PartialPath, Path,
 }

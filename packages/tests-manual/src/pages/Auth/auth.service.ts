@@ -28,7 +28,7 @@ export class AuthService {
 
   logOut() {
     localStorage.removeItem(LOGGED_KEY)
-    this.router.redirect('/')
+    this.router.go('/')
   }
 }
 

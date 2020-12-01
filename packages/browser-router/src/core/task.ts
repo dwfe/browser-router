@@ -118,7 +118,7 @@ export class Task<TComponent = any,
 
   public isCompleted(): boolean {
     if (!this.isCanceled)
-      this.isCanceled = this.router.isLocationChanged(this.location)
+      this.isCanceled = this.router.isUserMadeTransition(this.location)
     return this.isCanceled || this.result
   }
 
@@ -189,8 +189,8 @@ export class Task<TComponent = any,
     return this.router.pathResolver
   }
 
-  private trace(stage: string) {
-    this.router.trace(this.id, stage)
+  private trace(text: string) {
+    this.router.trace(this.id, text)
   }
 
 //endregion

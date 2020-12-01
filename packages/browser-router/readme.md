@@ -96,8 +96,7 @@ export interface RoutingResult<TComponent = any, TContext extends RouteContext =
 
 
 #### TODO
-- для навигаций вперед/назад неактивность, если в этом направлении некуда переходить
-- захостить demo
+- захостить demo, добавить в описание
 - option: collecting statistics on the frequency of routes usage
 - tests for BrowserRouter
 - tests for PathResolver.correctResultFromAction

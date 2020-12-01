@@ -1,4 +1,4 @@
-import {IActionData, PathResolver, RouteContext, Routes, RoutingResult, ToType} from '@do-while-for-each/path-resolver'
+import {GoTo, IActionData, PathResolver, RouteContext, Routes, RoutingResult, ToType} from '@do-while-for-each/path-resolver'
 import {Action, Blocker, BrowserHistory, createBrowserHistory, Location, Path, State, Update} from 'history'
 import {Subject} from 'rxjs'
 import {distinctUntilChanged, filter, shareReplay} from 'rxjs/operators'
@@ -14,9 +14,10 @@ export class BrowserRouter<TComponent = any,
 
   public readonly pathResolver: PathResolver
   private readonly history: BrowserHistory<State> = createBrowserHistory() // https://github.com/ReactTraining/history/blob/master/docs/getting-started.md#basic-usage
-  private locationHandler: LocationHandler // the every location change is processed in a separate task
-  private lastLocationKey: string = '' // new unique string when location is changed
+  private readonly locationHandler: LocationHandler // the every location change is processed in a separate task
+
   private readonly window: WindowProxy & typeof globalThis
+  private lastLocationKey: string = '' // new unique string when user made the transition
 
   public readonly componentSubj = new Subject<{ // if routing result is component
     component: TComponent;
@@ -68,7 +69,7 @@ export class BrowserRouter<TComponent = any,
     if (isGoAway(to)) {
       this.goAway(to)
     } else {
-      if (isEqualsPaths(to, this.currentLocation)) {
+      if (this.isSameLocation(to)) {
         this.goWithoutChangingLocation(ctx)
       } else {
         this.history.push(getLocalRoute(to), ctx)
@@ -78,11 +79,12 @@ export class BrowserRouter<TComponent = any,
 
   /**
    *  At the moment when:
-   *    - the page is loaded for the first time,
-   *    - the page is refreshed,
-   *    - user changed the location to the same one;
-   *  then we don't need to go anywhere => we don't need to run this.go(...),
-   *  because we are already in the right location
+   *    - the page is loaded for the first time;
+   *    - the page is refreshed;
+   *    - user changed the location to the same one.
+   *  then we don't need to go anywhere => so we don't need to run this.go(...),
+   *  because we are already in the target location.
+   *  We just need to find the route and activate it.
    */
   goWithoutChangingLocation(ctx: TContext = null as TContext) {
     const update: Update<TContext> = {
@@ -126,13 +128,21 @@ export class BrowserRouter<TComponent = any,
   }
 
 
-  isLocationChanged({key}: Location) {
+//region Utils
+
+  trace(id: string, text: string) {
+    if (this.options.enableTrace)
+      console.log(`[ ${id} ]`, text)
+  }
+
+  isSameLocation(to: GoTo): boolean {
+    return isEqualsPaths(to, this.currentLocation)
+  }
+
+  isUserMadeTransition({key}: Location) {
     return this.lastLocationKey !== key
   }
 
-  trace(id: string, stage: string) {
-    if (this.options.enableTrace)
-      console.log(`[ ${id} ]`, stage)
-  }
+//endregion
 
 }
