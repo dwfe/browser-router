@@ -2,6 +2,8 @@ import React from 'react'
 import {BrowserRouter} from '@do-while-for-each/browser-router'
 import './style.css'
 import {useDIInstance} from '../../di/useDIInstance'
+import {GitGetCode} from '../GitGetCode/GitGetCode'
+import {BtnNavigate} from '../BtnNavigate/BtnNavigate'
 import {Link} from '../../routing'
 
 
@@ -14,20 +16,15 @@ export const Header = () => {
   return (
     <header className="page-header">
       <nav className="page-header_nav">
-        <button className="page-header_btn  page-header_btn--back" title="Back" onClick={backFn}>
-          <svg>
-            <path d={arrowPath}/>
-          </svg>
-        </button>
+        <BtnNavigate isBack={true} onClick={backFn}/>
         <Link href="/">Index</Link>
-        <button className="page-header_btn  page-header_btn--forward" title="Forward" onClick={forwardFn}>
-          <svg>
-            <path d={arrowPath}/>
-          </svg>
-        </button>
+        <BtnNavigate isBack={false} onClick={forwardFn}/>
       </nav>
+      <div className="page-header_code">
+        <GitGetCode href="https://gitlab.com/wizards-lab/routing/-/tree/master/packages/tests-manual"
+                    text='get this demo source'/>
+      </div>
     </header>
   )
 }
 
-const arrowPath = 'M19.9688 2.00049L2.99825 18.5843L19.9688 35.168'

@@ -1,0 +1,20 @@
+
+.btn-navigate {
+  display: grid;
+}
+
+.btn-navigate:focus {
+  outline: 2px solid blue;
+}
+
+.btn-navigate svg {
+  width: 22px;
+  height: 37px;
+  fill: none;
+  stroke: #1A1A1A;
+  stroke-width: 4px;
+}
+
+.btn-navigate--forward {
+  transform: rotate(180deg);
+}

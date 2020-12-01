@@ -3,6 +3,9 @@
   padding: 4px;
   background-color: aliceblue;
   border-radius: 4px;
+
+  display: flex;
+  justify-content: space-between;
 }
 
 .page-header_nav {
@@ -12,18 +15,6 @@
   align-items: center;
 }
 
-.page-header_btn {
+.page-header_code {
   display: grid;
-}
-
-.page-header_btn svg {
-  width: 22px;
-  height: 37px;
-  fill: none;
-  stroke: #1A1A1A;
-  stroke-width: 4px;
-}
-
-.page-header_btn--forward {
-  transform: rotate(180deg);
 }

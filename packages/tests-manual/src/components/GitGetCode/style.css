@@ -1,0 +1,15 @@
+
+.git-get-code {
+  display: flex;
+  align-items: center;
+}
+
+.git-get-code_pic {
+  height: 28px;
+}
+
+.git-get-code_text {
+  margin: 0;
+  padding: 0;
+  padding-left: 5px;
+}
