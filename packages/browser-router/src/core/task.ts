@@ -1,7 +1,7 @@
 import {IActionData, PathResolver, PathResolveResult, Route, RouteContext, RoutingResult} from '@do-while-for-each/path-resolver'
-import {Blocker, Location, Transition} from 'history'
+import {Blocker, Location, PartialPath, Transition} from 'history'
 import React from 'react'
-import {addFirstSymbol, excludeFirstSymbol, getUrl} from '../globals'
+import {addFirstSymbol, createPathStr, excludeFirstSymbol} from '../globals'
 import {BrowserRouter} from './browser-router'
 import {IBrowserRouterOptions} from './contract'
 
@@ -10,6 +10,8 @@ export class Task<TComponent = any,
   TContext extends RouteContext = RouteContext,
   TActionResult extends RoutingResult<TComponent, TContext> = RoutingResult<TComponent, TContext>,
   TNote = any> {
+
+  static id = (p: PartialPath): string => createPathStr(p)
 
   readonly route: Route<TComponent, TContext, TActionResult, TNote>
   readonly parentRoute: Route<TComponent, TContext, TActionResult, TNote>
@@ -39,6 +41,12 @@ export class Task<TComponent = any,
         throw err
       })
   ;
+
+  isCompleted(): boolean {
+    if (!this.isCanceled)
+      this.isCanceled = !this.router.isSameLocation(this.location)
+    return this.isCanceled || !!this.result
+  }
 
   private async stageCanActivate(): Promise<void> {
     if (this.isCompleted() || !this.route.canActivate)
@@ -114,14 +122,6 @@ export class Task<TComponent = any,
 
 //region Handlers
 
-  static id = (location: Location): string => getUrl(location)
-
-  public isCompleted(): boolean {
-    if (!this.isCanceled)
-      this.isCanceled = this.router.isUserMadeTransition(this.location)
-    return this.isCanceled || this.result
-  }
-
   private getRouteActionData(): IActionData<TContext> {
     let {pathname, search, hash, state, key} = this.location
     const previous = state?.previousActionData as IActionData<TContext>
@@ -181,18 +181,6 @@ export class Task<TComponent = any,
     }
   }
 
-  private get options(): IBrowserRouterOptions {
-    return this.router.options
-  }
-
-  private get pathResolver(): PathResolver {
-    return this.router.pathResolver
-  }
-
-  private trace(text: string) {
-    this.router.trace(this.id, text)
-  }
-
 //endregion
 
 //region CanDeactivate
@@ -231,6 +219,22 @@ export class Task<TComponent = any,
     this.unblockNavigationFn()
     this.unblockNavigationFn = null
     this.trace('unblock navigation')
+  }
+
+//endregion
+
+//region Utils
+
+  private get options(): IBrowserRouterOptions {
+    return this.router.options
+  }
+
+  private get pathResolver(): PathResolver {
+    return this.router.pathResolver
+  }
+
+  private trace(text: string) {
+    this.router.trace(this.id, text)
   }
 
 //endregion

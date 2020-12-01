@@ -1,8 +1,8 @@
 import {GoTo, IActionData, PathResolver, RouteContext, Routes, RoutingResult, ToType} from '@do-while-for-each/path-resolver'
-import {Action, Blocker, BrowserHistory, createBrowserHistory, Location, Path, State, Update} from 'history'
+import {Action, Blocker, BrowserHistory, createBrowserHistory, Path, State, Update} from 'history'
 import {Subject} from 'rxjs'
 import {distinctUntilChanged, filter, shareReplay} from 'rxjs/operators'
-import {convertGoToFromStr, createPath, getLocalRoute, getUrl, isEqualsPaths, isGoAway} from '../globals'
+import {convertGoToFromStr, createPath, getUrl, isEqualPaths, isGoAway} from '../globals'
 import {LocationHandler} from './location-handler'
 import {defaultOptions} from './contract'
 import {Task} from './task'
@@ -17,7 +17,6 @@ export class BrowserRouter<TComponent = any,
   private readonly locationHandler: LocationHandler // the every location change is processed in a separate task
 
   private readonly window: WindowProxy & typeof globalThis
-  private lastLocationKey: string = '' // new unique string when user made the transition
 
   public readonly componentSubj = new Subject<{ // if routing result is component
     component: TComponent;
@@ -32,7 +31,7 @@ export class BrowserRouter<TComponent = any,
     this.window = document.defaultView
   }
 
-  get currentLocation(): Path {
+  get currentPath(): Path {
     return createPath(this.window.location)
   }
 
@@ -42,7 +41,6 @@ export class BrowserRouter<TComponent = any,
   }
 
   private onLocationChange({location}: Update<TContext>) {
-    this.lastLocationKey = location.key
     this.locationHandler
       .processLocation(location)
       .then(task => this.routeActivation(task))
@@ -72,7 +70,7 @@ export class BrowserRouter<TComponent = any,
       if (this.isSameLocation(to)) {
         this.goWithoutChangingLocation(ctx)
       } else {
-        this.history.push(getLocalRoute(to), ctx)
+        this.history.push(createPath(to), ctx)
       }
     }
   }
@@ -82,7 +80,7 @@ export class BrowserRouter<TComponent = any,
    *    - the page is loaded for the first time;
    *    - the page is refreshed;
    *    - user changed the location to the same one.
-   *  then we don't need to go anywhere => so we don't need to run this.go(...),
+   *  we don't need to go anywhere => so we don't need to run this.go(...),
    *  because we are already in the target location.
    *  We just need to find the route and activate it.
    */
@@ -92,7 +90,7 @@ export class BrowserRouter<TComponent = any,
       location: {
         state: ctx,
         key: this.window.history.state?.key || 'default',
-        ...this.currentLocation
+        ...this.currentPath
       }
     }
     this.onLocationChange(update)
@@ -136,11 +134,7 @@ export class BrowserRouter<TComponent = any,
   }
 
   isSameLocation(to: GoTo): boolean {
-    return isEqualsPaths(to, this.currentLocation)
-  }
-
-  isUserMadeTransition({key}: Location) {
-    return this.lastLocationKey !== key
+    return isEqualPaths(to, this.currentPath)
   }
 
 //endregion

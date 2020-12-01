@@ -38,8 +38,7 @@ start(ctx?: TContext) {
   this.history.listen(this.onLocationChange.bind(this))
 }
 
-private onLocationChange({location}: Update<TContext>) {
-  this.lastLocationKey = location.key
+onLocationChange({location}: Update<TContext>) {
   this.locationHandler
     .processLocation(location)
     .then(task => this.routeActivation(task))
@@ -75,7 +74,7 @@ If any of the stages calculated the result, then all subsequent stages will be s
   
 As a result, when the location processing task is completed, the router only needs to call the result:
 ```
-private routeActivation(task?: Task) {
+routeActivation(task?: Task) {
   if (!task)
     return;
   const {isCanceled, result, id} = task
