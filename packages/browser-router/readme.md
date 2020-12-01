@@ -33,9 +33,9 @@ In the example above, the router works with React components, but it doesn't rea
 
 After starting, the router starts listening for location changes:
 ```
-start(initTo: ToType = '') {
+start(ctx?: TContext) {
+  this.goWithoutChangingLocation(ctx)
   this.history.listen(this.onLocationChange.bind(this))
-  this.go(initTo)
 }
 
 private onLocationChange({location}: Update<TContext>) {
@@ -96,10 +96,8 @@ export interface RoutingResult<TComponent = any, TContext extends RouteContext =
 
 
 #### TODO
-- why-refresh-added-to-session-history
-- захостить demo
 - для навигаций вперед/назад неактивность, если в этом направлении некуда переходить
-- кнопку показать историю
+- захостить demo
 - option: collecting statistics on the frequency of routes usage
 - tests for BrowserRouter
 - tests for PathResolver.correctResultFromAction

@@ -1,11 +1,11 @@
 import {IActionData, PathResolver, RouteContext, Routes, RoutingResult, ToType} from '@do-while-for-each/path-resolver'
-import {Blocker, BrowserHistory, createBrowserHistory, Location, State, Update} from 'history'
+import {Action, Blocker, BrowserHistory, createBrowserHistory, Location, Path, State, Update} from 'history'
 import {Subject} from 'rxjs'
 import {distinctUntilChanged, filter, shareReplay} from 'rxjs/operators'
-import {convertGoToFromStr, getLocalRoute, getUrl, isGoAway} from '../globals'
-import {defaultOptions} from './contract';
-import {Task} from './task'
+import {convertGoToFromStr, createPath, getLocalRoute, getUrl, isEqualsPaths, isGoAway} from '../globals'
 import {LocationHandler} from './location-handler'
+import {defaultOptions} from './contract'
+import {Task} from './task'
 
 export class BrowserRouter<TComponent = any,
   TContext extends RouteContext = RouteContext,
@@ -13,9 +13,10 @@ export class BrowserRouter<TComponent = any,
   TNote = any> {
 
   public readonly pathResolver: PathResolver
-  private readonly history: BrowserHistory<State> = createBrowserHistory() // https://github.com/ReactTraining/history#readme
+  private readonly history: BrowserHistory<State> = createBrowserHistory() // https://github.com/ReactTraining/history/blob/master/docs/getting-started.md#basic-usage
   private locationHandler: LocationHandler // the every location change is processed in a separate task
   private lastLocationKey: string = '' // unique string on every new location
+  private readonly window: (WindowProxy & typeof globalThis) | null
 
   public readonly componentSubj = new Subject<{ // if routing result is component
     component: TComponent;
@@ -25,11 +26,18 @@ export class BrowserRouter<TComponent = any,
   constructor(routes: Routes, public readonly options = defaultOptions) {
     this.pathResolver = new PathResolver(routes, options.pathResolver)
     this.locationHandler = new LocationHandler(this)
+    this.window = document.defaultView
   }
 
-  start(initTo: ToType = '') {
+  get currentLocation(): Path {
+    if (!this.window)
+      throw new Error(`object 'window' is missing`)
+    return createPath(this.window.location)
+  }
+
+  start(ctx?: TContext) {
+    this.goWithoutChangingLocation(ctx)
     this.history.listen(this.onLocationChange.bind(this))
-    this.go(initTo)
   }
 
   private onLocationChange({location}: Update<TContext>) {
@@ -60,8 +68,32 @@ export class BrowserRouter<TComponent = any,
     if (isGoAway(to)) {
       this.goAway(to)
     } else {
-      this.history.push(getLocalRoute(to), ctx)
+      if (isEqualsPaths(to, this.currentLocation)) {
+        this.goWithoutChangingLocation(ctx)
+      } else {
+        this.history.push(getLocalRoute(to), ctx)
+      }
     }
+  }
+
+  /**
+   *  At the moment when:
+   *    - the page is loaded for the first time,
+   *    - the page is refreshed,
+   *    - user changed the location to the same one;
+   *  then we don't need to go anywhere => we don't need to run this.go(...),
+   *  because we are already in the right location
+   */
+  goWithoutChangingLocation(ctx: TContext = null as TContext) {
+    const update: Update<TContext> = {
+      action: Action.Push,
+      location: {
+        state: ctx,
+        key: this.window?.history?.state?.key || 'default',
+        ...this.currentLocation
+      }
+    }
+    this.onLocationChange(update)
   }
 
   goBack() {
@@ -78,9 +110,9 @@ export class BrowserRouter<TComponent = any,
     if (!url)
       return;
     if (to.target === '_blank') {
-      window.open(url, '_blank')
+      this.window?.open(url, '_blank')
     } else {
-      window.location.assign(url)
+      this.window?.location.assign(url)
     }
   }
 

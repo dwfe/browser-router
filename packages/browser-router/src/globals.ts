@@ -1,4 +1,5 @@
 import {GoTo} from '@do-while-for-each/path-resolver'
+import {PartialPath, Path} from 'history'
 
 export const excludeFirstSymbol = (symbol: string, target: string | undefined): string | undefined =>
   target
@@ -30,3 +31,11 @@ export const convertGoToFromStr = (to: GoTo | string): GoTo =>
     ? {pathname: to}
     : to
 ;
+export const createPath = ({pathname = '', search = '', hash = ''}: PartialPath): Path => ({pathname, search, hash})
+export const isEqualsPaths = (p1: PartialPath, p2: PartialPath) => {
+  p1 = createPath(p1)
+  p2 = createPath(p2)
+  return p1.pathname === p2.pathname
+    && p1.search === p2.search
+    && p1.hash === p2.hash
+}

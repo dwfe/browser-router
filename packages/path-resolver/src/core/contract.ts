@@ -1,4 +1,4 @@
-import {Location} from 'history'
+import {Location, PartialPath} from 'history'
 
 export type Routes = Route[];
 
@@ -88,27 +88,7 @@ export type PathParams = object | { [key: string]: string; }
 
 export type ToType = GoTo | string;
 
-export interface GoTo {
-  /**
-   * Returns the Location object's URL's path.
-   *
-   * Can be set, to navigate to the same URL with a changed path.
-   */
-  pathname?: string;
-
-  /**
-   * Returns the Location object's URL's query (includes leading "?" if non-empty).
-   *
-   * Can be set, to navigate to the same URL with a changed query (ignores leading "?").
-   */
-  search?: string;
-
-  /**
-   * Returns the Location object's URL's fragment (includes leading "#" if non-empty).
-   *
-   * Can be set, to navigate to the same URL with a changed fragment (ignores leading "#").
-   */
-  hash?: string;
+export interface GoTo extends PartialPath {
 
   pathParams?: PathParams;
 
