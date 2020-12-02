@@ -2,6 +2,7 @@ import React from 'react'
 import {Header} from '../../components/Header/Header'
 import {Main} from '../../components/Main'
 import './style.css'
+import {Footer} from '../../components/Footer/Footer'
 
 export const GeneralTemplate = (props: any) => {
 
@@ -11,6 +12,7 @@ export const GeneralTemplate = (props: any) => {
       <Main>
         {props.children}
       </Main>
+      <Footer/>
     </div>
   )
 }

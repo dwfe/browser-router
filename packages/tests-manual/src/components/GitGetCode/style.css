@@ -2,10 +2,12 @@
 .git-get-code {
   display: flex;
   align-items: center;
+
+  font-size: 13px;
 }
 
 .git-get-code_pic {
-  height: 28px;
+  height: 23px;
 }
 
 .git-get-code_text {

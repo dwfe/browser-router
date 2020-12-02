@@ -15,18 +15,27 @@
   align-items: center;
 }
 
-.page-header_see-console {
+.page-header_info {
   padding: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  color: darkblue;
 }
 
-.page-header_see-console p {
+
+.page-header_info ol {
   margin: 0;
-  padding: 0;
 }
 
-.page-header_code {
+.page-header_info li {
+  padding-top: 4px;
+  font-size: 13px;
+  line-height: 13px;
+  font-weight: 470;
+}
+
+.page-header_get-code {
   display: grid;
 }
