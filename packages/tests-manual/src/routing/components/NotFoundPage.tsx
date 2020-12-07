@@ -4,7 +4,7 @@ import {ActionData} from './ActionData/ActionData';
 import {getPreviousRouteActionData} from '../globals';
 import {useDocumentTitle} from '../hooks/useDocumentTitle';
 
-export const NotFound = (props: IRoutableProps) => {
+export const NotFoundPage = (props: IRoutableProps) => {
   useDocumentTitle(props)
 
   const {routeActionData} = props

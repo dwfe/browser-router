@@ -31,3 +31,4 @@ Thumbs.db
 .env.production.local
 
 react-app-env.d.ts
+.eslintcache

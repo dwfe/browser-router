@@ -3,7 +3,7 @@ import {Route, RoutingResult} from '@do-while-for-each/path-resolver'
 import {Location} from '@do-while-for-each/browser-router'
 import React, {ReactElement} from 'react'
 import {AuthService, CanDeactivateCheckPage, FirstPage, IndexPage, LoginPage, PicPage, ProtectedByAuthorization, SecondPage} from './pages'
-import {Ctx, IRouteNote, NotFound, RouteActionData} from './routing'
+import {Ctx, IRouteNote, NotFoundPage, RouteActionData} from './routing'
 
 
 export const routes: Route<ReactElement, Ctx, RoutingResult<ReactElement, Ctx>, IRouteNote>[] = [
@@ -27,7 +27,7 @@ export const routes: Route<ReactElement, Ctx, RoutingResult<ReactElement, Ctx>, 
   {path: 'protected-by-authorization', canActivate: passIfLoggedIn, component: <ProtectedByAuthorization/>},
   {path: 'can-deactivate-check', canDeactivate: canDeactivateFn, component: <CanDeactivateCheckPage/>},
   {path: 'login', component: <LoginPage/>},
-  {path: 'not-found', component: <NotFound/>, note: {title: 'Not found page'}},
+  {path: 'not-found', component: <NotFoundPage/>, note: {title: 'Not found page'}},
   {path: '(.*)', redirectTo: '/not-found'}
 ]
 
