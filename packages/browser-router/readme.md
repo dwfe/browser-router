@@ -4,7 +4,7 @@
 ### Doc
 The first thing you need to do is [define routes](https://www.npmjs.com/package/@do-while-for-each/path-resolver#Routes).   
 Then you can define options, although this is not necessary:
-```ts
+```js
 export interface IBrowserRouterOptions {
   enableTrace?: boolean;
   injectRouteActionsDataToComponent?: boolean;
