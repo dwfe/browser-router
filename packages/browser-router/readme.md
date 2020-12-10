@@ -4,7 +4,7 @@
 ### Doc
 The first thing you need to do is [define routes](https://www.npmjs.com/package/@do-while-for-each/path-resolver#Routes).   
 Then you can define options, although this is not necessary:
-```js
+```ts
 export interface IBrowserRouterOptions {
   enableTrace?: boolean;
   injectRouteActionsDataToComponent?: boolean;
@@ -12,7 +12,7 @@ export interface IBrowserRouterOptions {
 }
 ```
 and finally, to create the router and start it:
-```
+```tsx
 const router = new BrowserRouter(routes, options)
 
 router.componentData$.pipe(
@@ -36,7 +36,7 @@ In the example above, the router works with React components, but it doesn't rea
 
 
 After starting, the router starts listening for location changes:
-```
+```ts
 start(ctx?: TContext) {
   this.goWithoutChangingLocation(ctx)
   this.history.listen(this.onLocationChange.bind(this))
@@ -50,7 +50,7 @@ onLocationChange({location}: Update<TContext>) {
 ```
 Here `history` is the functionality of the package [history](https://github.com/ReactTraining/history#readme).  
 The `LocationHandler` purposes to handle each subsequent location change:
-```
+```ts
 if (this.isTaskExist(taskId)) {
   this.trace(taskId, 'duplicate, skipped')
   return;
@@ -62,7 +62,7 @@ return this.resolveRoute({location, taskId})
 ```
   
 The every location change is processed in a separate task:
-```
+```ts
 runLifecycle = (): Promise<Task<TComponent, TContext, TActionResult, TNote>> =>
   this.stageCanActivate()
     .then(() => this.blockNavigation()) // if 'canDeactivate' is defined in the route
@@ -77,7 +77,7 @@ runLifecycle = (): Promise<Task<TComponent, TContext, TActionResult, TNote>> =>
 If any of the stages calculated the result, then all subsequent stages will be skipped.
   
 As a result, when the location processing task is completed, the router only needs to call the result:
-```
+```ts
 routeActivation(task?: Task) {
   if (!task)
     return;
@@ -88,7 +88,7 @@ routeActivation(task?: Task) {
 }
 ```
 The result of the `BrowserRouter`'s work is either a redirect to another location, or a component for rendering:
-```
+```ts
 export interface RoutingResult<TComponent = any, TContext extends RouteContext = RouteContext> {
   redirectTo?: string;
   customTo?: ICustomTo<TContext>;
@@ -99,7 +99,7 @@ export interface RoutingResult<TComponent = any, TContext extends RouteContext =
 
 
 #### TODO
-- 
+- переименовать в goto
 - может быть добавить доп. remote repo на github и линки всякие на него указывать?
 - сделать наконец нормальную прод. сборку с минимизацией и т.п.
 - option: collecting statistics on the frequency of routes usage
