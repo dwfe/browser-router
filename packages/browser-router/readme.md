@@ -4,7 +4,7 @@
 ### Doc
 The first thing you need to do is [define routes](https://www.npmjs.com/package/@do-while-for-each/path-resolver#Routes).   
 Then you can define options, although this is not necessary:
-```
+```ts
 export interface IBrowserRouterOptions {
   enableTrace?: boolean;
   injectRouteActionsDataToComponent?: boolean;
@@ -99,6 +99,7 @@ export interface RoutingResult<TComponent = any, TContext extends RouteContext =
 
 
 #### TODO
+- 
 - может быть добавить доп. remote repo на github и линки всякие на него указывать?
 - сделать наконец нормальную прод. сборку с минимизацией и т.п.
 - option: collecting statistics on the frequency of routes usage
