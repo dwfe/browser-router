@@ -32,3 +32,5 @@ Thumbs.db
 
 react-app-env.d.ts
 .eslintcache
+
+tsconfig.tsbuildinfo

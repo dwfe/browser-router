@@ -99,9 +99,7 @@ export interface RoutingResult<TComponent = any, TContext extends RouteContext =
 
 
 #### TODO
-- переименовать в goto
 - может быть добавить доп. remote repo на github и линки всякие на него указывать?
-- сделать наконец нормальную прод. сборку с минимизацией и т.п.
 - option: collecting statistics on the frequency of routes usage
 - tests for BrowserRouter
 - tests for PathResolver.correctResultFromAction

@@ -87,7 +87,7 @@ export class Task<TComponent = any,
         }
         : () => {
           this.trace(`${stage} goTo`)
-          this.router.go(to, context_for_Redirect_or_Go)
+          this.router.goto(to, context_for_Redirect_or_Go)
         }
       return;
     } else if (component) {

@@ -4,8 +4,9 @@
   "license": "MIT",
   "scripts": {
     "clean:dist": "lerna run clean",
+    "build": "npm run clean:dist && tsc -b",
+    "build:watch": "npm run clean:dist && tsc -b -w",
     "bootstrap": "npm run clean:dist && rimraf package-lock.json && lerna bootstrap --hoist",
-    "build:packages": "lerna run build",
     "total:clean": "npm run clean:dist && lerna clean --yes && rimraf package-lock.json && rimraf ./node_modules",
     "publish": "npm run build:packages && lerna publish"
   },

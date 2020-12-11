@@ -9,7 +9,7 @@ export const Link = (props: IProps) => {
   const handleClick = (event: SyntheticEvent) => {
     event.preventDefault()
     onClick && onClick(event as any)
-    router.go(event.currentTarget as HTMLAnchorElement, ctx)
+    router.goto(event.currentTarget as HTMLAnchorElement, ctx)
   }
   return (
     <a {...props}

@@ -1,0 +1,15 @@
+{
+  "extends": "./config/tsconfig",
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    { "path": "./packages/path-resolver" },
+    { "path": "./packages/browser-router" }
+  ],
+  "exclude": [
+    "**/tests*",
+    "**/node_modules",
+    "**/dist"
+  ]
+}

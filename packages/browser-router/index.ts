@@ -1,7 +1,7 @@
 import {Location, PartialPath, Path} from 'history'
 
-export * from './core/contract'
-export * from './core/browser-router'
+export * from './src/core/contract'
+export * from './src/core/browser-router'
 
 export {
   Location, PartialPath, Path,

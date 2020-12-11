@@ -62,7 +62,7 @@ export class BrowserRouter<TComponent = any,
   )
 
 
-  go(to: ToType, ctx?: TContext) {
+  goto(to: ToType, ctx?: TContext) {
     to = convertGoToFromStr(to)
     if (isGoAway(to)) {
       this.goAway(to)
