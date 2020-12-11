@@ -25,7 +25,11 @@ export const BtnNavigate = ({isBack, onClick}: IProps) => {
 
 
   return (
-    <button ref={buttonRef} {...props()}>
+    <button
+      ref={buttonRef}
+      {...props()}
+      data-qa={isBack ? 'go-back' : 'go-forward'}
+    >
       <svg>
         <path d={arrowPath}/>
       </svg>

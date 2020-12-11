@@ -11,12 +11,14 @@ export const ActionData = ({actionData}: any) => {
   }, [textareaRef])
 
   return (
-    <div className="ActionData">
-      <p className="ActionData_text">route action data (injected):</p>
-      <textarea className="ActionData_listing"
-                value={JSON.stringify(actionData || 'empty', null, 2)}
-                readOnly={true}
-                ref={textareaRef}/>
+    <div>
+      <div className="ActionData">
+        <p className="ActionData_text">route action data (injected):</p>
+        <textarea className="ActionData_listing"
+                  value={JSON.stringify(actionData || 'empty', null, 2)}
+                  readOnly={true}
+                  ref={textareaRef}/>
+      </div>
     </div>
   )
 }

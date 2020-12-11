@@ -67,11 +67,11 @@ export class Task<TComponent = any,
       return skip
     }
 
-    const context_for_Redirect_or_Go = {previousActionData: this.routeActionData} as RouteContext as TContext
+    const context_for_RedirectTo_or_Goto = {previousActionData: this.routeActionData} as RouteContext as TContext
     if (redirectTo) {
       this.result = () => {
         this.trace(`${stage} redirectTo`)
-        this.router.redirect(redirectTo, context_for_Redirect_or_Go)
+        this.router.redirect(redirectTo, context_for_RedirectTo_or_Goto)
       }
       return;
     } else if (customTo) {
@@ -83,11 +83,11 @@ export class Task<TComponent = any,
       this.result = isRedirect
         ? () => {
           this.trace(`${stage} redirectTo`)
-          this.router.redirect(to, context_for_Redirect_or_Go)
+          this.router.redirect(to, context_for_RedirectTo_or_Goto)
         }
         : () => {
-          this.trace(`${stage} goTo`)
-          this.router.goto(to, context_for_Redirect_or_Go)
+          this.trace(`${stage} goto`)
+          this.router.goto(to, context_for_RedirectTo_or_Goto)
         }
       return;
     } else if (component) {
