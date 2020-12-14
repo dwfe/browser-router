@@ -1,11 +1,11 @@
 import React from 'react'
 import {BrowserRouter} from '@do-while-for-each/browser-router'
-import {QaSel} from '@dwfe/tests-core'
 import './style.css'
 import {useDIInstance} from '../../di/useDIInstance'
 import {GitGetCode} from '../GitGetCode/GitGetCode'
 import {BtnNavigate} from '../BtnNavigate/BtnNavigate'
 import {Link} from '../../routing'
+import {QaSel} from '../../qa/qa-selectors';
 
 
 export const Header = () => {

@@ -19,4 +19,6 @@ export enum QaSel {
 
   CanDeactivatePage_First = 'can-deactivate-page_first',
   CanDeactivatePage_Second = 'can-deactivate-page_second',
+  CanDeactivatePage_DialogueYes = 'can-deactivate-page_dialogue-yes',
+  CanDeactivatePage_DialogueCancel = 'can-deactivate-page_dialogue-cancel',
 }

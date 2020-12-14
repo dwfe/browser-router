@@ -1,6 +1,6 @@
 import React from 'react'
-import {QaSel} from '@dwfe/tests-core'
 import {ActionData, IRoutableProps, Link, useDocumentTitle} from '../routing'
+import {QaSel} from '../qa/qa-selectors';
 
 export const IndexPage = (props: IRoutableProps) => {
   useDocumentTitle(props)

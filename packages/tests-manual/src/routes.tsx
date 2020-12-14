@@ -2,8 +2,9 @@ import {container} from 'tsyringe'
 import {Route, RoutingResult} from '@do-while-for-each/path-resolver'
 import {Location} from '@do-while-for-each/browser-router'
 import React, {ReactElement} from 'react'
-import {AuthService, CanDeactivateCheckPage, FirstPage, IndexPage, LoginPage, PicPage, ProtectedByAuthorization, SecondPage} from './pages'
+import {AuthService, CanDeactivatePage, FirstPage, IndexPage, LoginPage, PicPage, ProtectedByAuthorization, SecondPage} from './pages'
 import {Ctx, IRouteNote, NotFoundPage, RouteActionData} from './routing'
+import {CanDeactivateService} from './pages/CanDeactivate/can-deactivate.service';
 
 
 export const routes: Route<ReactElement, Ctx, RoutingResult<ReactElement, Ctx>, IRouteNote>[] = [
@@ -25,7 +26,7 @@ export const routes: Route<ReactElement, Ctx, RoutingResult<ReactElement, Ctx>, 
     ]
   },
   {path: 'protected-by-authorization', canActivate: passIfLoggedIn, component: <ProtectedByAuthorization/>},
-  {path: 'can-deactivate-check', canDeactivate: canDeactivateFn, component: <CanDeactivateCheckPage/>},
+  {path: 'can-deactivate-check', canDeactivate: canDeactivateFn, component: <CanDeactivatePage/>},
   {path: 'login', component: <LoginPage/>},
   {path: 'not-found', component: <NotFoundPage/>, note: {title: 'Not found page'}},
   {path: '(.*)', redirectTo: '/not-found'}
@@ -49,5 +50,7 @@ async function passIfLoggedIn(data: RouteActionData): Promise<RoutingResult<Reac
 }
 
 async function canDeactivateFn(tryRelocation: Location, data: RouteActionData): Promise<boolean> {
-  return window.confirm(`Are you sure you want to go to '${tryRelocation.pathname}' ?`)
+  return await container
+    .resolve(CanDeactivateService)
+    .canDeactivate(tryRelocation, data)
 }

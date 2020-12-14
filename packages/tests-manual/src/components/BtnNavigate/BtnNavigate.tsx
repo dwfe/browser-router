@@ -1,7 +1,7 @@
 import React, {MutableRefObject, useRef} from 'react'
 import classNames from 'classnames'
-import {QaSel} from '@dwfe/tests-core'
 import './style.css'
+import {QaSel} from '../../qa/qa-selectors';
 
 
 export const BtnNavigate = ({isBack, onClick}: IProps) => {

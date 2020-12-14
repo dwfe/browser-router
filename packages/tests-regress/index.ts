@@ -1,6 +1,6 @@
-import {QaSel} from '@dwfe/tests-core'
 import {chromium} from 'playwright'
 import {PageHandler} from './src/PageHandler'
+import {QaSel} from './src/qa/qa-selectors';
 
 
 const registry: ISel[] = [
@@ -19,8 +19,7 @@ const registry: ISel[] = [
   //TODO - 2 картинки: залогинен/разлогинен
   {selector: QaSel.IndexPage_AuthorizationRequired},
 
-  //TODO - сделать подтверждение с использованием https://www.npmjs.com/package/react-modal
-  {selector: QaSel.IndexPage_CanDeactivate},
+  {selector: QaSel.IndexPage_CanDeactivate, canDeactivateAnswerSelector: QaSel.CanDeactivatePage_DialogueYes},
 
   {selector: QaSel.IndexPage_ExternalRFC2616}
 ];
@@ -35,26 +34,29 @@ const registry: ISel[] = [
   await page.action.goto('/')
   await page.action.screenshot('index-page')
 
-
-  await crawler(registry, page)
+  await pageScreenshotCrawler(registry, page)
 
   browser.close()
 })()
 
 
-async function crawler(selectors: ISel[], page: PageHandler) {
-  for (const {selector, children} of selectors) {
+async function pageScreenshotCrawler(selectors: ISel[], page: PageHandler) {
+  for (const {selector, children, canDeactivateAnswerSelector} of selectors) {
     await page.clickThenScreenshot(selector)
     if (children) {
-      await crawler(children, page)
+      await pageScreenshotCrawler(children, page)
     }
     await page.action.goBack()
+    if (canDeactivateAnswerSelector) {
+      await page.action.click(canDeactivateAnswerSelector)
+    }
   }
 }
 
 
 interface ISel {
-  selector: string;
+  selector: QaSel;
+  canDeactivateAnswerSelector?: QaSel;
   children?: ISel[];
 }
 
