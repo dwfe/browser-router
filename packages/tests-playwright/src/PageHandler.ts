@@ -5,8 +5,8 @@ export class PageHandler {
 
   static async of(browser: Browser): Promise<PageHandler> {
     const page = await browser.newPage()
-    const pageChanger = PageAction.of(page)
-    return new PageHandler(page, pageChanger)
+    const action = PageAction.of(page)
+    return new PageHandler(page, action)
   }
 
   constructor(public page: Page,
@@ -14,14 +14,13 @@ export class PageHandler {
   ) {
   }
 
-
   async close() {
     await this.page.close()
   }
 
-  async clickThenScreenshot(selector: string, screenshotName: string) {
+  async clickThenScreenshot(selector: string, screenshotName?: string) {
     await this.action.click(selector)
-    await this.action.screenshot(screenshotName)
+    await this.action.screenshot(screenshotName || selector)
   }
 
 

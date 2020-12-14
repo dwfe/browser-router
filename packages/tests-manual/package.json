@@ -19,6 +19,7 @@
     "tsyringe": "4",
     "@do-while-for-each/path-resolver": "1",
     "@do-while-for-each/browser-router": "1",
+    "@dwfe/tests-core": "1.2.3",
     "classnames": "2",
     "autosize": "4"
   },

@@ -1,5 +1,6 @@
 import React, {MutableRefObject, useRef} from 'react'
 import classNames from 'classnames'
+import {QaSel} from '@dwfe/tests-core'
 import './style.css'
 
 
@@ -28,7 +29,7 @@ export const BtnNavigate = ({isBack, onClick}: IProps) => {
     <button
       ref={buttonRef}
       {...props()}
-      data-qa={isBack ? 'go-back' : 'go-forward'}
+      data-qa={isBack ? QaSel.Header_GoBack : QaSel.Header_GoForward}
     >
       <svg>
         <path d={arrowPath}/>

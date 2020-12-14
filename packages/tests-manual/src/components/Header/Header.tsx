@@ -1,5 +1,6 @@
 import React from 'react'
 import {BrowserRouter} from '@do-while-for-each/browser-router'
+import {QaSel} from '@dwfe/tests-core'
 import './style.css'
 import {useDIInstance} from '../../di/useDIInstance'
 import {GitGetCode} from '../GitGetCode/GitGetCode'
@@ -17,7 +18,7 @@ export const Header = () => {
     <header className="page-header">
       <nav className="page-header_nav">
         <BtnNavigate isBack={true} onClick={backFn}/>
-        <Link href="/">Index</Link>
+        <Link href="/" data-qa={QaSel.Header_Index}>Index</Link>
         <BtnNavigate isBack={false} onClick={forwardFn}/>
       </nav>
       <div className="page-header_info">
