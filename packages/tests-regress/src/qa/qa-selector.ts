@@ -17,6 +17,10 @@ export enum QaSel {
   SecondPage_LongTimeGettingOfActionResult = 'second-page_long-time-getting-of-action-result',
   SecondPage_First = 'second-page_first',
 
+  LoginPage_Username = 'login-page_username',
+  LoginPage_Password = 'login-page_password',
+  LoginPage_LogIn = 'login-page_log-in',
+
   CanDeactivatePage_First = 'can-deactivate-page_first',
   CanDeactivatePage_Second = 'can-deactivate-page_second',
   CanDeactivatePage_DialogueYes = 'can-deactivate-page_dialogue-yes',

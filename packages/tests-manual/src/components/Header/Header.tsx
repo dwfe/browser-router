@@ -5,7 +5,7 @@ import {useDIInstance} from '../../di/useDIInstance'
 import {GitGetCode} from '../GitGetCode/GitGetCode'
 import {BtnNavigate} from '../BtnNavigate/BtnNavigate'
 import {Link} from '../../routing'
-import {QaSel} from '../../qa/qa-selectors';
+import {QaSel} from '../../qa/qa-selector';
 
 
 export const Header = () => {

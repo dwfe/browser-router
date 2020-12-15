@@ -1,11 +1,10 @@
 
 .page-footer {
   padding: 4px;
-  background-color: lightcyan;
+  background-color: lightblue;
   border-radius: 4px;
 
   display: flex;
-  justify-content: flex-end;
   align-items: center;
 
   min-height: 50px;

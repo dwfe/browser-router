@@ -1,6 +1,6 @@
 import React from 'react'
 import {ActionData, IRoutableProps, Link} from '../routing'
-import {QaSel} from '../qa/qa-selectors';
+import {QaSel} from '../qa/qa-selector';
 
 export class FirstPage extends React.Component<IRoutableProps, any> {
 

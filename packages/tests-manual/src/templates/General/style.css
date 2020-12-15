@@ -2,4 +2,5 @@
 .general-tmpl {
   display: grid;
   grid-row-gap: 20px;
+  grid-template-rows: auto 1fr auto;
 }

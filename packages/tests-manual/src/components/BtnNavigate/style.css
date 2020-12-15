@@ -3,11 +3,6 @@
   display: grid;
 }
 
-.btn-navigate:focus {
-  outline: 2px solid blue;
-  outline-offset: 1px;
-}
-
 .btn-navigate svg {
   width: 22px;
   height: 37px;

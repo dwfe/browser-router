@@ -3,20 +3,10 @@ import Modal from 'react-modal'
 import {ActionData, IRoutableProps, Link, useDocumentTitle} from '../../routing'
 import {useDIInstance} from '../../di/useDIInstance';
 import {CanDeactivateService} from './can-deactivate.service'
-import {QaSel} from '../../qa/qa-selectors';
+import {QaSel} from '../../qa/qa-selector';
+import {defaultModalStyles} from '../modal.settings';
 
 Modal.setAppElement('#root')
-const modalStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    transform: 'translate(-50%, -50%)',
-    width: '400px',
-    height: '200px'
-  }
-};
 
 export const CanDeactivatePage = (props: IRoutableProps) => {
   useDocumentTitle(props)
@@ -29,14 +19,23 @@ export const CanDeactivatePage = (props: IRoutableProps) => {
     setShowModal(false)
     canDeactivateService.canBeDeactivatedResultSubj.next(can)
   }
+  const afterOpenModal = () => {
+    const btn = document.querySelector(`[data-qa=${QaSel.CanDeactivatePage_DialogueYes}]`) as HTMLButtonElement
+    btn?.focus()
+  }
 
   return (<div>
     <p>Try to leave the page</p>
     <Link href="/first" data-qa={QaSel.CanDeactivatePage_First}>first</Link><br/><br/>
     <Link href="/second" data-qa={QaSel.CanDeactivatePage_Second}>second</Link><br/><br/>
 
-    <Modal isOpen={showModal} style={modalStyles}>
-      <p>Are you sure you want to go to <code><b>{canDeactivateService.tryRelocation?.pathname}</b></code> ?</p>
+    <Modal
+      isOpen={showModal}
+      onRequestClose={() => canBeDeactivated(false)}
+      onAfterOpen={afterOpenModal}
+      style={defaultModalStyles}
+    >
+      <p>Are you sure you want to go to <code><b>{canDeactivateService.tryRelocation?.pathname}</b></code> page?</p>
       <div>
         <button onClick={() => canBeDeactivated(true)} data-qa={QaSel.CanDeactivatePage_DialogueYes}>Yes</button>
         &nbsp;&nbsp;&nbsp;

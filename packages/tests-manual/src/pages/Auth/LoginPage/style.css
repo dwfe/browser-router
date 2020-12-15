@@ -1,0 +1,12 @@
+
+.login-block {
+  display: grid;
+  width: 300px;
+  grid-row-gap: 5px;
+
+}
+
+.login-block_req {
+  display: grid;
+  grid-template-columns: 85px 1fr;
+}

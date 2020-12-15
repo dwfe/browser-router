@@ -1,6 +1,6 @@
 import React from 'react'
 import {ActionData, IRoutableProps, Link, useDocumentTitle} from '../../routing'
-import {QaSel} from '../../qa/qa-selectors';
+import {QaSel} from '../../qa/qa-selector';
 
 export const SecondPage = (props: IRoutableProps) => {
   useDocumentTitle(props)
