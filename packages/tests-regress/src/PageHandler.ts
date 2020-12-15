@@ -5,7 +5,7 @@ export class PageHandler {
 
   engine = ''
   baseUrl = ''
-  referenceDir: string | undefined
+  referenceDir = ''
 
   constructor(public page: Page) {
   }
@@ -36,11 +36,6 @@ export class PageHandler {
 
   async goBack() {
     await this.page.goBack()
-    await this.removeNeedlessElements()
-  }
-
-  async goForward() {
-    await this.page.goForward()
     await this.removeNeedlessElements()
   }
 
@@ -79,11 +74,6 @@ export class PageHandler {
       const elem = document.getElementsByClassName('ActionData')[0]
       elem?.parentNode?.removeChild(elem)
     })
-  }
-
-
-  async close() {
-    await this.page.close()
   }
 
 }
