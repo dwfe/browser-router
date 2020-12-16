@@ -9,6 +9,8 @@
   background-color: lightyellow;
   border: 1px solid darkgray;
   border-radius: 2px;
+  font-family: Menlo, Consolas, monospace;
+  font-size: 13px;
 }
 
 .ActionData_text {

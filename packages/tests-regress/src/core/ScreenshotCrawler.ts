@@ -2,26 +2,29 @@ import {IScreenshotCrawlerOptions, IScriptItem} from './contract'
 import * as playwright from 'playwright'
 import {Browser} from 'playwright'
 import {PageHandler} from './PageHandler'
+import {ScreenshotParams} from './ScreenshotParams';
 
 export class ScreenshotCrawler {
 
   static async of(options: IScreenshotCrawlerOptions): Promise<ScreenshotCrawler> {
-    const {engine, baseUrl, dir, browserOptions, browserContextOptions} = options
+    const {engine, baseUrl, screenshotOptions, browserOptions, browserContextOptions} = options
 
     const browser = await playwright[engine].launch(browserOptions)
     const browserContext = await browser.newContext(browserContextOptions)
     const page = await browserContext.newPage()
 
     const pageHandler = new PageHandler(page)
-    pageHandler.engine = engine
     pageHandler.baseUrl = baseUrl
-    pageHandler.dir = dir
 
-    return new ScreenshotCrawler(pageHandler, browser)
+    const screenshotParams = new ScreenshotParams(screenshotOptions, engine, browserContextOptions.viewport)
+
+    return new ScreenshotCrawler(pageHandler, screenshotParams, browser, options)
   }
 
   constructor(private h: PageHandler,
-              private browser: Browser) {
+              private screenshotParams: ScreenshotParams,
+              private browser: Browser,
+              private options: IScreenshotCrawlerOptions) {
   }
 
   async run(script: IScriptItem[]) {
@@ -32,19 +35,19 @@ export class ScreenshotCrawler {
   async traverse(script: IScriptItem[]) {
     for (const {goto, screenshot, click, fill, children, last, canDeactivateClick} of script) {
       if (screenshot)
-        await this.h.screenshot(screenshot)
+        await this.h.screenshot(this.getScreenshotOptions(screenshot.scName))
 
       if (goto) {
         const {path, scName} = goto
         scName
-          ? await this.h.gotoThenScreenshot(path, scName)
+          ? await this.h.gotoThenScreenshot(path, this.getScreenshotOptions(scName))
           : await this.h.goto(path)
       }
 
       if (click) {
         const {sel, scName} = click
         scName
-          ? await this.h.clickThenScreenshot(sel, scName)
+          ? await this.h.clickThenScreenshot(sel, this.getScreenshotOptions(scName))
           : await this.h.click(sel)
       }
 
@@ -70,6 +73,10 @@ export class ScreenshotCrawler {
       if (canDeactivateClick)
         await this.h.click(canDeactivateClick)
     }
+  }
+
+  getScreenshotOptions(name: string) {
+    return this.screenshotParams.getScreenshotOptions(name)
   }
 
 }

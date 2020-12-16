@@ -1,11 +1,9 @@
-import {Page} from 'playwright'
-import {EngineType, IPoint} from './contract'
+import {Page, Response} from 'playwright'
+import {IPoint} from './contract'
 
 export class PageHandler {
 
-  engine: EngineType = 'chromium'
   baseUrl = 'http://localhost'
-  dir = '.'
 
   constructor(public page: Page) {
   }
@@ -24,7 +22,7 @@ export class PageHandler {
 
   async click(selector: string) { // https://github.com/microsoft/playwright/blob/master/docs/selectors.md
     await this.page.click(this.getSel(selector))
-    await this.constatntAdditionalActionsOnDOM()
+    await this.constantAdditionalActionsOnDOM()
   }
 
   async fill(selector: string, value: string) {
@@ -35,41 +33,40 @@ export class PageHandler {
 
 //region Navigation
 
-  async goto(path: string) {
-    await this.page.goto(this.getUrl(path))
-    await this.constatntAdditionalActionsOnDOM()
+  async goto(path: string): Promise<null | Response> {
+    const result = await this.page.goto(this.getUrl(path))
+    await this.constantAdditionalActionsOnDOM()
+    return result
   }
 
-  async goBack() {
-    await this.page.goBack()
-    await this.constatntAdditionalActionsOnDOM()
+  async goBack(): Promise<null | Response> {
+    const result = await this.page.goBack()
+    await this.constantAdditionalActionsOnDOM()
+    return result
   }
 
-  async goForward() {
-    await this.page.goForward()
-    await this.constatntAdditionalActionsOnDOM()
+  async goForward(): Promise<null | Response> {
+    const result = await this.page.goForward()
+    await this.constantAdditionalActionsOnDOM()
+    return result
   }
 
 //endregion
 
 //region Screenshot
 
-  async screenshot(name) {
-    const options = this.dir ? {
-        path: `${this.dir}/${this.engine}_${name}.png`
-      }
-      : undefined
-    await this.page.screenshot(options)
+  async screenshot(options?: any): Promise<Buffer> {
+    return await this.page.screenshot(options)
   }
 
-  async gotoThenScreenshot(path: string, screenshotName: string) {
-    await this.goto(path)
-    await this.screenshot(screenshotName)
+  async gotoThenScreenshot(path: string, screenshotOptions): Promise<Buffer> {
+    return await this.goto(path)
+      .then(() => this.screenshot(screenshotOptions))
   }
 
-  async clickThenScreenshot(selector: string, screenshotName: string) {
-    await this.click(selector)
-    await this.screenshot(screenshotName)
+  async clickThenScreenshot(selector: string, screenshotOptions): Promise<Buffer> {
+    return await this.click(selector)
+      .then(() => this.screenshot(screenshotOptions))
   }
 
 //endregion
@@ -85,7 +82,7 @@ export class PageHandler {
 
 //endregion
 
-  private async constatntAdditionalActionsOnDOM() {
+  private async constantAdditionalActionsOnDOM() {
     await this.removeNeedlessElements()
   }
 
