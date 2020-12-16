@@ -1,5 +1,5 @@
 {
-  "name": "@dwfe/routing-tests",
+  "name": "@dwfe/tests-automated",
   "private": true,
   "license": "UNLICENSED",
   "main": "./dist/index.js",
@@ -15,7 +15,11 @@
     "@types/jest": "26",
     "jest": "26.6.0",
     "ts-jest": "26",
-    "@do-while-for-each/path-resolver": "1"
+    "@do-while-for-each/path-resolver": "1",
+    "playwright": "1.7.0",
+    "@types/pixelmatch": "5",
+    "@types/pngjs": "3",
+    "pixelmatch": "5"
   },
   "dependencies": {}
 }

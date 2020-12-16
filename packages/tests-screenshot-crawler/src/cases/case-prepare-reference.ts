@@ -36,7 +36,7 @@ export const options: IScreenshotCrawlerOptions = {
     // quality: 50,
   },
   browserOptions: {
-    headless: false,
+    headless: true,
     // devtools: true,
   },
   browserContextOptions: {

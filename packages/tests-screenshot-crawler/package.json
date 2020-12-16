@@ -1,5 +1,5 @@
 {
-  "name": "@dwfe/tests-regress",
+  "name": "@dwfe/tests-screenshot-crawler",
   "private": true,
   "license": "UNLICENSED",
   "main": "./dist/esm/index.js",
