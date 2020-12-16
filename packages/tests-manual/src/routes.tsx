@@ -19,7 +19,7 @@ export const routes: Route<ReactElement, Ctx, RoutingResult<ReactElement, Ctx>, 
     path: 'second', component: <SecondPage/>, note: {title: 'Second page'}, children: [
       {
         path: ':page', children: [
-          {path: 'pic', component: <PicPage/>, note: {title: 'Pic'}},
+          {path: 'picture', component: <PicPage/>, note: {title: 'Picture'}},
           {path: '(.*)', action: longTimeGettingOfActionResult},
         ]
       },
@@ -35,7 +35,7 @@ export const routes: Route<ReactElement, Ctx, RoutingResult<ReactElement, Ctx>, 
 
 function longTimeGettingOfActionResult(data: RouteActionData): Promise<RoutingResult<ReactElement, Ctx>> {
   return new Promise(resolve => {
-    setTimeout(() => resolve({redirectTo: 'pic'}), 5_000)
+    setTimeout(() => resolve({redirectTo: 'picture'}), 5_000)
   })
 }
 

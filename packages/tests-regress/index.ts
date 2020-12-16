@@ -1,25 +1,7 @@
-import {ScreenshotCrawler} from './src/ScreenshotCrawler';
+import {ScreenshotCrawler} from './src/core/ScreenshotCrawler';
+import * as casePrepareReference from './src/cases/case-prepare-reference';
 
 ScreenshotCrawler
-  .of({
-    engine: 'chromium',
-    baseUrl: 'http://localhost:3000',
-    referenceDir: './REFERENCE',
-    browserOptions: {
-      headless: false,
-    },
-    ctxOptions: {
-      viewport: {
-        width: 800,
-        height: 600
-      },
-      timezoneId: 'Europe/Moscow',
-      locale: 'ru_RU',
-      colorScheme: 'light',
-      // recordVideo: {
-      //   dir: referenceDir
-      // }
-    }
-  })
-  .then(crawler => crawler.run())
+  .of(casePrepareReference.options)
+  .then(crawler => crawler.run(casePrepareReference.script))
 
