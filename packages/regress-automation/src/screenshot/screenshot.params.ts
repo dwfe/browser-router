@@ -1,14 +1,14 @@
 import {ViewportSize} from 'playwright'
-import {BrowserType, IScreenshotOptions} from '../contract'
+import {BrowserType, ScreenshotOptions} from '../contract'
 
 export class ScreenshotParams {
-  constructor(public options: IScreenshotOptions,
+  constructor(public options: ScreenshotOptions,
               public browserType: BrowserType,
               public viewport: ViewportSize | any,
               public dir: string) {
   }
 
-  getScreenshotOptions(name: string): IScreenshotOptions {
+  getScreenshotOptions(name: string): ScreenshotOptions {
     return {
       ...this.options,
       path: this.getPathToScreenshot(name)
