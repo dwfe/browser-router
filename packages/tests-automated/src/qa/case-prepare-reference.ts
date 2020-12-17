@@ -1,6 +1,6 @@
-import {IScreenshotCrawlerOptions, IScriptItem} from '../core/contract'
-import {QaScName} from '../qa/qa-screenshot-name'
-import {QaSel} from '../qa/qa-selector'
+import {IRegressAutomationOptions, IScriptItem} from '@dwfe/regress-automation'
+import {QaScName} from './qa-screenshot-name'
+import {QaSel} from './qa-selector'
 
 export const script: IScriptItem[] = [
   {goto: {path: '/', scName: QaScName.IndexPage}},
@@ -27,13 +27,14 @@ export const script: IScriptItem[] = [
 ];
 
 
-export const options: IScreenshotCrawlerOptions = {
-  engine: 'chromium',
+export const options: IRegressAutomationOptions = {
+  browserType: 'chromium',
   baseUrl: 'http://localhost:3000',
+  dir: './REFERENCE',
   screenshotOptions: {
-    path: './REFERENCE',
     type: 'png',
     // quality: 50,
+    // fullPage: true,
   },
   browserOptions: {
     headless: true,

@@ -2,10 +2,12 @@
   "name": "@dwfe/tests-automated",
   "private": true,
   "license": "UNLICENSED",
-  "main": "./dist/index.js",
+  "main": "./dist/esm/index.js",
   "typings": "./dist/types",
   "scripts": {
     "clean": "rimraf ./dist",
+    "build": "npm run clean && tsc -b",
+    "run:crawler": "npm run build && node ./dist/esm/crawler.js",
     "test":"jest"
   },
   "devDependencies": {
@@ -16,10 +18,8 @@
     "jest": "26.6.0",
     "ts-jest": "26",
     "@do-while-for-each/path-resolver": "1",
-    "playwright": "1.7.0",
-    "@types/pixelmatch": "5",
-    "@types/pngjs": "3",
-    "pixelmatch": "5"
+    "@dwfe/regress-automation": "1.0.0",
+    "@babel/preset-env": "7"
   },
   "dependencies": {}
 }

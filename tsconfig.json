@@ -5,7 +5,8 @@
   },
   "references": [
     { "path": "./packages/path-resolver" },
-    { "path": "./packages/browser-router" }
+    { "path": "./packages/browser-router" },
+    { "path": "./packages/regress-automation" }
   ],
   "exclude": [
     "**/tests*",

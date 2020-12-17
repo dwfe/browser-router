@@ -1,4 +1,5 @@
 import {BrowserContextOptions, LaunchOptions} from 'playwright'
+import {PixelmatchOptions} from 'pixelmatch';
 
 export interface IPoint {
   x: number;
@@ -15,14 +16,27 @@ export interface IScriptItem {
   canDeactivateClick?: string;
 }
 
-export type EngineType = 'chromium' | 'webkit' | 'firefox'
+export type BrowserType = 'chromium' | 'webkit' | 'firefox'
 
-export interface IScreenshotCrawlerOptions {
-  engine: EngineType;
+export interface IRegressAutomationOptions {
+  browserType: BrowserType;
   baseUrl: string;
+  dir: string;
   screenshotOptions: IScreenshotOptions;
   browserOptions: LaunchOptions;
   browserContextOptions: BrowserContextOptions;
+  pixelmatchOptions?: PixelmatchOptions;
+}
+
+// https://www.npmjs.com/package/pixelmatch#pixelmatchimg1-img2-output-width-height-options
+export const defaultPixelmatchOptions: PixelmatchOptions = {
+  threshold: 0.1,
+  includeAA: true, // if 'true', disables detecting and ignoring anti-aliased pixels
+  alpha: 0.1,
+  aaColor: [0, 165, 0], // green
+  diffColor: [0, 0, 255], // blue
+  diffColorAlt: [255, 0, 0], // red
+  diffMask: false,
 }
 
 export interface IScreenshotOptions {

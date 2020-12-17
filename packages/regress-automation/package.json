@@ -1,13 +1,11 @@
 {
-  "name": "@dwfe/tests-screenshot-crawler",
-  "private": true,
-  "license": "UNLICENSED",
+  "name": "@dwfe/regress-automation",
+  "version": "1.0.0",
   "main": "./dist/esm/index.js",
   "typings": "./dist/types",
   "scripts": {
     "clean": "rimraf ./dist",
-    "build": "npm run clean && tsc -b",
-    "run": "npm run build && node ."
+    "build": "npm run clean && tsc -b"
   },
   "devDependencies": {
     "@types/node": "12",

@@ -9,8 +9,7 @@
   },
   "scripts": {
     "clean": "rimraf ./dist",
-    "build": "npm run clean && tsc -b",
-    "build watch": "npm run clean && tsc -b -w"
+    "build": "npm run clean && tsc -b"
   },
   "devDependencies": {
     "@types/node": "12",
