@@ -1,20 +1,5 @@
 import {BrowserContextOptions, LaunchOptions, Page} from 'playwright'
-import {PixelmatchOptions} from 'pixelmatch';
-
-export interface IPoint {
-  x: number;
-  y: number;
-}
-
-export interface IScriptItem {
-  goto?: { path: string, scName?: string };
-  screenshot?: { scName: string };
-  click?: { sel: string, scName?: string };
-  fill?: { sel: string, value: string };
-  children?: IScriptItem[];
-  last?: 'goBack' | 'goForward' | string;
-  canDeactivateClick?: string;
-}
+import {PixelmatchOptions} from 'pixelmatch'
 
 export type BrowserType = 'chromium' | 'webkit' | 'firefox'
 export type ScreenshotOptions = NonNullable<Parameters<Page['screenshot']>[0]>
@@ -38,4 +23,19 @@ export const defaultPixelmatchOptions: PixelmatchOptions = {
   diffColor: [0, 0, 255], // blue
   diffColorAlt: [255, 0, 0], // red
   diffMask: false,
+}
+
+export interface IScriptItem {
+  goto?: { path: string, scName?: string };
+  screenshot?: { scName: string };
+  click?: { sel: string, scName?: string };
+  fill?: { sel: string, value: string };
+  children?: IScriptItem[];
+  last?: 'goBack' | 'goForward' | string;
+  canDeactivateClick?: string;
+}
+
+export interface IPoint {
+  x: number;
+  y: number;
 }

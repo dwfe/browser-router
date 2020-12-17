@@ -19,7 +19,7 @@ export class PngComparator {
               public options: IRegressAutomationOptions) {
   }
 
-  stop() {
+  close() {
     this.browser.close()
   }
 
@@ -45,7 +45,6 @@ export class PngComparator {
     return this.compare(origImg, imgToCompare)
   }
 
-  // сравнить файл и remote
   async compareWithScreenshot(origPath: string, toComparePath: string): Promise<IPngCompareResult> {
     const origImg = this.read(origPath)
     const imgToCompare = await this.pageHandler

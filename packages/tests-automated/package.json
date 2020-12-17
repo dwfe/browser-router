@@ -19,7 +19,10 @@
     "ts-jest": "26",
     "@do-while-for-each/path-resolver": "1",
     "@dwfe/regress-automation": "1.0.0",
-    "@babel/preset-env": "7"
+    "@babel/preset-env": "7",
+    "@types/pixelmatch": "5"
   },
-  "dependencies": {}
+  "dependencies": {
+    "pixelmatch": "5"
+  }
 }

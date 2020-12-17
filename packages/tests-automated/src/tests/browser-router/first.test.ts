@@ -25,5 +25,5 @@ describe(`pixelmatch`, () => {
 })
 
 afterAll(() => {
-  pngComparator.stop()
+  pngComparator.close()
 })
