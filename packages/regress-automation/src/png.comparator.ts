@@ -55,7 +55,7 @@ export class PngComparator {
 
 }
 
-export interface IPngCompareResult {
+interface IPngCompareResult {
   diffImg: PNG;
   diffPixelsCount: number;
 }

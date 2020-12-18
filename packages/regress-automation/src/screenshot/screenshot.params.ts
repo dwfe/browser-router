@@ -16,7 +16,7 @@ export class ScreenshotParams {
   }
 
   getPathToScreenshot(name: string): string {
-    const linearSizes = this.viewport ? `-${this.viewport.width}x${this.viewport.height}` : ''
+    const linearSizes = this.viewport ? `_${this.viewport.width}x${this.viewport.height}` : ''
     const ext = this.options.type
     return `${this.dir}/${this.browserType}${linearSizes}_${name}.${ext}`
   }

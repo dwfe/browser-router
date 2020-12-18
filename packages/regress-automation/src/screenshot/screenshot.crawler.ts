@@ -10,35 +10,40 @@ export class ScreenshotCrawler {
     const {browserType, dir, screenshotOptions, browserContextOptions} = options
     const [browser, pageHandler] = await playwrightInitiator(options)
     const screenshotParams = new ScreenshotParams(screenshotOptions, browserType, browserContextOptions.viewport, dir)
-    return new ScreenshotCrawler(pageHandler, browser, screenshotParams)
+    return new ScreenshotCrawler(pageHandler, browser, screenshotParams, options)
   }
 
   constructor(public pageHandler: PageHandler,
               public browser: Browser,
-              public screenshotParams: ScreenshotParams) {
+              public screenshotParams: ScreenshotParams,
+              private options: IRegressAutomationOptions) {
   }
 
   async run(script: IScriptItem[]) {
     await this.traverse(script)
-    await this.browser.close()
+    if (this.options.closeBrowserAfterAll)
+      await this.browser.close()
   }
 
   async traverse(script: IScriptItem[]) {
-    for (const {goto, screenshot, click, fill, children, last, canDeactivateClick} of script) {
+    for (const {waitForTimeout, goto, screenshot, click, fill, children, last, canDeactivateClick} of script) {
+      if (waitForTimeout)
+        await this.pageHandler.page.waitForTimeout(waitForTimeout)
+
       if (screenshot)
         await this.pageHandler.screenshot(this.getScreenshotOptions(screenshot.scName))
 
       if (goto) {
-        const {path, scName} = goto
+        const {path, scName, waitBeforeScreenshot} = goto
         scName
-          ? await this.pageHandler.gotoThenScreenshot(path, this.getScreenshotOptions(scName))
+          ? await this.pageHandler.gotoThenScreenshot(path, this.getScreenshotOptions(scName), waitBeforeScreenshot)
           : await this.pageHandler.goto(path)
       }
 
       if (click) {
-        const {sel, scName} = click
+        const {sel, scName, waitBeforeScreenshot} = click
         scName
-          ? await this.pageHandler.clickThenScreenshot(sel, this.getScreenshotOptions(scName))
+          ? await this.pageHandler.clickThenScreenshot(sel, this.getScreenshotOptions(scName), waitBeforeScreenshot)
           : await this.pageHandler.click(sel)
       }
 

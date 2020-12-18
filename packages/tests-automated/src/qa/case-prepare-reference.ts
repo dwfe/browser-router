@@ -31,6 +31,7 @@ export const options: IRegressAutomationOptions = {
   browserType: 'chromium',
   baseUrl: 'http://localhost:3000',
   dir: './REFERENCE',
+  closeBrowserAfterAll: true,
   screenshotOptions: {
     type: 'png',
     // quality: 50,

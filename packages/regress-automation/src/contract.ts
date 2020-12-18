@@ -8,6 +8,7 @@ export interface IRegressAutomationOptions {
   browserType: BrowserType;
   baseUrl: string;
   dir: string;
+  closeBrowserAfterAll: boolean;
   screenshotOptions: ScreenshotOptions;
   browserOptions: LaunchOptions;
   browserContextOptions: BrowserContextOptions;
@@ -26,9 +27,10 @@ export const defaultPixelmatchOptions: PixelmatchOptions = {
 }
 
 export interface IScriptItem {
-  goto?: { path: string, scName?: string };
+  waitForTimeout?: number;
+  goto?: { path: string; scName?: string; waitBeforeScreenshot?: number };
   screenshot?: { scName: string };
-  click?: { sel: string, scName?: string };
+  click?: { sel: string, scName?: string; waitBeforeScreenshot?: number };
   fill?: { sel: string, value: string };
   children?: IScriptItem[];
   last?: 'goBack' | 'goForward' | string;
