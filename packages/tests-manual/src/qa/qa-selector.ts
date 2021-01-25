@@ -3,19 +3,12 @@ export enum QaSel {
   Header_GoBack = 'go-back',
   Header_GoForward = 'go-forward',
 
-  IndexPage_First = 'index-page_first',
-  IndexPage_Second = 'index-page_second',
   IndexPage_DoesntExist = 'index-page_doesnt-exist',
   IndexPage_AuthorizationRequired = 'index-page_authorization-required',
   IndexPage_CanDeactivate = 'index-page_can-deactivate',
-  IndexPage_ExternalRFC2616 = 'index-page_external-rfc-2616',
-
-  FirstPage_ToSecondPic = 'first-page_to-second-pic',
-  FirstPage_DoesntExist = 'first-page_doesnt-exist',
-
-  SecondPage_Pic = 'second-page_pic',
-  SecondPage_LongTimeGettingOfActionResult = 'second-page_long-time-getting-of-action-result',
-  SecondPage_First = 'second-page_first',
+  IndexPage_External = 'index-page_external',
+  IndexPage_First = 'index-page_first',
+  IndexPage_Second = 'index-page_second',
 
   LoginPage_Username = 'login-page_username',
   LoginPage_Password = 'login-page_password',
@@ -25,4 +18,11 @@ export enum QaSel {
   CanDeactivatePage_Second = 'can-deactivate-page_second',
   CanDeactivatePage_DialogueYes = 'can-deactivate-page_dialogue-yes',
   CanDeactivatePage_DialogueCancel = 'can-deactivate-page_dialogue-cancel',
+
+  FirstPage_ToSecondPic = 'first-page_to-second-pic',
+  FirstPage_DoesntExist = 'first-page_doesnt-exist',
+
+  SecondPage_Pic = 'second-page_pic',
+  SecondPage_LongTimeGettingOfActionResult = 'second-page_long-time-getting-of-action-result',
+  SecondPage_First = 'second-page_first',
 }

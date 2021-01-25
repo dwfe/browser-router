@@ -83,6 +83,9 @@ module.exports = {
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
+  modulePathIgnorePatterns: [
+    "<rootDir>/dist/"
+  ],
 
   // Activates notifications for test results
   // notify: false,
@@ -98,6 +101,14 @@ module.exports = {
 
   // Use this configuration option to add custom reporters to Jest
   // reporters: undefined,
+  reporters: [
+    "default",
+    ["jest-html-reporters", {
+      "publicPath": "./Storage/report",
+      "filename": "index.html",
+      "expand": true
+    }]
+  ],
 
   // Automatically reset mock state between every test
   // resetMocks: false,

@@ -6,7 +6,7 @@
   "references": [
     { "path": "./packages/path-resolver" },
     { "path": "./packages/browser-router" },
-    { "path": "./packages/regress-automation" }
+    { "path": "./packages/automation-environment" },
   ],
   "exclude": [
     "**/tests*",

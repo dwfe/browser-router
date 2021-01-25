@@ -4,5 +4,12 @@
     "declarationDir": "./dist/types",
     "outDir": "./dist/esm",
     "baseUrl": "."
-  }
+  },
+  "include": [
+    "**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

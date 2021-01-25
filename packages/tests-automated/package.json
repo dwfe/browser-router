@@ -7,8 +7,9 @@
   "scripts": {
     "clean": "rimraf ./dist",
     "build": "npm run clean && tsc -b",
-    "run:crawler": "npm run build && node ./dist/esm/crawler.js",
-    "test":"jest"
+    "prepare_regress-browser-router": "npm run build && node ./dist/esm/preparations/regress-browser-router",
+    "test_regress-browser-router": "jest regress-browser-router.*",
+    "test": "jest"
   },
   "devDependencies": {
     "@types/node": "12",
@@ -18,11 +19,10 @@
     "jest": "26.6.0",
     "ts-jest": "26",
     "@do-while-for-each/path-resolver": "1",
-    "@dwfe/regress-automation": "1.0.0",
-    "@babel/preset-env": "7",
-    "@types/pixelmatch": "5"
+    "@dwfe/automation-environment": "1.0.0",
+    "@types/pixelmatch": "5",
+    "jest-html-reporters": "2.1.2"
   },
   "dependencies": {
-    "pixelmatch": "5"
   }
 }
