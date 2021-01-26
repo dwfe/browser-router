@@ -3,12 +3,13 @@ export enum TaskId {
   MultiClickSameLinkThenGoBack = '001_01-Multi-Click-Same-Link-Then-Go-Back',
   GoForward = '001_02-Go-Forward',
 
-  PageDoesntExist = '002_01-Page-Doesnt-Exist',
-  PageDoesntExistGoBack = '002_02-Page-Doesnt-Exist-Go-Back',
+  NotFoundPage = '002_01-Not-Found-Page',
+  NotFoundPageGoBack = '002_02-Not-Found-Page-Go-Back',
 
   AuthorizationRequired = '003_01-Authorization-Required',
-  ProtectedByAuthorization = '003_02-Protected-By-Authorization',
-  LogOut = '003_03-Log-Out',
+  AuthorizationRequiredGoBack = '003_02-Authorization-Required-Go-Back',
+  ProtectedByAuthorization = '003_03-Protected-By-Authorization',
+  LogOut = '003_04-Log-Out',
 
   CanDeactivateToIndex = '004_01-Can-Deactivate-To-Index',
   CanDeactivateCancelToFirst = '004_02-Can-Deactivate-Cancel-To-First',

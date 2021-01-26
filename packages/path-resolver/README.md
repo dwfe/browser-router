@@ -30,8 +30,11 @@ export interface Route<TComponent = any,
   name?: string;
 }
 ```
+
 ### Routes
+
 Define your routes in your `Routes` array, for example:
+
 ```
 export const routes: Route<ReactElement, Ctx, RoutingResult<ReactElement, Ctx>, IRouteNote>[] = [
   {path: '', component: <IndexPage/>, note: {title: 'Index'}},
