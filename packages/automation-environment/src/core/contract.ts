@@ -1,4 +1,4 @@
-import {BrowserContextOptions, LaunchOptions, Page} from 'playwright';
+import {BrowserContextOptions, LaunchOptions, Mouse, Page} from 'playwright';
 import {PixelmatchOptions} from 'pixelmatch';
 import {PNG} from 'pngjs';
 
@@ -160,18 +160,30 @@ export interface IWaitForAllDataReceivedCommand {
 }
 
 export interface IClickElementCommand {
-  type: 'clickElement';
-  data: string;
+  type: 'click';
+  data: {
+    selector: string;
+    options?: Parameters<Page['click']>[1];
+    useFullSelector?: boolean;
+  };
 }
 
 export interface IFillCommand {
   type: 'fill';
-  data: { sel: string, value: string }
+  data: {
+    selector: string;
+    value: string;
+    options?: Parameters<Page['fill']>[2];
+    useFullSelector?: boolean;
+  }
 }
 
 export interface IMouseClickCommand {
   type: 'mouseClick';
-  data: IPoint;
+  data: {
+    point: IPoint;
+    options?: Parameters<Mouse['click']>[2];
+  };
 }
 
 export interface ILoginCommand {
@@ -207,8 +219,8 @@ export class Command {
     return {type: 'waitForAllDataReceived'};
   }
 
-  static clickElement(data: IClickElementCommand['data']): IClickElementCommand {
-    return {type: 'clickElement', data};
+  static click(data: IClickElementCommand['data']): IClickElementCommand {
+    return {type: 'click', data};
   }
 
   static fill(data: IFillCommand['data']): IFillCommand {
@@ -283,7 +295,7 @@ export interface Type<T> extends Function { // тип описывает кон�
   new(...args: any[]): T;
 }
 
-export interface IPoint{
+export interface IPoint {
   x: number;
   y: number;
 }

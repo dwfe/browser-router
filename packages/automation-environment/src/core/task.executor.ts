@@ -65,18 +65,19 @@ export class TaskExecutor {
             await task.allDataReceived();
             break;
           }
-          case 'clickElement': {
-            await page.click(this.getSelector(command.data));
+          case 'click': {
+            const {selector, options, useFullSelector} = command.data;
+            await page.click(this.getSelector(selector, useFullSelector), options);
             break;
           }
           case 'fill': {
-            const {sel, value} = command.data;
-            await page.fill(this.getSelector(sel), value);
+            const {selector, value, options, useFullSelector} = command.data;
+            await page.fill(this.getSelector(selector, useFullSelector), value, options);
             break;
           }
           case 'mouseClick': {
-            const {x, y} = command.data;
-            await page.mouse.click(x, y, {delay: 50});
+            const {point, options} = command.data;
+            await page.mouse.click(point.x, point.y, options);
             break;
           }
           case 'login': {
@@ -98,12 +99,12 @@ export class TaskExecutor {
   }
 
   /**
-   * Для упрощения поддержки считать, что на целевом элементе
-   * определен атрибут 'data-qa' со значением sel, например:
+   * Для упрощения поддержки по умолчанию считать, что на целевом элементе
+   * определен атрибут 'data-qa' со значением selector, например:
    *  <input data-qa="login-page_username" />
    */
-  private getSelector(sel: string): string {
-    return `[data-qa=${sel}]`;
+  private getSelector(selector: string, useFullSelector?: boolean): string {
+    return useFullSelector ? selector : `[data-qa=${selector}]`;
   }
 
   private getUrl(path: string): string {

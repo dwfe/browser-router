@@ -13,6 +13,7 @@ export enum QaSel {
   LoginPage_Username = 'login-page_username',
   LoginPage_Password = 'login-page_password',
   LoginPage_LogIn = 'login-page_log-in',
+  LoginPage_LogOut = 'login-page_log-out',
 
   CanDeactivatePage_First = 'can-deactivate-page_first',
   CanDeactivatePage_Second = 'can-deactivate-page_second',

@@ -2,7 +2,7 @@ import {AbstractTask, AutomationEnvironment, Command, TCommand} from '@dwfe/auto
 import {TaskId} from '../task.id';
 import {QaSel} from '../../qa-selector';
 
-const {clickElement, wait} = Command;
+const {click, wait, fill} = Command;
 
 export abstract class AbstractClickTask extends AbstractTask {
 
@@ -27,23 +27,67 @@ export abstract class AbstractClickTask extends AbstractTask {
 
   static opt = new Map<TaskId, TCommand[]>([
 
-    [TaskId.PageDoesntExist, [clickElement(QaSel.IndexPage_DoesntExist)]],
+    [TaskId.MultiClickSameLinkThenGoBack, [
+      click({selector: QaSel.IndexPage_DoesntExist}),
+      click({selector: QaSel.Header_Index}),
+      click({selector: QaSel.Header_Index, options: {delay: 50}}),
+      click({selector: QaSel.Header_Index, options: {delay: 50}}),
+      click({selector: QaSel.Header_Index, options: {delay: 50}}),
+      click({selector: QaSel.Header_Index, options: {delay: 50}}),
+      click({selector: QaSel.Header_GoBack}),
+    ]],
 
-    [TaskId.AuthorizationRequired, [clickElement(QaSel.IndexPage_AuthorizationRequired)]],
+    [TaskId.GoForward, [
+      click({selector: QaSel.IndexPage_DoesntExist}),
+      click({selector: QaSel.Header_GoBack}),
+      click({selector: QaSel.Header_GoForward}),
+    ]],
 
-    [TaskId.CanDeactivate, [
-      clickElement(QaSel.IndexPage_CanDeactivate),
-      clickElement(QaSel.Header_Index),
+    [TaskId.PageDoesntExist, [click({selector: QaSel.IndexPage_DoesntExist})]],
+    [TaskId.PageDoesntExistGoBack, [
+      click({selector: QaSel.IndexPage_DoesntExist}),
+      click({selector: QaSel.Header_GoBack}),
+    ]],
+
+    [TaskId.AuthorizationRequired, [click({selector: QaSel.IndexPage_AuthorizationRequired})]],
+    [TaskId.ProtectedByAuthorization, [
+      click({selector: QaSel.IndexPage_AuthorizationRequired}),
+      fill({selector: QaSel.LoginPage_Username, value: '1'}),
+      fill({selector: QaSel.LoginPage_Password, value: '2'}),
+      click({selector: QaSel.LoginPage_LogIn}),
+    ]],
+    [TaskId.LogOut, [
+      click({selector: QaSel.IndexPage_AuthorizationRequired}),
+      click({selector: QaSel.LoginPage_LogOut}),
+    ]],
+
+    [TaskId.CanDeactivateToIndex, [
+      click({selector: QaSel.IndexPage_CanDeactivate}),
+      click({selector: QaSel.Header_Index}),
+    ]],
+    [TaskId.CanDeactivateCancelToFirst, [
+      click({selector: QaSel.IndexPage_CanDeactivate}),
+      click({selector: QaSel.CanDeactivatePage_First}),
+      click({selector: QaSel.CanDeactivatePage_DialogueCancel}),
+      click({selector: QaSel.CanDeactivatePage_First}),
+      click({selector: QaSel.CanDeactivatePage_DialogueCancel}),
+      click({selector: QaSel.CanDeactivatePage_First}),
+      click({selector: QaSel.CanDeactivatePage_DialogueCancel}),
+    ]],
+    [TaskId.CanDeactivateYesToSecond, [
+      click({selector: QaSel.IndexPage_CanDeactivate}),
+      click({selector: QaSel.CanDeactivatePage_Second}),
+      click({selector: QaSel.CanDeactivatePage_DialogueYes}),
     ]],
 
     [TaskId.External, [
-      clickElement(QaSel.IndexPage_External),
+      click({selector: QaSel.IndexPage_External}),
       wait(3_000),
     ]],
 
-    [TaskId.FirstPage, [clickElement(QaSel.IndexPage_First)]],
+    [TaskId.FirstPage, [click({selector: QaSel.IndexPage_First})]],
 
-    [TaskId.SecondPage, [clickElement(QaSel.IndexPage_Second)]],
+    [TaskId.SecondPage, [click({selector: QaSel.IndexPage_Second})]],
 
   ]);
 }
