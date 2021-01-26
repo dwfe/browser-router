@@ -1,9 +1,9 @@
 import {afterAll, beforeAll, describe, expect, test} from '@jest/globals';
-import {addAttach} from 'jest-html-reporters/helper';
 import {AutomationEnvironment} from '@dwfe/automation-environment';
-import {TaskFactory} from '../../preparations/regress-browser-router/task/task.factory';
-import {Prepare} from '../../preparations/regress-browser-router/prepare';
-import {TaskIds} from '../../preparations/regress-browser-router/task.id';
+import {addAttach} from 'jest-html-reporters/helper';
+import {TaskFactory} from './task/task.factory';
+import {TaskIds} from './task/task.id';
+import {Prepare} from './prepare';
 
 jest.setTimeout(30_000); // default timeout for each test
 

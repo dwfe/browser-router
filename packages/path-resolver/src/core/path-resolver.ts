@@ -1,6 +1,6 @@
 import {compile, match} from 'path-to-regexp'
 import {defaultOptions, ICustomTo, PathResolveResult, Route, Routes, RoutingResult} from './contract'
-import {cloneResult, cloneRoute} from '../globals'
+import {cloneResult, cloneRoute} from '../common'
 
 export class PathResolver {
   routes: Routes = [];

@@ -1,6 +1,6 @@
 import {AbstractTask, AutomationEnvironment, Command, TCommand} from '@dwfe/automation-environment';
-import {TaskId} from '../task.id';
-import {QaSel} from '../../qa-selector';
+import {QaSel} from './qa-selector';
+import {TaskId} from './task.id';
 
 const {click, wait, fill} = Command;
 
@@ -30,10 +30,10 @@ export abstract class AbstractClickTask extends AbstractTask {
     [TaskId.MultiClickSameLinkThenGoBack, [
       click({selector: QaSel.IndexPage_DoesntExist}),
       click({selector: QaSel.Header_Index}),
-      click({selector: QaSel.Header_Index, options: {delay: 50}}),
-      click({selector: QaSel.Header_Index, options: {delay: 50}}),
-      click({selector: QaSel.Header_Index, options: {delay: 50}}),
-      click({selector: QaSel.Header_Index, options: {delay: 50}}),
+      click({selector: QaSel.Header_Index, options: {delay: 300}}),
+      click({selector: QaSel.Header_Index, options: {delay: 300}}),
+      click({selector: QaSel.Header_Index, options: {delay: 300}}),
+      click({selector: QaSel.Header_Index, options: {delay: 300}}),
       click({selector: QaSel.Header_GoBack}),
     ]],
 

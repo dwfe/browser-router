@@ -1,5 +1,5 @@
 import {describe, expect, test} from '@jest/globals'
-import {Route} from '@do-while-for-each/path-resolver'
+import {Route} from '../..'
 import {lengthCheck, Traverse} from './common/common'
 import {initFlat} from './common/environment';
 

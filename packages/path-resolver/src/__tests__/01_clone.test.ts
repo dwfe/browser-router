@@ -1,5 +1,5 @@
 import {describe, expect, test} from '@jest/globals'
-import {PathResolver, Route} from '@do-while-for-each/path-resolver'
+import {PathResolver, Route} from '../..'
 import {routesCheck} from './routes/routes.check'
 import {routes} from './routes/routes'
 import {lengthCheck, routesFlat, Traverse} from './common/common'

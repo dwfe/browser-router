@@ -1,5 +1,5 @@
 import {describe, expect, test} from '@jest/globals'
-import {PathResolver, Routes} from '@do-while-for-each/path-resolver'
+import {PathResolver, Routes} from '../..'
 
 describe(`error 'lead slash'`, () => {
 

@@ -21,7 +21,7 @@ export const firefox800x600: IAutomationEnvironmentOptions = {
   pixelmatch: defaultPixelmatchOptions,
   storage: {
     variant: Storage,
-    dir: './Storage',
+    dir: './src/__tests__/__snapshots__',
   },
   baseUrl: 'http://localhost:3000',
   isDebug: true,

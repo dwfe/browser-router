@@ -1,7 +1,7 @@
-import {PathResolver, Routes} from '@do-while-for-each/path-resolver';
-import {routesCheck} from '../routes/routes.check';
-import {routes} from '../routes/routes';
-import {routesFlat} from './common';
+import {routesCheck} from '../routes/routes.check'
+import {routes} from '../routes/routes'
+import {routesFlat} from './common'
+import {PathResolver, Routes} from '../../..'
 
 export const initFlat = (): {
   pathResolver: PathResolver;

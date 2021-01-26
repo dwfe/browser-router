@@ -1,4 +1,4 @@
-import {Routes} from '@do-while-for-each/path-resolver'
+import {Routes} from '../../..'
 
 export const routes: Routes = [
   {

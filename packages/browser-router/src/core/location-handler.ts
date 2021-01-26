@@ -1,7 +1,7 @@
 import {RouteContext, RoutingResult} from '@do-while-for-each/path-resolver'
 import {Location} from 'history'
-import {Task} from './task'
 import {BrowserRouter} from './browser-router'
+import {Task} from './task'
 
 export class LocationHandler<TComponent = any,
   TContext extends RouteContext = RouteContext,

@@ -1,6 +1,6 @@
 import {AutomationEnvironment, Command, ITask} from '@dwfe/automation-environment';
-import {TaskIds} from '../task.id';
 import {ClickTask} from './01.click.task';
+import {TaskIds} from './task.id';
 
 export type TStage = 'init' | 'make-screenshot' | 'test';
 const {newPage, closePage, waitForAllDataReceived, wait, screenshot, compareScreenshot} = Command;

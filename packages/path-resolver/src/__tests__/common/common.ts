@@ -1,6 +1,6 @@
 import {expect} from '@jest/globals'
-import {Routes} from '@do-while-for-each/path-resolver';
 import {routesTotalCount} from '../routes/routes'
+import {Routes} from '../../..'
 
 export const routesFlat = (routes: Routes, deleteChildren: boolean, parentRoute: any = null, res: Routes = []): Routes => {
   for (let i = 0; i < routes.length; i++) {

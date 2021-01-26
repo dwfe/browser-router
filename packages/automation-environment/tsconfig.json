@@ -1,6 +1,7 @@
 {
   "extends": "../../config/tsconfig",
   "compilerOptions": {
+    "esModuleInterop": true,
     "composite": true,
     "declarationDir": "./dist/types",
     "outDir": "./dist/esm",

@@ -1,5 +1,5 @@
 import {PNG, PNGWithMetadata} from 'pngjs';
-import * as pixelmatch from 'pixelmatch';
+import pixelmatch from 'pixelmatch';
 import * as JPEG from 'jpeg-js';
 import {RawImageData} from 'jpeg-js';
 import {readFileSync, writeFileSync} from 'fs';
