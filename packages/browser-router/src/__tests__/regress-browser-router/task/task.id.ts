@@ -18,8 +18,14 @@ export enum TaskId {
   External = '005_01-External',
 
   FirstPage = '006_01-First-Page',
+  FirstNotFoundPage = '006_02-First-Not-Found-Page',
 
   SecondPage = '007_01-Second-Page',
+  SecondPicturePage = '007_02-Second-Picture-Page',
+
+  CancelTransition = '008_01-Cancel-Transition',
+
+  PreventDuplicates = '009_01-Prevent-Duplicates',
 }
 
 /**

@@ -23,7 +23,7 @@ export enum QaSel {
   FirstPage_ToSecondPic = 'first-page_to-second-pic',
   FirstPage_DoesntExist = 'first-page_doesnt-exist',
 
-  SecondPage_Pic = 'second-page_pic',
+  SecondPage_Picture = 'second-page_picture',
   SecondPage_LongTimeGettingOfActionResult = 'second-page_long-time-getting-of-action-result',
   SecondPage_First = 'second-page_first',
 }

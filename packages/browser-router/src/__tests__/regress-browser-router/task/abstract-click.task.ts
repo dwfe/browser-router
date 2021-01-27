@@ -102,10 +102,49 @@ export abstract class AbstractClickTask extends AbstractTask {
     [TaskId.FirstPage, [
       click({selector: QaSel.IndexPage_First})
     ]],  // => first page
+    [TaskId.FirstNotFoundPage, [
+      click({selector: QaSel.IndexPage_First}),
+      click({selector: QaSel.FirstPage_DoesntExist})
+    ]],  // => first not found page
+
 
     [TaskId.SecondPage, [
       click({selector: QaSel.IndexPage_Second})
     ]], // => second page
+    [TaskId.SecondPicturePage, [
+      click({selector: QaSel.IndexPage_Second}),
+      click({selector: QaSel.SecondPage_Picture})
+    ]], // => second picture page
+
+    [TaskId.CancelTransition, [
+      click({selector: QaSel.IndexPage_Second}),
+      click({selector: QaSel.SecondPage_LongTimeGettingOfActionResult}),
+      wait(500),
+      click({selector: QaSel.Header_Index}),
+      wait(10_000),
+    ]], // => index page
+
+    [TaskId.PreventDuplicates, [
+      click({selector: QaSel.IndexPage_Second}),
+      click({selector: QaSel.SecondPage_LongTimeGettingOfActionResult, options: {delay: 100}}),
+      wait(100),
+      click({selector: QaSel.SecondPage_LongTimeGettingOfActionResult, options: {delay: 100}}),
+      wait(100),
+      click({selector: QaSel.SecondPage_LongTimeGettingOfActionResult, options: {delay: 100}}),
+      wait(100),
+      click({selector: QaSel.SecondPage_LongTimeGettingOfActionResult, options: {delay: 100}}),
+      wait(100),
+      click({selector: QaSel.SecondPage_LongTimeGettingOfActionResult, options: {delay: 100}}),
+      wait(100),
+      click({selector: QaSel.SecondPage_LongTimeGettingOfActionResult, options: {delay: 100}}),
+      wait(100),
+      click({selector: QaSel.Header_Index}),
+      wait(10_000),
+      click({selector: QaSel.Header_GoBack}),
+      wait(100),
+      click({selector: QaSel.Header_GoBack}),
+    ]], // => second page
+
 
   ]);
 }
