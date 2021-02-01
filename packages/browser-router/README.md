@@ -112,6 +112,18 @@ export interface RoutingResult<TComponent = any, TContext extends RouteContext =
 
 #### TODO
 
+- сделать чистый бандл
+- оформить
+  - чтобы красиво выглядело
+  - описание возможностей(мб взять из тестов)
+  - Get started
+  - раздел релизы на гитхабе
+  - добавить Open collective или чета наподобии
+  - обновить демо
+  - добавить бейджики: 
+      - ссылка на npm
+      - сбилджено
+      - протестировано
 - может быть добавить доп. remote repo на github и линки всякие на него указывать?
 - option: collecting statistics on the frequency of routes usage
 - tests for BrowserRouter
