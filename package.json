@@ -1,14 +1,14 @@
 {
   "name": "dwfe-routing",
-  "version": "1.0.0",
-  "license": "MIT",
+  "private": true,
+  "license": "UNLICENSED",
   "scripts": {
-    "clean:dist": "lerna run clean",
-    "build": "npm run clean:dist && tsc -b",
-    "build:watch": "npm run clean:dist && tsc -b -w",
-    "bootstrap": "npm run clean:dist && rimraf package-lock.json && lerna bootstrap --hoist",
-    "total:clean": "npm run clean:dist && lerna clean --yes && rimraf package-lock.json && rimraf ./node_modules",
-    "publish": "npm run build:packages && lerna publish"
+    "clean": "lerna run clean && rimraf ./dist",
+    "build": "npm run clean && tsc -b",
+    "build:watch": "npm run clean && tsc -b -w",
+    "bootstrap": "npm run clean && rimraf package-lock.json && lerna bootstrap --hoist",
+    "total:clean": "npm run clean && lerna clean --yes && rimraf package-lock.json && rimraf ./node_modules",
+    "publish": "npm run build && lerna publish"
   },
   "devDependencies": {
     "lerna": "3",

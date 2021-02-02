@@ -2,8 +2,8 @@
   "extends": "../../config/tsconfig",
   "compilerOptions": {
     "composite": true,
-    "declarationDir": "./dist/types",
     "outDir": "./dist/esm",
+    "declarationDir": "./dist/types",
     "baseUrl": "."
   },
   "include": [

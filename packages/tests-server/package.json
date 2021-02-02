@@ -2,7 +2,7 @@
   "name": "@dwfe/routing-tests-server",
   "private": true,
   "license": "UNLICENSED",
-  "main": "./dist/index.js",
+  "main": "./dist/esm",
   "typings": "./dist/types",
   "scripts": {
     "server:clean": "rimraf ./dist",

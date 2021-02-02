@@ -3,8 +3,12 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "composite": true,
-    "declarationDir": "./dist/types",
     "outDir": "./dist/esm",
+    "declarationDir": "./dist/types",
     "baseUrl": "."
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+  ]
 }

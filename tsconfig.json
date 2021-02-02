@@ -1,16 +1,21 @@
 {
   "extends": "./config/tsconfig",
   "compilerOptions": {
-    "composite": true
+    "composite": true,
+    "outDir": "dist/esm",
+    "baseUrl": ".",
+    "skipLibCheck": true
   },
   "references": [
     { "path": "./packages/path-resolver" },
     { "path": "./packages/browser-router" },
-    { "path": "./packages/automation-environment" },
+    { "path": "./packages/automation-environment" }
   ],
   "exclude": [
     "**/tests*",
+    "**/*.test.ts",
     "**/node_modules",
-    "**/dist"
+    "**/dist",
+    "**/*.d.ts"
   ]
 }
