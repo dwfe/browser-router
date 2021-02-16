@@ -112,6 +112,7 @@ export interface RoutingResult<TComponent = any, TContext extends RouteContext =
 
 #### TODO
 
+- привести в соответсвии с URL свойствами
 - сделать чистый бандл
   - [чтобы без косяков](https://www.opennet.ru/opennews/art.shtml?num=54566)
 - оформить
