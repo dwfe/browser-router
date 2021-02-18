@@ -2,7 +2,7 @@ import {IPath} from './contract'
 
 export class Path implements Partial<IPath> {
 
-  constructor(public readonly pathname?: string,
+  constructor(public readonly pathname: string,
               public readonly search?: string,
               public readonly hash?: string) {
   }
@@ -20,17 +20,16 @@ export class Path implements Partial<IPath> {
   }
 
   static isEquals(p1: Partial<IPath>, p2: Partial<IPath>): boolean {
-    p1 = Path.of(p1)
-    p2 = Path.of(p2)
     return p1.pathname === p2.pathname
       && p1.search === p2.search
       && p1.hash === p2.hash
   }
 
-  static toString({pathname, search, hash}: Partial<IPath>): string {
-    if (!pathname)
-      return ''
+  static toString(path: Partial<IPath>): string {
+    if (!path.pathname)
+      throw new Error(`path can't be without pathname: ${JSON.stringify(path, null, 2)}`);
 
+    let {pathname, search, hash} = path
     if (search)
       search = search[0] === '?' ? search : '?' + search
     else
