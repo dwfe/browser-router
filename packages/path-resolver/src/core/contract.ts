@@ -1,4 +1,4 @@
-import {Location, PartialPath} from 'history'
+import {Location} from 'history'
 
 export type Routes = Route[];
 
@@ -88,7 +88,7 @@ export type PathParams = object | { [key: string]: string; }
 
 export type ToType = GoTo | string;
 
-export interface GoTo extends PartialPath {
+export interface GoTo extends Partial<IPath> {
 
   pathParams?: PathParams;
 
@@ -116,4 +116,11 @@ export interface IPathResolverOptions {
 
 export const defaultOptions: IPathResolverOptions = {
   enableTrace: false,
+}
+
+
+export interface IPath {
+  pathname: string;
+  search: string;
+  hash: string;
 }

@@ -1,7 +1,7 @@
-import {IActionData, PathResolver, PathResolveResult, Route, RouteContext, RoutingResult} from '@do-while-for-each/path-resolver'
-import {Blocker, Location, PartialPath, Transition} from 'history'
+import {IActionData, IPath, Path, PathResolver, PathResolveResult, Route, RouteContext, RoutingResult} from '@do-while-for-each/path-resolver'
+import {Blocker, Location, Transition} from 'history'
 import React from 'react'
-import {addFirstSymbol, createPathStr, excludeFirstSymbol} from '../common'
+import {addFirstSymbol, excludeFirstSymbol} from '../common'
 import {IBrowserRouterOptions} from './contract'
 import {BrowserRouter} from './browser-router'
 
@@ -11,7 +11,7 @@ export class Task<TComponent = any,
   TActionResult extends RoutingResult<TComponent, TContext> = RoutingResult<TComponent, TContext>,
   TNote = any> {
 
-  static id = (p: PartialPath): string => createPathStr(p)
+  static id = (path: Partial<IPath>): string => Path.toString(path)
 
   readonly route: Route<TComponent, TContext, TActionResult, TNote>
   readonly parentRoute: Route<TComponent, TContext, TActionResult, TNote>

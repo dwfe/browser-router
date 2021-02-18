@@ -1,12 +1,12 @@
-import {resolve, join} from 'path'
+import {join, resolve} from 'path'
 import {Configuration} from 'webpack'
 
 const DIST = resolve(__dirname, '../../')
 
 export default {
-  mode: 'production',
+  mode: 'development',
   entry: join(DIST, 'esm/index.js'),
-  output:{
+  output: {
     path: DIST,
     filename: 'bundle.js',
   },

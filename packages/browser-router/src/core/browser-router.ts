@@ -1,8 +1,8 @@
-import {GoTo, IActionData, PathResolver, RouteContext, Routes, RoutingResult, ToType} from '@do-while-for-each/path-resolver'
-import {Action, Blocker, BrowserHistory, createBrowserHistory, Path, State, Update} from 'history'
+import {GoTo, IActionData, IPath, Path, PathResolver, RouteContext, Routes, RoutingResult, ToType} from '@do-while-for-each/path-resolver'
+import {Action, Blocker, BrowserHistory, createBrowserHistory, State, Update} from 'history'
 import {distinctUntilChanged, filter, shareReplay} from 'rxjs/operators'
 import {Subject} from 'rxjs'
-import {convertGoToFromStr, createPath, getUrl, isEqualPaths, isGoAway} from '../common'
+import {convertGoToFromStr, getUrl, isGoAway} from '../common'
 import {LocationHandler} from './location-handler'
 import {defaultOptions} from './contract'
 import {Task} from './task'
@@ -23,7 +23,8 @@ export class BrowserRouter<TComponent = any,
     routeActionData: IActionData<TContext>
   }>()
 
-  constructor(routes: Routes, public readonly options = defaultOptions) {
+  constructor(routes: Routes,
+              public readonly options = defaultOptions) {
     this.pathResolver = new PathResolver(routes, options.pathResolver)
     this.locationHandler = new LocationHandler(this)
     if (!document?.defaultView)
@@ -32,7 +33,7 @@ export class BrowserRouter<TComponent = any,
   }
 
   get currentPath(): Path {
-    return createPath(this.window.location)
+    return Path.of(this.window.location)
   }
 
   start(ctx?: TContext) {
@@ -70,7 +71,7 @@ export class BrowserRouter<TComponent = any,
       if (this.isSameLocation(to)) {
         this.gotoWithoutChangingLocation(ctx)
       } else {
-        this.history.push(createPath(to), ctx)
+        this.history.push(Path.of(to), ctx)
       }
     }
   }
@@ -90,7 +91,7 @@ export class BrowserRouter<TComponent = any,
       location: {
         state: ctx,
         key: this.window.history.state?.key || 'default',
-        ...this.currentPath
+        ...this.currentPath as IPath
       }
     }
     this.onLocationChange(update)
@@ -134,7 +135,7 @@ export class BrowserRouter<TComponent = any,
   }
 
   isSameLocation(to: GoTo): boolean {
-    return isEqualPaths(to, this.currentPath)
+    return this.currentPath.isEquals(to)
   }
 
 //endregion
