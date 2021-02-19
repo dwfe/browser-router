@@ -5,7 +5,7 @@ import {Task} from './task'
 
 export class LocationHandler<TComponent = any,
   TContext extends RouteContext = RouteContext,
-  TActionResult extends RoutingResult<TComponent, TContext> = RoutingResult<TComponent, TContext>,
+  TActionResult extends RoutingResult<TComponent> = RoutingResult<TComponent>,
   TNote = any> {
 
   private tasks: { [id: string]: true } = {}

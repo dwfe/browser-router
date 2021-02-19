@@ -1,4 +1,4 @@
-import {GoTo, IActionData, IPath, Path, PathResolver, RouteContext, Routes, RoutingResult, ToType} from '@do-while-for-each/path-resolver'
+import {IActionData, IPath, Path, PathResolver, RouteContext, Routes, RoutingResult, ToType} from '@do-while-for-each/path-resolver'
 import {Action, Blocker, BrowserHistory, createBrowserHistory, State, Update} from 'history'
 import {distinctUntilChanged, filter, shareReplay} from 'rxjs/operators'
 import {Subject} from 'rxjs'
@@ -9,7 +9,7 @@ import {Task} from './task'
 
 export class BrowserRouter<TComponent = any,
   TContext extends RouteContext = RouteContext,
-  TActionResult extends RoutingResult<TComponent, TContext> = RoutingResult<TComponent, TContext>,
+  TActionResult extends RoutingResult<TComponent> = RoutingResult<TComponent>,
   TNote = any> {
 
   public readonly pathResolver: PathResolver
@@ -68,10 +68,10 @@ export class BrowserRouter<TComponent = any,
     if (isGoAway(to)) {
       this.goAway(to)
     } else {
-      if (this.isSameLocation(to)) {
+      if (this.isSameLocation(to as IPath)) {
         this.gotoWithoutChangingLocation(ctx)
       } else {
-        this.history.push(Path.of(to), ctx)
+        this.history.push(Path.of(to as IPath), ctx)
       }
     }
   }
@@ -86,12 +86,15 @@ export class BrowserRouter<TComponent = any,
    *  We just need to find the route and activate it.
    */
   gotoWithoutChangingLocation(ctx: TContext = null as TContext) {
+    const {pathname, search, hash} = this.currentPath;
     const update: Update<TContext> = {
       action: Action.Push,
       location: {
         state: ctx,
         key: this.window.history.state?.key || 'default',
-        ...this.currentPath as IPath
+        pathname,
+        search,
+        hash,
       }
     }
     this.onLocationChange(update)
@@ -134,7 +137,7 @@ export class BrowserRouter<TComponent = any,
       console.log(`[ ${id} ]`, text)
   }
 
-  isSameLocation(to: GoTo): boolean {
+  isSameLocation(to: IPath): boolean {
     return this.currentPath.isEquals(to)
   }
 

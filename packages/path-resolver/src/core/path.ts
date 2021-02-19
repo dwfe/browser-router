@@ -1,13 +1,17 @@
 import {IPath} from './contract'
 
-export class Path implements Partial<IPath> {
+export class Path implements IPath {
 
-  constructor(public readonly pathname: string,
-              public readonly search?: string,
-              public readonly hash?: string) {
+  static of({pathname, search, hash}: IPath): Path {
+    return new Path(Path.fixPathname(pathname), Path.fixSearch(search), Path.fixHash(hash));
   }
 
-  isEquals(path: Partial<IPath>) {
+  constructor(public pathname: string,
+              public search?: string,
+              public hash?: string) {
+  }
+
+  isEquals(path: IPath) {
     return Path.isEquals(this, path);
   }
 
@@ -15,32 +19,32 @@ export class Path implements Partial<IPath> {
     return Path.toString(this);
   }
 
-  static of({pathname = '', search = '', hash = ''}: Partial<IPath>): Path {
-    return new Path(pathname, search, hash);
-  }
-
-  static isEquals(p1: Partial<IPath>, p2: Partial<IPath>): boolean {
+  static isEquals(p1: IPath, p2: IPath): boolean {
     return p1.pathname === p2.pathname
       && p1.search === p2.search
       && p1.hash === p2.hash
   }
 
-  static toString(path: Partial<IPath>): string {
-    if (!path.pathname)
-      throw new Error(`path can't be without pathname: ${JSON.stringify(path, null, 2)}`);
-
-    let {pathname, search, hash} = path
-    if (search)
-      search = search[0] === '?' ? search : '?' + search
-    else
-      search = ''
-
-    if (hash)
-      hash = hash[0] === '#' ? hash : '#' + hash
-    else
-      hash = ''
-
+  static toString({pathname, search, hash}: IPath): string {
     return pathname + search + hash;
+  }
+
+  static fixPathname(pathname: string): string {
+    if (pathname)
+      return pathname[0] === '/' ? pathname : `/${pathname}`;
+    return '/';
+  }
+
+  static fixSearch(search: string): string {
+    if (search)
+      return search[0] === '?' ? search : `?${search}`;
+    return '';
+  }
+
+  static fixHash(hash: string): string {
+    if (hash)
+      return hash[0] === '#' ? hash : `#${hash}`;
+    return '';
   }
 
 }

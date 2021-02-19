@@ -4,9 +4,9 @@ export type Routes = Route[];
 
 export interface Route<TComponent = any,
   TContext extends RouteContext = RouteContext,
-  TActionResult extends RoutingResult<TComponent, TContext> = RoutingResult<TComponent, TContext>,
+  TActionResult extends RoutingResult<TComponent> = RoutingResult<TComponent>,
   TNote = any>
-  extends RoutingResult<TComponent, TContext> {
+  extends RoutingResult<TComponent> {
 
   path: string; // see syntax here: https://github.com/pillarjs/path-to-regexp#readme
 
@@ -34,17 +34,14 @@ export type RouteContext = {
 } | null // because history package type 'State' = object | null
 
 
-export interface RoutingResult<TComponent = any, TContext extends RouteContext = RouteContext> {
+export interface RoutingResult<TComponent = any> {
   redirectTo?: string;
-  customTo?: ICustomTo<TContext>;
+  customTo?: ICustomTo;
   component?: TComponent;
   skip?: boolean; // if 'true' then stage 'CanActivate' will skip the processing to next stage
 }
 
-export interface ICustomTo<TContext extends RouteContext = RouteContext> {
-  pathname: string;
-  search?: string;
-  hash?: string;
+export interface ICustomTo extends IPath {
   isRedirect?: boolean; // if not set, it equals 'true'
 }
 
@@ -120,7 +117,7 @@ export const defaultOptions: IPathResolverOptions = {
 
 
 export interface IPath {
-  pathname: string;
-  search: string;
-  hash: string;
+  pathname?: string;
+  search?: string;
+  hash?: string;
 }

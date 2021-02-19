@@ -5,13 +5,12 @@ import {addFirstSymbol, excludeFirstSymbol} from '../common'
 import {IBrowserRouterOptions} from './contract'
 import {BrowserRouter} from './browser-router'
 
-
 export class Task<TComponent = any,
   TContext extends RouteContext = RouteContext,
-  TActionResult extends RoutingResult<TComponent, TContext> = RoutingResult<TComponent, TContext>,
+  TActionResult extends RoutingResult<TComponent> = RoutingResult<TComponent>,
   TNote = any> {
 
-  static id = (path: Partial<IPath>): string => Path.toString(path)
+  static id = (path: IPath): string => Path.toString(path)
 
   readonly route: Route<TComponent, TContext, TActionResult, TNote>
   readonly parentRoute: Route<TComponent, TContext, TActionResult, TNote>
