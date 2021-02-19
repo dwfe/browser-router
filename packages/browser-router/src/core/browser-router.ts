@@ -1,4 +1,4 @@
-import {IActionData, IPath, Path, PathResolver, RouteContext, Routes, RoutingResult} from '@do-while-for-each/path-resolver'
+import {IActionData, Path, PathResolver, RouteContext, Routes, RoutingResult} from '@do-while-for-each/path-resolver'
 import {Action, Blocker, BrowserHistory, createBrowserHistory, State, Update} from 'history'
 import {distinctUntilChanged, filter, shareReplay} from 'rxjs/operators'
 import {Subject} from 'rxjs'
@@ -63,10 +63,10 @@ export class BrowserRouter<TComponent = any,
 
 
   goto(to: To, ctx?: TContext) {
-    if (this.isSameLocation(to as IPath)) {
+    if (this.isSameLocation(to)) {
       this.gotoWithoutChangingLocation(ctx)
     } else {
-      this.history.push(Path.of(to as IPath), ctx)
+      this.history.push(to, ctx)
     }
   }
 
@@ -127,10 +127,11 @@ export class BrowserRouter<TComponent = any,
   }
 
   isSameLocation(to: To): boolean {
-    const pathname = this.currentPath.pathname;
-    if (typeof to === 'string')
-      return pathname === to;
-    return pathname === to.pathname;
+    if (typeof to === 'string') {
+      const url = new URL(window.location.origin + to)
+      to = Path.of(url)
+    }
+    return this.currentPath.isEqualsLocation(to);
   }
 
 //endregion

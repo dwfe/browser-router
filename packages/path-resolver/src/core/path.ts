@@ -15,14 +15,24 @@ export class Path implements IPath {
     return Path.isEquals(this, path);
   }
 
+  isEqualsLocation(path: IPath) {
+    return Path.isEqualsLocation(this, path);
+  }
+
   toString() {
     return Path.toString(this);
   }
+
 
   static isEquals(p1: IPath, p2: IPath): boolean {
     return p1.pathname === p2.pathname
       && p1.search === p2.search
       && p1.hash === p2.hash
+  }
+
+  static isEqualsLocation(p1: IPath, p2: IPath): boolean {
+    return p1.pathname === p2.pathname
+      && p1.search === p2.search
   }
 
   static toString({pathname, search, hash}: IPath): string {
