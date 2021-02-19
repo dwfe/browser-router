@@ -1,10 +1,9 @@
-import {IActionData, IPath, Path, PathResolver, RouteContext, Routes, RoutingResult, ToType} from '@do-while-for-each/path-resolver'
+import {IActionData, IPath, Path, PathResolver, RouteContext, Routes, RoutingResult} from '@do-while-for-each/path-resolver'
 import {Action, Blocker, BrowserHistory, createBrowserHistory, State, Update} from 'history'
 import {distinctUntilChanged, filter, shareReplay} from 'rxjs/operators'
 import {Subject} from 'rxjs'
-import {convertGoToFromStr, getUrl, isGoAway} from '../common'
 import {LocationHandler} from './location-handler'
-import {defaultOptions} from './contract'
+import {defaultOptions, To} from './contract'
 import {Task} from './task'
 
 export class BrowserRouter<TComponent = any,
@@ -63,16 +62,31 @@ export class BrowserRouter<TComponent = any,
   )
 
 
-  goto(to: ToType, ctx?: TContext) {
-    to = convertGoToFromStr(to)
-    if (isGoAway(to)) {
-      this.goAway(to)
+  goto(to: To, ctx?: TContext) {
+    if (this.isSameLocation(to as IPath)) {
+      this.gotoWithoutChangingLocation(ctx)
     } else {
-      if (this.isSameLocation(to as IPath)) {
-        this.gotoWithoutChangingLocation(ctx)
-      } else {
-        this.history.push(Path.of(to as IPath), ctx)
-      }
+      this.history.push(Path.of(to as IPath), ctx)
+    }
+  }
+
+  redirect(to: To, ctx?: TContext) {
+    this.history.replace(to, ctx)
+  }
+
+  goBack() {
+    this.history.back()
+  }
+
+  goForward() {
+    this.history.forward()
+  }
+
+  goAway(href: string, target?: string) {
+    if (target === '_blank') {
+      this.window.open(href, target)
+    } else {
+      this.window.location.assign(href)
     }
   }
 
@@ -100,31 +114,6 @@ export class BrowserRouter<TComponent = any,
     this.onLocationChange(update)
   }
 
-  goBack() {
-    this.history.back()
-  }
-
-  goForward() {
-    this.history.forward()
-  }
-
-  goAway(to: ToType) {
-    to = convertGoToFromStr(to)
-    const url = getUrl(to)
-    if (!url)
-      return;
-    if (to.target === '_blank') {
-      this.window.open(url, '_blank')
-    } else {
-      this.window.location.assign(url)
-    }
-  }
-
-  redirect(to: ToType, ctx?: TContext) {
-    to = convertGoToFromStr(to)
-    this.history.replace(to, ctx)
-  }
-
   block(blocker: Blocker<TContext>): any {
     return this.history.block(blocker)
   }
@@ -137,8 +126,11 @@ export class BrowserRouter<TComponent = any,
       console.log(`[ ${id} ]`, text)
   }
 
-  isSameLocation(to: IPath): boolean {
-    return this.currentPath.isEquals(to)
+  isSameLocation(to: To): boolean {
+    const pathname = this.currentPath.pathname;
+    if (typeof to === 'string')
+      return pathname === to;
+    return pathname === to.pathname;
   }
 
 //endregion

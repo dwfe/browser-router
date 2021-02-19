@@ -41,13 +41,9 @@ export interface RoutingResult<TComponent = any> {
   skip?: boolean; // if 'true' then stage 'CanActivate' will skip the processing to next stage
 }
 
-export interface ICustomTo extends IPath {
-  isRedirect?: boolean; // if not set, it equals 'true'
-}
-
 export interface IActionData<TContext extends RouteContext = RouteContext, TNote = any> {
 
-  target: GoTo;
+  target: IActionDataTarget;
 
   /**
    * Context is unreliable!, because context will be null when:
@@ -80,32 +76,16 @@ export interface PathResolveResult {
   parentRoute?: Route;
 }
 
+export interface ICustomTo extends IPath {
+  isRedirect?: boolean; // if not set, it equals 'true'
+}
+
+export interface IActionDataTarget extends IPath {
+  pathParams: PathParams;
+}
+
 export type PathParams = object | { [key: string]: string; }
 
-
-export type ToType = GoTo | string;
-
-export interface GoTo extends Partial<IPath> {
-
-  pathParams?: PathParams;
-
-  /**
-   * Returns the Location object's URL's origin.
-   */
-  origin?: string;
-
-  /**
-   * Returns the Location object's URL.
-   *
-   * Can be set, to navigate to the given URL.
-   */
-  href?: string;
-
-  /**
-   * To open a new window on every call of window.open(), use the special value _blank for windowName.
-   */
-  target?: '_blank' | any;
-}
 
 export interface IPathResolverOptions {
   enableTrace?: boolean;

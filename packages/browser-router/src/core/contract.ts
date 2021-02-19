@@ -1,4 +1,4 @@
-import {IPathResolverOptions} from '@do-while-for-each/path-resolver'
+import {IPath, IPathResolverOptions} from '@do-while-for-each/path-resolver'
 
 export interface IBrowserRouterOptions {
   enableTrace?: boolean;
@@ -13,3 +13,5 @@ export const defaultOptions: IBrowserRouterOptions = {
     enableTrace: false,
   }
 }
+
+export type To = IPath | string;
