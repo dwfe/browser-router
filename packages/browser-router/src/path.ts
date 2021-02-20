@@ -1,4 +1,4 @@
-import {IPath} from './contract'
+import {IPath} from '@do-while-for-each/path-resolver'
 
 export class Path implements IPath {
 

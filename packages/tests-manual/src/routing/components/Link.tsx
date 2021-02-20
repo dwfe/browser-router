@@ -1,5 +1,5 @@
+import {BrowserRouter, Path} from '@do-while-for-each/browser-router';
 import React, {HTMLProps, SyntheticEvent} from 'react'
-import {BrowserRouter} from '@do-while-for-each/browser-router';
 import {useDIInstance} from '../../di/useDIInstance'
 
 export const Link = (props: IProps) => {
@@ -9,7 +9,9 @@ export const Link = (props: IProps) => {
   const handleClick = (event: SyntheticEvent) => {
     event.preventDefault()
     onClick && onClick(event as any)
-    router.goto(event.currentTarget as HTMLAnchorElement, ctx)
+    // @ts-ignore
+    const path = Path.of(event.currentTarget as HTMLAnchorElement)
+    router.goto(path, ctx)
   }
   return (
     <a {...props}

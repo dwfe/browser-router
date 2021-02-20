@@ -1,9 +1,10 @@
-import {IActionData, Path, PathResolver, RouteContext, Routes, RoutingResult} from '@do-while-for-each/path-resolver'
+import {IActionData, PathResolver, RouteContext, Routes, RoutingResult} from '@do-while-for-each/path-resolver'
 import {Action, Blocker, BrowserHistory, createBrowserHistory, State, Update} from 'history'
 import {distinctUntilChanged, filter, shareReplay} from 'rxjs/operators'
 import {Subject} from 'rxjs'
 import {LocationHandler} from './location-handler'
 import {defaultOptions, To} from './contract'
+import {Path} from '../path'
 import {Task} from './task'
 
 export class BrowserRouter<TComponent = any,

@@ -1,9 +1,10 @@
-import {IActionData, IPath, Path, PathResolver, PathResolveResult, Route, RouteContext, RoutingResult} from '@do-while-for-each/path-resolver'
+import {IActionData, IPath, PathResolver, PathResolveResult, Route, RouteContext, RoutingResult} from '@do-while-for-each/path-resolver'
 import {Blocker, Location, Transition} from 'history'
 import React from 'react'
 import {addFirstSymbol, excludeFirstSymbol} from '../common'
 import {IBrowserRouterOptions} from './contract'
 import {BrowserRouter} from './browser-router'
+import {Path} from '../path'
 
 export class Task<TComponent = any,
   TContext extends RouteContext = RouteContext,

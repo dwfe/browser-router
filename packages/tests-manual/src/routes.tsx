@@ -7,7 +7,7 @@ import {Ctx, IRouteNote, NotFoundPage, RouteActionData} from './routing'
 import {CanDeactivateService} from './pages/CanDeactivate/can-deactivate.service';
 
 
-export const routes: Route<ReactElement, Ctx, RoutingResult<ReactElement, Ctx>, IRouteNote>[] = [
+export const routes: Route<ReactElement, Ctx, RoutingResult<ReactElement>, IRouteNote>[] = [
   {path: '', component: <IndexPage/>, note: {title: 'Index'}},
   {
     path: 'first', component: <FirstPage/>, note: {title: 'First page'}, children: [
@@ -33,13 +33,13 @@ export const routes: Route<ReactElement, Ctx, RoutingResult<ReactElement, Ctx>, 
 ]
 
 
-function longTimeGettingOfActionResult(data: RouteActionData): Promise<RoutingResult<ReactElement, Ctx>> {
+function longTimeGettingOfActionResult(data: RouteActionData): Promise<RoutingResult<ReactElement>> {
   return new Promise(resolve => {
     setTimeout(() => resolve({redirectTo: 'picture'}), 5_000)
   })
 }
 
-async function passIfLoggedIn(data: RouteActionData): Promise<RoutingResult<ReactElement, Ctx>> {
+async function passIfLoggedIn(data: RouteActionData): Promise<RoutingResult<ReactElement>> {
   const auth = container.resolve(AuthService)
   if (auth.isLoggedIn())
     return {skip: true}

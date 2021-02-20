@@ -1,12 +1,11 @@
-import {GoTo} from '@do-while-for-each/path-resolver'
-import {BrowserRouter} from '@do-while-for-each/browser-router'
+import {BrowserRouter, To} from '@do-while-for-each/browser-router'
 import {container} from 'tsyringe'
 
 export const LOGGED_KEY = 'logged-key'
 
 export class AuthService {
 
-  redirectTo: GoTo = {pathname: ''}
+  redirectTo: To = {pathname: ''}
 
   private router: BrowserRouter
 
