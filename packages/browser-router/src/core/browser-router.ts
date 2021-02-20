@@ -32,8 +32,8 @@ export class BrowserRouter<TComponent = any,
     this.window = document.defaultView
   }
 
-  get currentPath(): Path {
-    return Path.of(this.window.location)
+  get currentPath(): IPath {
+    return Path.normalize(this.window.location)
   }
 
   start(ctx?: TContext) {
@@ -124,7 +124,7 @@ export class BrowserRouter<TComponent = any,
   }
 
   isSameLocation(path: IPath): boolean {
-    return this.currentPath.isEqualsLocation(path);
+    return Path.isEqualsLocation(this.currentPath, path)
   }
 
 //endregion
