@@ -4,7 +4,7 @@ import React from 'react'
 import {addFirstSymbol, excludeFirstSymbol} from '../common'
 import {IBrowserRouterOptions} from './contract'
 import {BrowserRouter} from './browser-router'
-import {Path} from '../path'
+import {Path} from './path'
 
 export class Task<TComponent = any,
   TContext extends RouteContext = RouteContext,

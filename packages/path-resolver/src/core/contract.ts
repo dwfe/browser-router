@@ -97,7 +97,7 @@ export const defaultOptions: IPathResolverOptions = {
 
 
 export interface IPath {
-  pathname: string;
+  pathname?: string;
   search?: string;
   hash?: string;
 }

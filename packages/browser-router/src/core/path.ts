@@ -1,9 +1,10 @@
 import {IPath} from '@do-while-for-each/path-resolver'
+import {To} from './contract'
 
 export class Path implements IPath {
 
   static of({pathname, search, hash}: IPath): Path {
-    return new Path(Path.fixPathname(pathname), Path.fixSearch(search), Path.fixHash(hash));
+    return new Path(Path.fixPathname(pathname), Path.fixSearch(search), Path.fixHash(hash))
   }
 
   constructor(public pathname: string,
@@ -12,15 +13,15 @@ export class Path implements IPath {
   }
 
   isEquals(path: IPath) {
-    return Path.isEquals(this, path);
+    return Path.isEquals(this, path)
   }
 
   isEqualsLocation(path: IPath) {
-    return Path.isEqualsLocation(this, path);
+    return Path.isEqualsLocation(this, path)
   }
 
   toString() {
-    return Path.toString(this);
+    return Path.toString(this)
   }
 
 
@@ -36,25 +37,32 @@ export class Path implements IPath {
   }
 
   static toString({pathname, search, hash}: IPath): string {
-    return pathname + search + hash;
+    return pathname + search + hash
   }
 
   static fixPathname(pathname: string): string {
-    if (pathname)
-      return pathname[0] === '/' ? pathname : `/${pathname}`;
-    return '/';
+    return pathname
+      ? pathname[0] === '/' ? pathname : `/${pathname}`
+      : ''
   }
 
   static fixSearch(search: string): string {
-    if (search)
-      return search[0] === '?' ? search : `?${search}`;
-    return '';
+    return search
+      ? search[0] === '?' ? search : `?${search}`
+      : ''
   }
 
   static fixHash(hash: string): string {
-    if (hash)
-      return hash[0] === '#' ? hash : `#${hash}`;
-    return '';
+    return hash
+      ? hash[0] === '#' ? hash : `#${hash}`
+      : ''
+  }
+
+  static normalize(to: To): IPath {
+    const {pathname, search, hash} = typeof to === 'string'
+      ? new URL(window.location.origin + Path.fixPathname(to))
+      : to
+    return {pathname, search, hash}
   }
 
 }

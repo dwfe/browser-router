@@ -1,10 +1,10 @@
-import {IActionData, PathResolver, RouteContext, Routes, RoutingResult} from '@do-while-for-each/path-resolver'
+import {IActionData, IPath, PathResolver, RouteContext, Routes, RoutingResult} from '@do-while-for-each/path-resolver'
 import {Action, Blocker, BrowserHistory, createBrowserHistory, State, Update} from 'history'
 import {distinctUntilChanged, filter, shareReplay} from 'rxjs/operators'
 import {Subject} from 'rxjs'
 import {LocationHandler} from './location-handler'
 import {defaultOptions, To} from './contract'
-import {Path} from '../path'
+import {Path} from './path'
 import {Task} from './task'
 
 export class BrowserRouter<TComponent = any,
@@ -64,15 +64,14 @@ export class BrowserRouter<TComponent = any,
 
 
   goto(to: To, ctx?: TContext) {
-    if (this.isSameLocation(to)) {
-      this.gotoWithoutChangingLocation(ctx)
-    } else {
-      this.history.push(to, ctx)
-    }
+    const path = Path.normalize(to);
+    this.isSameLocation(path)
+      ? this.gotoWithoutChangingLocation(ctx)
+      : this.history.push(path, ctx)
   }
 
   redirect(to: To, ctx?: TContext) {
-    this.history.replace(to, ctx)
+    this.history.replace(Path.normalize(to), ctx)
   }
 
   goBack() {
@@ -101,15 +100,12 @@ export class BrowserRouter<TComponent = any,
    *  We just need to find the route and activate it.
    */
   gotoWithoutChangingLocation(ctx: TContext = null as TContext) {
-    const {pathname, search, hash} = this.currentPath;
     const update: Update<TContext> = {
       action: Action.Push,
       location: {
         state: ctx,
         key: this.window.history.state?.key || 'default',
-        pathname,
-        search,
-        hash,
+        ...this.currentPath as Required<IPath>
       }
     }
     this.onLocationChange(update)
@@ -127,12 +123,8 @@ export class BrowserRouter<TComponent = any,
       console.log(`[ ${id} ]`, text)
   }
 
-  isSameLocation(to: To): boolean {
-    if (typeof to === 'string') {
-      const url = new URL(window.location.origin + to)
-      to = Path.of(url)
-    }
-    return this.currentPath.isEqualsLocation(to);
+  isSameLocation(path: IPath): boolean {
+    return this.currentPath.isEqualsLocation(path);
   }
 
 //endregion
