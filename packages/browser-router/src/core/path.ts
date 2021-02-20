@@ -43,7 +43,7 @@ export class Path implements IPath {
   static fixPathname(pathname: string): string {
     return pathname
       ? pathname[0] === '/' ? pathname : `/${pathname}`
-      : ''
+      : '/'
   }
 
   static fixSearch(search: string): string {
