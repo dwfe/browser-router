@@ -7,10 +7,11 @@ export class Path implements IPath {
   search: string;
   hash: string;
 
-  constructor({pathname, search, hash}: IPath) {
-    this.pathname = Path.normalizePathname(pathname)
-    this.search = Path.normalizeSearch(search)
-    this.hash = Path.normalizeHash(hash)
+  constructor(to: To) {
+    const path = Path.normalize(to)
+    this.pathname = path.pathname
+    this.search = path.search
+    this.hash = path.hash
   }
 
   isEquals(path: IPath) {
@@ -41,8 +42,11 @@ export class Path implements IPath {
     return pathname + search + hash
   }
 
-  static parse(path: string): URL {
-    return new URL(window.location.origin + Path.normalizePathname(path))
+  static parse(str: string): URL {
+    const url = str.includes('http:') || str.includes('https:')
+      ? str
+      : window.location.origin + Path.normalizePathname(str)
+    return new URL(url)
   }
 
   /**
