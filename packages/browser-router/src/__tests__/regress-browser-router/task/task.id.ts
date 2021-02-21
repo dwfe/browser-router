@@ -19,6 +19,7 @@ export enum TaskId {
 
   FirstPage = '006_01-First-Page',
   FirstNotFoundPage = '006_02-First-Not-Found-Page',
+  CheckCustomTo = '006_03-Check-Custom-To',
 
   SecondPage = '007_01-Second-Page',
   SecondPicturePage = '007_02-Second-Picture-Page',
@@ -33,6 +34,6 @@ export enum TaskId {
  * ТОГДА переопредели TaskIds своим списком
  */
 // export const TaskIds: TaskId[] = [
-//
+//   TaskId.CheckCustomTo,
 // ];
 export const TaskIds: TaskId[] = Object.values(TaskId);

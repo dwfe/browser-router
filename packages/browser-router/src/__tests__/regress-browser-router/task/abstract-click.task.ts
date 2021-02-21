@@ -106,7 +106,10 @@ export abstract class AbstractClickTask extends AbstractTask {
       click({selector: QaSel.IndexPage_First}),
       click({selector: QaSel.FirstPage_DoesntExist})
     ]],  // => first not found page
-
+    [TaskId.CheckCustomTo, [
+      click({selector: QaSel.IndexPage_First}),
+      click({selector: QaSel.FirstPage_ToSecondPic})
+    ]],  // => check customTo
 
     [TaskId.SecondPage, [
       click({selector: QaSel.IndexPage_Second})
