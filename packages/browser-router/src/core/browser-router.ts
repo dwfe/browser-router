@@ -37,7 +37,7 @@ export class BrowserRouter<TComponent = any,
   }
 
   start(ctx?: TContext) {
-    this.gotoWithoutChangeLocation(ctx)
+    this.gotoWithoutChangeLocation(this.currentPath, ctx)
     this.history.listen(this.onLocationChange.bind(this))
   }
 
@@ -66,7 +66,7 @@ export class BrowserRouter<TComponent = any,
   goto(to: To, ctx?: TContext) {
     const path = Path.normalize(to);
     this.isSameLocation(path)
-      ? this.gotoWithoutChangeLocation(ctx)
+      ? this.gotoWithoutChangeLocation(path, ctx)
       : this.history.push(path, ctx)
   }
 
@@ -95,17 +95,17 @@ export class BrowserRouter<TComponent = any,
    *    - the page is loaded for the first time;
    *    - the page is refreshed;
    *    - user changed the location to the same one.
-   *  we don't need to go anywhere => so we don't need to run this.go(...),
+   *  we don't need to go anywhere => so we don't need to run this.goto(...),
    *  because we are already in the target location.
    *  We just need to find the route and activate it.
    */
-  gotoWithoutChangeLocation(ctx: TContext = null as TContext) {
+  gotoWithoutChangeLocation(path: IPath, ctx: TContext = null as TContext) {
     const update: Update<TContext> = {
       action: Action.Push,
       location: {
         state: ctx,
         key: this.window.history.state?.key || 'default',
-        ...this.currentPath as Required<IPath>
+        ...path as Required<IPath>
       }
     }
     this.onLocationChange(update)
