@@ -1,7 +1,6 @@
 import {IActionData, IPath, PathResolver, PathResolveResult, Route, RouteContext, RoutingResult} from '@do-while-for-each/path-resolver'
 import {Blocker, Location, Transition} from 'history'
 import React from 'react'
-import {addFirstSymbol, excludeFirstSymbol} from '../common'
 import {IBrowserRouterOptions} from './contract'
 import {BrowserRouter} from './browser-router'
 import {Path} from './path'
@@ -75,19 +74,16 @@ export class Task<TComponent = any,
       }
       return;
     } else if (customTo) {
-      let {pathname, search, hash, isRedirect} = customTo
-      search = addFirstSymbol('?', search)
-      hash = addFirstSymbol('#', hash)
-      const to = {pathname, search, hash}
+      let {isRedirect} = customTo
       isRedirect = isRedirect === undefined || isRedirect === true
       this.result = isRedirect
         ? () => {
           this.log(`${stage} redirectTo`)
-          this.router.redirect(to, context_for_RedirectTo_or_Goto)
+          this.router.redirect(customTo, context_for_RedirectTo_or_Goto)
         }
         : () => {
           this.log(`${stage} goto`)
-          this.router.goto(to, context_for_RedirectTo_or_Goto)
+          this.router.goto(customTo, context_for_RedirectTo_or_Goto)
         }
       return;
     } else if (component) {
@@ -135,8 +131,8 @@ export class Task<TComponent = any,
       target: {
         pathname,
         pathParams: this.resolved.pathParams,
-        search: excludeFirstSymbol('?', search),
-        hash: excludeFirstSymbol('#', hash),
+        search,
+        hash,
       },
       ctx: state,
       note: this.route.note,

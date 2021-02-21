@@ -42,7 +42,7 @@ export class Path implements IPath {
   static normalizePathname(pathname: string): string {
     return pathname
       ? pathname[0] === '/' ? pathname : `/${pathname}`
-      : '/'
+      : '/' // e.g. for url 'http://example.org:8888/?q=baz#bang' pathname => '/'
   }
 
   static normalizeSearch(search: string): string {
@@ -57,7 +57,12 @@ export class Path implements IPath {
       : ''
   }
 
-  static normalizeTo(to: To): IPath {
+  /**
+   * Interface IPath can implement a wide variety of objects.
+   * But using the passed object directly can lead to unexpected problems.
+   * Therefore, the object is truncated exactly to the composition of the IPath fields.
+   */
+  static normalize(to: To): IPath {
     const {pathname, search, hash} = typeof to === 'string'
       ? new URL(window.location.origin + Path.normalizePathname(to))
       : to

@@ -28,12 +28,12 @@ export class BrowserRouter<TComponent = any,
     this.pathResolver = new PathResolver(routes, options.pathResolver)
     this.locationHandler = new LocationHandler(this)
     if (!document?.defaultView)
-      throw new Error(`Object 'window' must be present, because this is Browser Router`)
+      throw new Error(`Object 'window' must be present, because this is router of Browser`)
     this.window = document.defaultView
   }
 
   get currentPath(): IPath {
-    return Path.normalizeTo(this.window.location)
+    return Path.normalize(this.window.location)
   }
 
   start(ctx?: TContext) {
@@ -64,14 +64,14 @@ export class BrowserRouter<TComponent = any,
 
 
   goto(to: To, ctx?: TContext) {
-    const path = Path.normalizeTo(to);
+    const path = Path.normalize(to);
     this.isSameLocation(path)
       ? this.gotoWithoutChangeLocation(ctx, path.hash)
       : this.history.push(path, ctx)
   }
 
   redirect(to: To, ctx?: TContext) {
-    this.history.replace(Path.normalizeTo(to), ctx)
+    this.history.replace(Path.normalize(to), ctx)
   }
 
   goBack() {
