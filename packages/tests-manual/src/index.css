@@ -30,3 +30,8 @@ button:focus {
   outline: 2px solid blue;
   outline-offset: 1px;
 }
+
+p, h3 {
+  margin-top: 5px;
+  margin-bottom: 16px;
+}

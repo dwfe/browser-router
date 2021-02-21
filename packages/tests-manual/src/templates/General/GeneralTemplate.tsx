@@ -1,14 +1,16 @@
 import React from 'react'
+import {PathPrint} from '../../components/PathPrint/PathPrint'
 import {Header} from '../../components/Header/Header'
+import {Footer} from '../../components/Footer/Footer'
 import {Main} from '../../components/Main'
 import './style.css'
-import {Footer} from '../../components/Footer/Footer'
 
 export const GeneralTemplate = (props: any) => {
 
   return (
     <div className="general-tmpl">
       <Header/>
+      <PathPrint/>
       <Main>
         {props.children}
       </Main>

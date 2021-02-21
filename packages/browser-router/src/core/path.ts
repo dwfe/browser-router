@@ -3,9 +3,11 @@ import {To} from './contract'
 
 export class Path implements IPath {
 
-  constructor(public pathname?: string,
-              public search?: string,
-              public hash?: string) {
+  pathname: string;
+  search: string;
+  hash: string;
+
+  constructor({pathname, search, hash}: IPath) {
     this.pathname = Path.normalizePathname(pathname)
     this.search = Path.normalizeSearch(search)
     this.hash = Path.normalizeHash(hash)
