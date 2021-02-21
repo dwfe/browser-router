@@ -52,7 +52,7 @@ export class BrowserRouter<TComponent = any,
       return;
     const {isCanceled, result, id} = task
     isCanceled
-      ? this.trace(id, 'canceled')
+      ? this.log(id, 'canceled')
       : result()
   }
 
@@ -118,8 +118,8 @@ export class BrowserRouter<TComponent = any,
 
 //region Utils
 
-  trace(id: string, text: string) {
-    if (this.options.enableTrace)
+  log(id: string, text: string) {
+    if (this.options.isDebug)
       console.log(`[ ${id} ]`, text)
   }
 

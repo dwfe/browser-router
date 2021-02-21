@@ -1,14 +1,14 @@
-import {container} from 'tsyringe'
 import {BrowserRouter, IBrowserRouterOptions} from '@do-while-for-each/browser-router'
-import {routes} from '../routes'
+import {container} from 'tsyringe'
+import {CanDeactivateService} from '../pages/CanDeactivate/can-deactivate.service'
 import {AuthService} from '../pages'
-import {CanDeactivateService} from '../pages/CanDeactivate/can-deactivate.service';
+import {routes} from '../routes'
 
 const routerOptions: IBrowserRouterOptions = {
-  enableTrace: true,
+  isDebug: true,
   injectRouteActionsDataToComponent: true,
   pathResolver: {
-    enableTrace: true,
+    isDebug: true,
   }
 }
 

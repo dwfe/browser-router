@@ -15,10 +15,10 @@ export class LocationHandler<TComponent = any,
 
   public async processLocation(location: Location<TContext>): Promise<Task<TComponent, TContext, TActionResult, TNote> | undefined> {
     const taskId = Task.id(location)
-    this.trace(taskId, 'start processing location')
+    this.log(taskId, 'start processing location')
 
     if (this.isTaskExist(taskId)) {
-      this.trace(taskId, 'duplicate, skipped')
+      this.log(taskId, 'duplicate, skipped')
       return;
     }
     return this.resolveRoute({location, taskId})
@@ -28,7 +28,7 @@ export class LocationHandler<TComponent = any,
   }
 
   private async resolveRoute({location, taskId}) {
-    this.trace(taskId, 'resolving route...')
+    this.log(taskId, 'resolving route...')
     const resolved = this.router.pathResolver.resolve(location.pathname)
     if (!resolved)
       throw new Error(`Cannot match any routes for [ ${taskId} ]`)
@@ -63,8 +63,8 @@ export class LocationHandler<TComponent = any,
   }
 
 
-  private trace(taskId: string, stage: string) {
-    this.router.trace(taskId, stage)
+  private log(taskId: string, stage: string) {
+    this.router.log(taskId, stage)
   }
 
 }

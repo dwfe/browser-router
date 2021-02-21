@@ -1,6 +1,6 @@
 import {compile, match} from 'path-to-regexp'
 import {defaultOptions, ICustomTo, PathResolveResult, Route, Routes, RoutingResult} from './contract'
-import {cloneResult, cloneRoute} from '../common'
+import {cloneRoute} from '../common'
 
 export class PathResolver {
   routes: Routes = [];
@@ -26,7 +26,7 @@ export class PathResolver {
   }
 
   resolve(pathname: string): PathResolveResult | undefined {
-    this.trace(`resolving '${pathname}'`)
+    this.log(`resolving '${pathname}'`)
     return this.find(pathname, this.routes)
   }
 
@@ -37,7 +37,7 @@ export class PathResolver {
     for (let i = 0; i < routes.length; i++) {
       const route = cloneRoute(routes[i])
       const matching = match(route.path)(pathname)
-      this.trace(`[${!!matching ? 'v' : 'x'}] ${route.path}`)
+      this.log(`[${!!matching ? 'v' : 'x'}] ${route.path}`)
 
       if (matching && !needToMatchChildren(route)) {
         const pathParams = matching.params
@@ -59,8 +59,6 @@ export class PathResolver {
     if (result.redirectTo === undefined && result.customTo === undefined)
       return;
 
-    const res = cloneResult(result)
-
     const parentPath = parentRoute ? parentRoute.path : '/'
     result.redirectTo = init.calcTo(result.redirectTo, parentPath)
     result.customTo = init.calcCustomTo(result.customTo, parentPath)
@@ -77,8 +75,8 @@ export class PathResolver {
     }
   }
 
-  private trace(path: string) {
-    if (this.options.enableTrace)
+  private log(path: string) {
+    if (this.options.isDebug)
       console.log(' ', path)
   }
 

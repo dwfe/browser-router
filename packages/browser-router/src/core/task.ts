@@ -52,25 +52,25 @@ export class Task<TComponent = any,
     if (this.isCompleted() || !this.route.canActivate)
       return;
     const stage = `invoke 'canActivate' action`
-    this.trace(stage)
+    this.log(stage)
     await this.invokeAction(this.route.canActivate, 'canActivate', stage)
   }
 
   private async stageProcessResult({redirectTo, customTo, component, skip}: RoutingResult<TComponent>): Promise<boolean | undefined> {
     if (this.isCompleted())
       return;
-    this.trace('process result')
+    this.log('process result')
     const stage = '->'
 
     if (skip) {
-      this.trace(`${stage} go to the next stage`)
+      this.log(`${stage} go to the next stage`)
       return skip
     }
 
     const context_for_RedirectTo_or_Goto = {previousActionData: this.routeActionData} as RouteContext as TContext
     if (redirectTo) {
       this.result = () => {
-        this.trace(`${stage} redirectTo`)
+        this.log(`${stage} redirectTo`)
         this.router.redirect(redirectTo, context_for_RedirectTo_or_Goto)
       }
       return;
@@ -82,18 +82,18 @@ export class Task<TComponent = any,
       isRedirect = isRedirect === undefined || isRedirect === true
       this.result = isRedirect
         ? () => {
-          this.trace(`${stage} redirectTo`)
+          this.log(`${stage} redirectTo`)
           this.router.redirect(to, context_for_RedirectTo_or_Goto)
         }
         : () => {
-          this.trace(`${stage} goto`)
+          this.log(`${stage} goto`)
           this.router.goto(to, context_for_RedirectTo_or_Goto)
         }
       return;
     } else if (component) {
       component = this.injectRoutingProps(component)
       this.result = () => {
-        this.trace(`${stage} component`)
+        this.log(`${stage} component`)
         this.router.componentSubj.next({
           component: component as TComponent,
           routeActionData: this.routeActionData
@@ -101,19 +101,19 @@ export class Task<TComponent = any,
       }
       return;
     }
-    this.trace(`  unprocessed`)
+    this.log(`  unprocessed`)
   }
 
   private async stageInvokeRoutesAction(): Promise<void> {
     if (this.isCompleted() || !this.route.action)
       return;
     const stage = `invoke 'action'`
-    this.trace(stage)
+    this.log(stage)
     await this.invokeAction(this.route.action, 'action', stage)
   }
 
   private async stageSummarize(): Promise<Task<TComponent, TContext, TActionResult, TNote>> {
-    this.trace('location processed')
+    this.log('location processed')
     if (!this.isCompleted())
       throw new Error(`Impossible to process of resolved route for [ ${this.id} ]`)
     return this
@@ -150,7 +150,7 @@ export class Task<TComponent = any,
       return component
 
     if (typeof component === 'object') {
-      this.trace('  inject routing props to component')
+      this.log('  inject routing props to component')
       const props = {routeActionData: this.routeActionData}
       if (React.isValidElement(component)) {
         return React.cloneElement(
@@ -177,7 +177,7 @@ export class Task<TComponent = any,
       // so here you need to send the actionResult to the waiting listeners,
       // but why anyone would want to do that - I can't think of a single case...
       this.isCanceled = true
-      this.trace(`${stage} -> unknown result`)
+      this.log(`${stage} -> unknown result`)
     }
   }
 
@@ -189,7 +189,7 @@ export class Task<TComponent = any,
     const canDeactivate = this.route.canDeactivate
     if (this.isCompleted() || !canDeactivate)
       return;
-    this.trace(`block navigation out from [ ${this.id} ]`)
+    this.log(`block navigation out from [ ${this.id} ]`)
 
     const routeActionData = this.getRouteActionData()
 
@@ -198,9 +198,9 @@ export class Task<TComponent = any,
      */
     const blockHandler: Blocker = async (tx: Transition<TContext>) => {
       try {
-        this.trace(`invoke 'canDeactivate' action`)
+        this.log(`invoke 'canDeactivate' action`)
         const pass = await canDeactivate(tx.location, routeActionData)
-        this.trace(`${pass ? 'can' : 'cannot'} be deactivated to [ ${Task.id(tx.location)} ]`)
+        this.log(`${pass ? 'can' : 'cannot'} be deactivated to [ ${Task.id(tx.location)} ]`)
         if (pass) {
           this.unblockNavigation()
           tx.retry()
@@ -218,7 +218,7 @@ export class Task<TComponent = any,
       return;
     this.unblockNavigationFn()
     this.unblockNavigationFn = null
-    this.trace('unblock navigation')
+    this.log('unblock navigation')
   }
 
 //endregion
@@ -233,8 +233,8 @@ export class Task<TComponent = any,
     return this.router.pathResolver
   }
 
-  private trace(text: string) {
-    this.router.trace(this.id, text)
+  private log(text: string) {
+    this.router.log(this.id, text)
   }
 
 //endregion

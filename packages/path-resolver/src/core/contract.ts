@@ -88,11 +88,11 @@ export type PathParams = object | { [key: string]: string; }
 
 
 export interface IPathResolverOptions {
-  enableTrace?: boolean;
+  isDebug?: boolean;
 }
 
 export const defaultOptions: IPathResolverOptions = {
-  enableTrace: false,
+  isDebug: false,
 }
 
 

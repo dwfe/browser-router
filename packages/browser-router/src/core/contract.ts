@@ -1,16 +1,16 @@
 import {IPath, IPathResolverOptions} from '@do-while-for-each/path-resolver'
 
 export interface IBrowserRouterOptions {
-  enableTrace?: boolean;
+  isDebug?: boolean;
   injectRouteActionsDataToComponent?: boolean;
   pathResolver?: IPathResolverOptions;
 }
 
 export const defaultOptions: IBrowserRouterOptions = {
-  enableTrace: false,
+  isDebug: true,
   injectRouteActionsDataToComponent: false,
   pathResolver: {
-    enableTrace: false,
+    isDebug: true,
   }
 }
 
