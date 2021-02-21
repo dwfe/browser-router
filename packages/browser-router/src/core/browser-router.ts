@@ -37,7 +37,7 @@ export class BrowserRouter<TComponent = any,
   }
 
   start(ctx?: TContext) {
-    this.gotoWithoutChangeLocation(this.currentPath, ctx)
+    this.gotoWithoutChangeLocation(ctx)
     this.history.listen(this.onLocationChange.bind(this))
   }
 
@@ -66,7 +66,7 @@ export class BrowserRouter<TComponent = any,
   goto(to: To, ctx?: TContext) {
     const path = Path.normalize(to);
     this.isSameLocation(path)
-      ? this.gotoWithoutChangeLocation(path, ctx)
+      ? this.gotoWithoutChangeLocation(ctx, path.hash)
       : this.history.push(path, ctx)
   }
 
@@ -99,13 +99,15 @@ export class BrowserRouter<TComponent = any,
    *  because we are already in the target location.
    *  We just need to find the route and activate it.
    */
-  gotoWithoutChangeLocation(path: IPath, ctx: TContext = null as TContext) {
+  gotoWithoutChangeLocation(ctx: TContext = null as TContext, hash?: string) {
+    const currentPath = this.currentPath
     const update: Update<TContext> = {
       action: Action.Push,
       location: {
         state: ctx,
         key: this.window.history.state?.key || 'default',
-        ...path as Required<IPath>
+        ...currentPath as Required<IPath>,
+        hash: hash || currentPath.hash // location has not changed, but hash can
       }
     }
     this.onLocationChange(update)
