@@ -13,16 +13,16 @@ export class Task<TComponent = any,
 
   static id = (path: IPath): string => Path.toString(path)
 
-  readonly route: Route<TComponent, TContext, TActionResult, TNote>
-  readonly parentRoute: Route<TComponent, TContext, TActionResult, TNote>
-  readonly routeActionData: IActionData<TContext>
+  route: Route<TComponent, TContext, TActionResult, TNote>
+  parentRoute: Route<TComponent, TContext, TActionResult, TNote>
+  routeActionData: IActionData<TContext>
   isCanceled = false // the task can be canceled if the user changed the location while the current one was being processed
   result: any // task result is either a redirect to another location, or a component for rendering
 
   private unblockNavigationFn: any // unblock function if 'canDeactivate' action is defined
 
-  constructor(public readonly id: string,
-              public readonly location: Location<TContext>,
+  constructor(public id: string,
+              public location: Location<TContext>,
               private resolved: PathResolveResult,
               private router: BrowserRouter<TComponent, TContext, TActionResult, TNote>) {
     this.route = resolved.route as Route<TComponent, TContext, TActionResult, TNote>

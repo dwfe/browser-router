@@ -5,7 +5,8 @@ import {cloneRoute} from '../common'
 export class PathResolver {
   routes: Routes = [];
 
-  constructor(routes: Routes, public readonly options = defaultOptions) {
+  constructor(routes: Routes,
+              public options = defaultOptions) {
     routes.forEach(r => {
       const route = cloneRoute(r)
 

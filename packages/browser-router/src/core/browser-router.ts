@@ -12,19 +12,19 @@ export class BrowserRouter<TComponent = any,
   TActionResult extends RoutingResult<TComponent> = RoutingResult<TComponent>,
   TNote = any> {
 
-  public readonly pathResolver: PathResolver
-  private readonly history: BrowserHistory<State> = createBrowserHistory() // https://github.com/ReactTraining/history/blob/master/docs/getting-started.md#basic-usage
-  private readonly locationHandler: LocationHandler // the every location change is processed in a separate task
+  public pathResolver: PathResolver
+  private history: BrowserHistory<State> = createBrowserHistory() // https://github.com/ReactTraining/history/blob/master/docs/getting-started.md#basic-usage
+  private locationHandler: LocationHandler // the every location change is processed in a separate task
 
-  private readonly window: WindowProxy & typeof globalThis
+  private window: WindowProxy & typeof globalThis
 
-  public readonly componentSubj = new Subject<{ // if routing result is component
+  public componentSubj = new Subject<{ // if routing result is component
     component: TComponent;
     routeActionData: IActionData<TContext>
   }>()
 
   constructor(routes: Routes,
-              public readonly options = defaultOptions) {
+              public options = defaultOptions) {
     this.pathResolver = new PathResolver(routes, options.pathResolver)
     this.locationHandler = new LocationHandler(this)
     if (!document?.defaultView)
@@ -37,7 +37,7 @@ export class BrowserRouter<TComponent = any,
   }
 
   start(ctx?: TContext) {
-    this.gotoWithoutChangingLocation(ctx)
+    this.gotoWithoutChangeLocation(ctx)
     this.history.listen(this.onLocationChange.bind(this))
   }
 
@@ -66,7 +66,7 @@ export class BrowserRouter<TComponent = any,
   goto(to: To, ctx?: TContext) {
     const path = Path.normalize(to);
     this.isSameLocation(path)
-      ? this.gotoWithoutChangingLocation(ctx)
+      ? this.gotoWithoutChangeLocation(ctx)
       : this.history.push(path, ctx)
   }
 
@@ -99,7 +99,7 @@ export class BrowserRouter<TComponent = any,
    *  because we are already in the target location.
    *  We just need to find the route and activate it.
    */
-  gotoWithoutChangingLocation(ctx: TContext = null as TContext) {
+  gotoWithoutChangeLocation(ctx: TContext = null as TContext) {
     const update: Update<TContext> = {
       action: Action.Push,
       location: {

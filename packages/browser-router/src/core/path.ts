@@ -3,13 +3,12 @@ import {To} from './contract'
 
 export class Path implements IPath {
 
-  static of({pathname, search, hash}: IPath): Path {
-    return new Path(Path.fixPathname(pathname), Path.fixSearch(search), Path.fixHash(hash))
-  }
-
-  constructor(public pathname: string,
+  constructor(public pathname?: string,
               public search?: string,
               public hash?: string) {
+    this.pathname = Path.normalizePathname(pathname)
+    this.search = Path.normalizeSearch(search)
+    this.hash = Path.normalizeHash(hash)
   }
 
   isEquals(path: IPath) {
@@ -40,19 +39,19 @@ export class Path implements IPath {
     return pathname + search + hash
   }
 
-  static fixPathname(pathname: string): string {
+  static normalizePathname(pathname: string): string {
     return pathname
       ? pathname[0] === '/' ? pathname : `/${pathname}`
       : '/'
   }
 
-  static fixSearch(search: string): string {
+  static normalizeSearch(search: string): string {
     return search
       ? search[0] === '?' ? search : `?${search}`
       : ''
   }
 
-  static fixHash(hash: string): string {
+  static normalizeHash(hash: string): string {
     return hash
       ? hash[0] === '#' ? hash : `#${hash}`
       : ''
@@ -60,7 +59,7 @@ export class Path implements IPath {
 
   static normalize(to: To): IPath {
     const {pathname, search, hash} = typeof to === 'string'
-      ? new URL(window.location.origin + Path.fixPathname(to))
+      ? new URL(window.location.origin + Path.normalizePathname(to))
       : to
     return {pathname, search, hash}
   }

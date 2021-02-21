@@ -118,6 +118,7 @@ export interface RoutingResult<TComponent = any, TContext extends RouteContext =
 
 #### TODO
 
+- Path.normalizePathname, а если location /app/123 и там сделать переход "hello/world"
 - привести в соответсвии с URL свойствами
 - сделать чистый бандл
   - [чтобы без косяков](https://www.opennet.ru/opennews/art.shtml?num=54566)
