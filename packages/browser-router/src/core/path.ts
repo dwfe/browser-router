@@ -41,6 +41,10 @@ export class Path implements IPath {
     return pathname + search + hash
   }
 
+  static parse(path: string): URL {
+    return new URL(window.location.origin + Path.normalizePathname(path))
+  }
+
   /**
    * Interface IPath can implement a wide variety of objects.
    * But using the passed object directly can lead to unexpected problems.
@@ -48,7 +52,7 @@ export class Path implements IPath {
    */
   static normalize(to: To): IPath {
     const path = typeof to === 'string'
-      ? new URL(window.location.origin + Path.normalizePathname(to))
+      ? Path.parse(to)
       : to
     return {
       pathname: Path.normalizePathname(path.pathname),
