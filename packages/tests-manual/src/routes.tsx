@@ -1,10 +1,10 @@
-import {container} from 'tsyringe'
 import {Route, RoutingResult} from '@do-while-for-each/path-resolver'
 import {Location} from '@do-while-for-each/browser-router'
 import React, {ReactElement} from 'react'
+import {container} from 'tsyringe'
 import {AuthService, CanDeactivatePage, FirstPage, IndexPage, LoginPage, PicPage, ProtectedByAuthorization, SecondPage} from './pages'
+import {CanDeactivateService} from './pages/CanDeactivate/can-deactivate.service'
 import {Ctx, IRouteNote, NotFoundPage, RouteActionData} from './routing'
-import {CanDeactivateService} from './pages/CanDeactivate/can-deactivate.service';
 
 
 export const routes: Route<ReactElement, Ctx, RoutingResult<ReactElement>, IRouteNote>[] = [

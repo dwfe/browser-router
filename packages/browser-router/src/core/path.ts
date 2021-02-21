@@ -39,6 +39,22 @@ export class Path implements IPath {
     return pathname + search + hash
   }
 
+  /**
+   * Interface IPath can implement a wide variety of objects.
+   * But using the passed object directly can lead to unexpected problems.
+   * Therefore, the object is truncated exactly to the composition of the IPath fields.
+   */
+  static normalize(to: To): IPath {
+    const path = typeof to === 'string'
+      ? new URL(window.location.origin + Path.normalizePathname(to))
+      : to
+    return {
+      pathname: Path.normalizePathname(path.pathname),
+      search: Path.normalizeSearch(path.search),
+      hash: Path.normalizeHash(path.hash)
+    }
+  }
+
   static normalizePathname(pathname: string): string {
     return pathname
       ? pathname[0] === '/' ? pathname : `/${pathname}`
@@ -55,22 +71,6 @@ export class Path implements IPath {
     return hash
       ? hash[0] === '#' ? hash : `#${hash}`
       : ''
-  }
-
-  /**
-   * Interface IPath can implement a wide variety of objects.
-   * But using the passed object directly can lead to unexpected problems.
-   * Therefore, the object is truncated exactly to the composition of the IPath fields.
-   */
-  static normalize(to: To): IPath {
-    const path = typeof to === 'string'
-      ? new URL(window.location.origin + Path.normalizePathname(to))
-      : to
-    return {
-      pathname: Path.normalizePathname(path.pathname),
-      search: Path.normalizeSearch(path.search),
-      hash: Path.normalizeHash(path.hash)
-    }
   }
 
 }
