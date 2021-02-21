@@ -3,9 +3,9 @@ import {To} from './contract'
 
 export class Path implements IPath {
 
-  pathname: string;
-  search: string;
-  hash: string;
+  pathname: string
+  search: string
+  hash: string
 
   constructor(to: To) {
     const path = Path.normalize(to)
