@@ -57,7 +57,7 @@ export class Path implements IPath {
       : ''
   }
 
-  static normalize(to: To): IPath {
+  static normalizeTo(to: To): IPath {
     const {pathname, search, hash} = typeof to === 'string'
       ? new URL(window.location.origin + Path.normalizePathname(to))
       : to

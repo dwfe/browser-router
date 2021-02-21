@@ -33,7 +33,7 @@ export class BrowserRouter<TComponent = any,
   }
 
   get currentPath(): IPath {
-    return Path.normalize(this.window.location)
+    return Path.normalizeTo(this.window.location)
   }
 
   start(ctx?: TContext) {
@@ -64,14 +64,14 @@ export class BrowserRouter<TComponent = any,
 
 
   goto(to: To, ctx?: TContext) {
-    const path = Path.normalize(to);
+    const path = Path.normalizeTo(to);
     this.isSameLocation(path)
       ? this.gotoWithoutChangeLocation(ctx, path.hash)
       : this.history.push(path, ctx)
   }
 
   redirect(to: To, ctx?: TContext) {
-    this.history.replace(Path.normalize(to), ctx)
+    this.history.replace(Path.normalizeTo(to), ctx)
   }
 
   goBack() {
