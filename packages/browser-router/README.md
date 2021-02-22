@@ -135,7 +135,6 @@ export interface RoutingResult<TComponent = any, TContext extends RouteContext =
     - протестировано
 - может быть добавить доп. remote repo на github и линки всякие на него указывать?
 - option: collecting statistics on the frequency of routes usage
-- tests for BrowserRouter
 - tests for PathResolver.correctResultFromAction
 
 - ActivatedRoute - https://angular.io/guide/router#getting-route-information
