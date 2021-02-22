@@ -15,8 +15,8 @@ export class Task<TComponent = any,
   route: Route<TComponent, TContext, TActionResult, TNote>
   parentRoute: Route<TComponent, TContext, TActionResult, TNote>
   routeActionData: IActionData<TContext>
-  isCanceled = false // the task can be canceled if the user changed the location while the current one was being processed
-  result: any // task result is either a redirect to another location, or a component for rendering
+  isCanceled = false // task can be canceled if the user changed the location while the current one was being processed
+  result: () => void // task result is either a redirect to another location or a component for rendering
 
   private unblockNavigationFn: any // unblock function if 'canDeactivate' action is defined
 
@@ -229,8 +229,8 @@ export class Task<TComponent = any,
     return this.router.pathResolver
   }
 
-  private log(text: string) {
-    this.router.log(this.id, text)
+  private log(...args) {
+    this.router.log(this.id, ...args)
   }
 
 //endregion
