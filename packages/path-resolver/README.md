@@ -11,8 +11,8 @@ export interface Route<TComponent = any,
 
   path: string; // see syntax here: https://github.com/pillarjs/path-to-regexp#readme
 
-  canActivate?: (data: IActionData<TContext, TNote>) => Promise<TActionResult>;
-  canDeactivate?: (tryRelocation: Location<TContext>, data: IActionData<TContext, TNote>) => Promise<boolean>;
+  canActivate?: (data: IActionData<TNote, TContext>) => Promise<TActionResult>;
+  canDeactivate?: (tryRelocation: Location<TContext>, data: IActionData<TNote, TContext>) => Promise<boolean>;
 
   /**
    * part extended from RoutingResult:
@@ -21,7 +21,7 @@ export interface Route<TComponent = any,
    *  - component?: TComponent;
    */
 
-  action?: (data: IActionData<TContext, TNote>) => Promise<TActionResult>;
+  action?: (data: IActionData<TNote, TContext>) => Promise<TActionResult>;
 
   children?: Routes;
 

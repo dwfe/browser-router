@@ -19,7 +19,7 @@ export class BrowserRouter<TComponent = any, TNote = any,
 
   public componentSubj = new Subject<{ // if routing result is component
     component: TComponent;
-    routeActionData: IActionData<TContext, TNote>
+    routeActionData: IActionData<TNote, TContext>
   }>()
 
   constructor(routes: Routes,

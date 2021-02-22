@@ -1,5 +1,28 @@
 import {Location} from 'history'
 
+export interface IPathResolveResult {
+  route: Route;
+  pathParams: TPathParams;
+  parentRoute?: Route;
+}
+
+export interface IPathResolverOptions {
+  isDebug?: boolean;
+}
+
+export const defaultOptions: IPathResolverOptions = {
+  isDebug: false,
+}
+
+export type TPathParams = { [key: string]: string; }
+
+export interface IPath {
+  pathname?: string;
+  search?: string;
+  hash?: string;
+}
+
+
 export type Routes = Route[]
 
 export interface Route<TComponent = any, TNote = any,
@@ -8,14 +31,14 @@ export interface Route<TComponent = any, TNote = any,
 
   path: string; // see syntax here: https://github.com/pillarjs/path-to-regexp#readme
 
-  canActivate?: (data: IActionData<TContext, TNote>) => Promise<TActionResult>;
-  canDeactivate?: (tryRelocation: Location<TContext>, data: IActionData<TContext, TNote>) => Promise<boolean>;
+  canActivate?: (data: IActionData<TNote, TContext>) => Promise<TActionResult>;
+  canDeactivate?: (tryRelocation: Location<TContext>, data: IActionData<TNote, TContext>) => Promise<boolean>;
 
   redirectTo?: string;
   customTo?: ICustomTo;
   component?: TComponent;
 
-  action?: (data: IActionData<TContext, TNote>) => Promise<TActionResult>;
+  action?: (data: IActionData<TNote, TContext>) => Promise<TActionResult>;
 
   children?: Routes;
 
@@ -24,13 +47,7 @@ export interface Route<TComponent = any, TNote = any,
   name?: string;
 }
 
-export interface IPathResolveResult {
-  route: Route;
-  pathParams: TPathParams;
-  parentRoute?: Route;
-}
-
-export interface IActionData<TContext extends TRouteContext = TRouteContext, TNote = any> {
+export interface IActionData<TNote = any, TContext extends TRouteContext = TRouteContext> {
 
   target: IActionDataTarget;
 
@@ -45,7 +62,7 @@ export interface IActionData<TContext extends TRouteContext = TRouteContext, TNo
 
   note?: TNote; // note field defined in the route
 
-  previous?: IActionData<TContext, TNote>;
+  previous?: IActionData<TNote, TContext>;
 
   /**
    * A unique string associated with this location. May be used to safely store
@@ -66,33 +83,14 @@ export interface IActionResult<TComponent = any> {
   skip?: boolean; // if 'true' then stage 'CanActivate' will skip the processing to next stage
 }
 
-export type TRouteContext = {
-  previousActionData?: IActionData<TRouteContext>;
-} | null // because history package type 'State' = object | null
-
+export interface IActionDataTarget extends IPath {
+  pathParams: TPathParams;
+}
 
 export interface ICustomTo extends IPath {
   isRedirect?: boolean; // if not set, it equals 'true'
 }
 
-export interface IActionDataTarget extends IPath {
-  pathParams: TPathParams;
-}
-
-export type TPathParams = object | { [key: string]: string; }
-
-
-export interface IPathResolverOptions {
-  isDebug?: boolean;
-}
-
-export const defaultOptions: IPathResolverOptions = {
-  isDebug: false,
-}
-
-
-export interface IPath {
-  pathname?: string;
-  search?: string;
-  hash?: string;
-}
+export type TRouteContext = {
+  previousActionData?: IActionData<TRouteContext>;
+} | null // because history package type 'State' = object | null

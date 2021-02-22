@@ -1,5 +1,5 @@
 import {compile, match as matcher, MatchResult} from 'path-to-regexp'
-import {defaultOptions, IActionResult, IPathResolveResult, Route, Routes} from './contract'
+import {defaultOptions, IActionResult, IPathResolveResult, Route, Routes, TPathParams} from './contract'
 import {Clone} from './clone'
 import {Init} from './init'
 
@@ -21,7 +21,7 @@ export class PathResolver {
 
     for (let i = 0; i < routes.length; i++) {
       let route = routes[i]
-      const match: MatchResult<object> | false = matcher(route.path)(pathname)
+      const match: MatchResult<TPathParams> | false = matcher<TPathParams>(route.path)(pathname)
       this.log(`[${match ? 'v' : 'x'}] ${route.path}`)
 
       if (match && !PathResolver.needToMatchChildren(route)) {
@@ -48,7 +48,7 @@ export class PathResolver {
     result.redirectTo = Init.to(result.redirectTo, parentPath)
     result.customTo = Init.customTo(result.customTo, parentPath)
 
-    const match: MatchResult<object> | false = matcher(route.path)(pathname)
+    const match: MatchResult<TPathParams> | false = matcher<TPathParams>(route.path)(pathname)
     if (match) {
       const pathParams = match.params
       if (result.redirectTo !== undefined) {

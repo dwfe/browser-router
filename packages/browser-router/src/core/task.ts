@@ -13,7 +13,7 @@ export class Task<TComponent = any, TNote = any,
 
   route: Route<TComponent, TNote, TActionResult, TContext>
   parentRoute: Route<TComponent, TNote, TActionResult, TContext>
-  routeActionData: IActionData<TContext, TNote>
+  routeActionData: IActionData<TNote, TContext>
   isCanceled = false // task can be canceled if the user changed the location while the current one was being processed
   result: () => void // task result is either a redirect to another location or a component for rendering
 
@@ -117,9 +117,9 @@ export class Task<TComponent = any, TNote = any,
 
 //region Handlers
 
-  private getRouteActionData(): IActionData<TContext, TNote> {
+  private getRouteActionData(): IActionData<TNote, TContext> {
     let {pathname, search, hash, state, key} = this.location
-    const previous = state?.previousActionData as IActionData<TContext, TNote>
+    const previous = state?.previousActionData as IActionData<TNote, TContext>
     if (previous) {
       delete state?.previousActionData
       if (state && Object.keys(state as object).length === 0)
@@ -157,7 +157,7 @@ export class Task<TComponent = any, TNote = any,
     return component
   }
 
-  private async invokeAction(action: (data: IActionData<TContext, TNote>) => Promise<TActionResult>, name: string, stage: string): Promise<void> {
+  private async invokeAction(action: (data: IActionData<TNote, TContext>) => Promise<TActionResult>, name: string, stage: string): Promise<void> {
     let actionResult: TActionResult
     try {
       actionResult = await action(this.routeActionData) as TActionResult

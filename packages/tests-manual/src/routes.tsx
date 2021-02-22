@@ -7,7 +7,7 @@ import {CanDeactivateService} from './pages/CanDeactivate/can-deactivate.service
 import {Ctx, IRouteNote, NotFoundPage, RouteActionData} from './routing'
 
 
-export const routes: Route<ReactElement, Ctx, IActionResult<ReactElement>, IRouteNote>[] = [
+export const routes: Route<ReactElement, IRouteNote, IActionResult<ReactElement>, Ctx>[] = [
   {path: '', component: <IndexPage/>, note: {title: 'Index'}},
   {
     path: 'first', component: <FirstPage/>, note: {title: 'First page'}, children: [
