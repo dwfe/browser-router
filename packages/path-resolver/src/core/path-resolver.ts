@@ -1,6 +1,7 @@
 import {compile, match} from 'path-to-regexp'
-import {defaultOptions, ICustomTo, PathResolveResult, Route, Routes, RoutingResult} from './contract'
+import {defaultOptions, PathResolveResult, Route, Routes, RoutingResult} from './contract'
 import {Clone} from './clone'
+import {Init} from './init'
 
 export class PathResolver {
   routes: Routes = [];
@@ -10,17 +11,16 @@ export class PathResolver {
     routes.forEach(r => {
       const route = Clone.route(r)
 
-      if (route.path[0] === '/')
-        throw errorLeadSlash(route.path)
+      Init.checkLeadSlash(route.path)
 
       // Step 1. All root paths get a prefix '/'
-      route.path = init.calcPath(route.path, '/')
-      route.redirectTo = init.calcTo(route.redirectTo, '/')
-      route.customTo = init.calcCustomTo(route.customTo, '/')
+      route.path = Init.path(route.path, '/')
+      route.redirectTo = Init.to(route.redirectTo, '/')
+      route.customTo = Init.customTo(route.customTo, '/')
 
       // Step 2. All children paths are obtained as follows:
       //         [full parent path] + '/' + [child path]
-      route.children = init.children(route)
+      route.children = Init.children(route)
 
       this.routes.push(route)
     })
@@ -40,7 +40,7 @@ export class PathResolver {
       const matching = match(route.path)(pathname)
       this.log(`[${!!matching ? 'v' : 'x'}] ${route.path}`)
 
-      if (matching && !needToMatchChildren(route)) {
+      if (matching && !PathResolver.needToMatchChildren(route)) {
         const pathParams = matching.params
         if (route.redirectTo) {
           route.redirectTo = compile(route.redirectTo)(pathParams)
@@ -61,8 +61,8 @@ export class PathResolver {
       return;
 
     const parentPath = parentRoute ? parentRoute.path : '/'
-    result.redirectTo = init.calcTo(result.redirectTo, parentPath)
-    result.customTo = init.calcCustomTo(result.customTo, parentPath)
+    result.redirectTo = Init.to(result.redirectTo, parentPath)
+    result.customTo = Init.customTo(result.customTo, parentPath)
 
     const matching = match(route.path)(pathname)
     if (matching) {
@@ -81,63 +81,9 @@ export class PathResolver {
       console.log(' ', path)
   }
 
+  static needToMatchChildren({redirectTo, component, children}: Route): boolean {
+    return redirectTo === undefined && component === undefined // if 'redirectTo' and 'component' are omitted
+      && children !== undefined && children.length > 0         // but children are available
+  }
+
 }
-
-export const init = {
-  calcPath: (path, parentPath): string => {
-    if (path === '') {
-      return parentPath
-    } else {
-      const prefix = parentPath === '/' ? '' : parentPath
-      return prefix + '/' + path
-    }
-  },
-  calcTo: (to, parentPath): string | undefined => {
-    if (typeof to === 'string') {
-      if (to === '')
-        return parentPath
-      else if (to[0] === '/')
-        return to
-      else {
-        const prefix = parentPath === '/' ? '/' : parentPath + '/'
-        return prefix + to
-      }
-    }
-  },
-  calcCustomTo: function (to: ICustomTo | undefined, parentPath): ICustomTo | undefined {
-    if (to) {
-      to.pathname = this.calcTo(to.pathname, parentPath) as string
-      return to
-    }
-  },
-  children: function ({path: parentPath, children: routes}: Route): Routes | undefined {
-    if (!routes)
-      return;
-
-    const children: Routes = []
-    for (let i = 0; i < routes.length; i++) {
-      const route = Clone.route(routes[i])
-      const {path} = route
-
-      if (path[0] === '/')
-        throw errorLeadSlash(path)
-
-      children.push(route)
-
-      route.path = this.calcPath(path, parentPath)
-      route.redirectTo = this.calcTo(route.redirectTo, parentPath)
-      route.customTo = this.calcCustomTo(route.customTo, parentPath)
-      route.children = this.children(route)
-    }
-    return children
-  },
-}
-
-const needToMatchChildren = ({redirectTo, component, children}: Route): boolean =>
-  redirectTo === undefined && component === undefined // if 'redirectTo' and 'component' are omitted
-  && children !== undefined && children.length > 0    // but children are available
-;
-
-const errorLeadSlash = (path: string) =>
-  new Error(`Invalid configuration of route, because path [ ${path} ] cannot start with a slash`)
-;

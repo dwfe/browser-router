@@ -58,9 +58,7 @@ export class Path implements IPath {
    * Therefore, the object is truncated exactly to the composition of the IPath fields.
    */
   static normalize(to: To): Required<IPath> {
-    const path = typeof to === 'string'
-      ? Path.parse(to)
-      : to
+    const path = typeof to === 'string' ? Path.parse(to) : to
     return {
       pathname: Path.normalizePathname(path.pathname),
       search: Path.normalizeSearch(path.search),

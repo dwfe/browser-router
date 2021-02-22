@@ -1,7 +1,7 @@
 import {describe, expect, test} from '@jest/globals'
-import {Route} from '../..'
 import {lengthCheck, Traverse} from './common/common'
-import {initFlat} from './common/environment';
+import {initFlat} from './common/environment'
+import {Route} from '../..'
 
 describe(`note`, () => {
   const {flatRoutes, flatPathResolverRoutes, flatRoutesCheck} = initFlat()

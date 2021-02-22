@@ -1,7 +1,8 @@
 import {describe, expect, test} from '@jest/globals'
-import {init, Route} from '../..'
 import {lengthCheck, Traverse} from './common/common'
-import {initFlat} from './common/environment';
+import {initFlat} from './common/environment'
+import {Init} from '../core/init'
+import {Route} from '../..'
 
 describe(`to`, () => {
   const {flatRoutes, flatPathResolverRoutes, flatRoutesCheck} = initFlat()
@@ -15,7 +16,7 @@ describe(`to`, () => {
         expect(flatRoutesCheck[totalCount].redirectTo).toBeUndefined()
       } else {
         // [redirectTo] routes + init.calcTo === pathResolver.routes
-        expect(route.redirectTo).toEqual(init.calcTo(flatRoutes[totalCount].redirectTo, route['parentRoute'].path))
+        expect(route.redirectTo).toEqual(Init.to(flatRoutes[totalCount].redirectTo, route['parentRoute'].path))
 
         // [redirectTo] routesCheck === pathResolver.routes
         expect(route.redirectTo).toEqual(flatRoutesCheck[totalCount].redirectTo)
@@ -30,7 +31,7 @@ describe(`to`, () => {
         expect(flatRoutesCheck[totalCount].customTo).toBeUndefined()
       } else {
         // [customTo] routes + init.calcCustomTo === pathResolver.routes
-        expect(route.customTo).toEqual(init.calcCustomTo(flatRoutes[totalCount].customTo, route['parentRoute'].path))
+        expect(route.customTo).toEqual(Init.customTo(flatRoutes[totalCount].customTo, route['parentRoute'].path))
 
         // [customTo] routesCheck === pathResolver.routes
         expect(route.customTo).toEqual(flatRoutesCheck[totalCount].customTo)

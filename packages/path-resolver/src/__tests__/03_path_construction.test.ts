@@ -1,7 +1,8 @@
 import {describe, expect, test} from '@jest/globals'
-import {init, Route} from '../..'
 import {lengthCheck, Traverse} from './common/common'
 import {initFlat} from './common/environment'
+import {Init} from '../core/init'
+import {Route} from '../..'
 
 describe(`path construction`, () => {
   const {flatRoutes, flatPathResolverRoutes, flatRoutesCheck} = initFlat()
@@ -16,7 +17,7 @@ describe(`path construction`, () => {
       // [path] routes + init.calcPath === pathResolver.routes
       const parentRoute = flatRoutesCheck[totalCount]['parentRoute']
       const parentPath = parentRoute === null ? '/' : parentRoute.path
-      expect(route.path).toEqual(init.calcPath(flatRoutes[totalCount].path, parentPath))
+      expect(route.path).toEqual(Init.path(flatRoutes[totalCount].path, parentPath))
 
       // [path] routesCheck === pathResolver.routes
       expect(route.path).toEqual(flatRoutesCheck[totalCount].path)

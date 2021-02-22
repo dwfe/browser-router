@@ -1,7 +1,7 @@
-import {describe, expect, test} from '@jest/globals';
-import {PathResolveResult, Route} from '../..';
-import {initFlat} from './common/environment';
-import {Traverse} from './common/common';
+import {describe, expect, test} from '@jest/globals'
+import {PathResolveResult, Route} from '../..'
+import {initFlat} from './common/environment'
+import {Traverse} from './common/common'
 
 describe(`resolve`, () => {
   const {pathResolver, flatPathResolverRoutes, flatRoutesCheck} = initFlat()

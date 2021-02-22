@@ -1,8 +1,8 @@
 import {describe, expect, test} from '@jest/globals'
-import {PathResolver, Route} from '../..'
-import {routesCheck} from './routes/routes.check'
-import {routes} from './routes/routes'
 import {lengthCheck, routesFlat, Traverse} from './common/common'
+import {routesCheck} from './routes/routes.check'
+import {PathResolver, Route} from '../..'
+import {routes} from './routes/routes'
 
 describe(`clone`, () => {
   const pathResolver = new PathResolver(routes)

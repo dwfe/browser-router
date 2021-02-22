@@ -1,6 +1,6 @@
 import {Location} from 'history'
 
-export type Routes = Route[];
+export type Routes = Route[]
 
 export interface Route<TComponent = any,
   TContext extends RouteContext = RouteContext,
