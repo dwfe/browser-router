@@ -1,6 +1,6 @@
 import {compile, match} from 'path-to-regexp'
 import {defaultOptions, ICustomTo, PathResolveResult, Route, Routes, RoutingResult} from './contract'
-import {cloneRoute} from '../common'
+import {Clone} from './clone'
 
 export class PathResolver {
   routes: Routes = [];
@@ -8,7 +8,7 @@ export class PathResolver {
   constructor(routes: Routes,
               public options = defaultOptions) {
     routes.forEach(r => {
-      const route = cloneRoute(r)
+      const route = Clone.route(r)
 
       if (route.path[0] === '/')
         throw errorLeadSlash(route.path)
@@ -36,7 +36,7 @@ export class PathResolver {
       return;
 
     for (let i = 0; i < routes.length; i++) {
-      const route = cloneRoute(routes[i])
+      const route = Clone.route(routes[i])
       const matching = match(route.path)(pathname)
       this.log(`[${!!matching ? 'v' : 'x'}] ${route.path}`)
 
@@ -116,7 +116,7 @@ export const init = {
 
     const children: Routes = []
     for (let i = 0; i < routes.length; i++) {
-      const route = cloneRoute(routes[i])
+      const route = Clone.route(routes[i])
       const {path} = route
 
       if (path[0] === '/')
