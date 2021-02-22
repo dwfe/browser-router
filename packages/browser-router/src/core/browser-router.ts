@@ -32,8 +32,8 @@ export class BrowserRouter<TComponent = any,
     this.window = document.defaultView
   }
 
-  get currentPath(): IPath {
-    return Path.normalize(this.window.location)
+  get currentPath(): Path {
+    return Path.of(this.window.location)
   }
 
   start(ctx?: TContext) {
@@ -100,13 +100,13 @@ export class BrowserRouter<TComponent = any,
    *  We just need to find the route and activate it.
    */
   gotoWithoutChangeLocation(ctx: TContext = null as TContext, hash?: string) {
-    const currentPath = this.currentPath
+    const currentPath = this.currentPath.simplify() as Required<IPath>
     const update: Update<TContext> = {
       action: Action.Push,
       location: {
         state: ctx,
         key: this.window.history.state?.key || 'default',
-        ...currentPath as Required<IPath>,
+        ...currentPath,
         hash: hash || currentPath.hash // location has not changed, but hash can
       }
     }
@@ -126,7 +126,7 @@ export class BrowserRouter<TComponent = any,
   }
 
   isSameLocation(path: IPath): boolean {
-    return Path.isEqualsLocation(this.currentPath, path)
+    return this.currentPath.isLocationEquals(path)
   }
 
 //endregion

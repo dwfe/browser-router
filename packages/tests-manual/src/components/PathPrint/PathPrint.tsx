@@ -7,7 +7,7 @@ export function PathPrint() {
   return (
     <div className="PathPrint">
       {/*<p className="PathPrint_text">path:</p>*/}
-      <p className="PathPrint_code">{new Path(window.location).toString()}</p>
+      <p className="PathPrint_code">{`${Path.of(window.location)}`}</p>
     </div>
   );
 }

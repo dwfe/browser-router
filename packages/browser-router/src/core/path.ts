@@ -3,27 +3,30 @@ import {To} from './contract'
 
 export class Path implements IPath {
 
-  pathname: string
-  search: string
-  hash: string
+  static of(to: To): Path {
+    const {pathname, search, hash} = Path.normalize(to)
+    return new Path(pathname, search, hash)
+  }
 
-  constructor(to: To) {
-    const path = Path.normalize(to)
-    this.pathname = path.pathname
-    this.search = path.search
-    this.hash = path.hash
+  constructor(public pathname: string,
+              public search: string,
+              public hash: string) {
   }
 
   isEquals(path: IPath) {
     return Path.isEquals(this, path)
   }
 
-  isEqualsLocation(path: IPath) {
-    return Path.isEqualsLocation(this, path)
+  isLocationEquals(path: IPath) {
+    return Path.isLocationEquals(this, path)
   }
 
   toString() {
     return Path.toString(this)
+  }
+
+  simplify(): IPath {
+    return Path.normalize(this)
   }
 
 
@@ -33,7 +36,7 @@ export class Path implements IPath {
       && p1.hash === p2.hash
   }
 
-  static isEqualsLocation(p1: IPath, p2: IPath): boolean {
+  static isLocationEquals(p1: IPath, p2: IPath): boolean {
     return p1.pathname === p2.pathname
       && p1.search === p2.search
   }
