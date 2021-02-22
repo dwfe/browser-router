@@ -3,6 +3,16 @@ import {Clone} from './clone'
 
 export class Init {
 
+  static route(r: Route, parentPath: string): Route {
+    Init.checkLeadSlash(r.path)
+    const route = Clone.route(r)
+    route.path = Init.path(route.path, parentPath)
+    route.redirectTo = Init.to(route.redirectTo, parentPath)
+    route.customTo = Init.customTo(route.customTo, parentPath)
+    route.children = Init.children(route)
+    return route
+  }
+
   static path(path, parentPath): string {
     if (path === '') {
       return parentPath
@@ -32,25 +42,8 @@ export class Init {
     }
   }
 
-  static children({path: parentPath, children: routes}: Route): Routes | undefined {
-    if (!routes)
-      return;
-
-    const children: Routes = []
-    for (let i = 0; i < routes.length; i++) {
-      const route = Clone.route(routes[i])
-      const {path} = route
-
-      Init.checkLeadSlash(path)
-
-      children.push(route)
-
-      route.path = Init.path(path, parentPath)
-      route.redirectTo = Init.to(route.redirectTo, parentPath)
-      route.customTo = Init.customTo(route.customTo, parentPath)
-      route.children = Init.children(route)
-    }
-    return children
+  static children({path: parentPath, children}: Route): Routes | undefined {
+    return children?.map(route => Init.route(route, parentPath))
   }
 
   static checkLeadSlash(path: string) {
