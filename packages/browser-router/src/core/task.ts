@@ -123,9 +123,8 @@ export class Task<TComponent = any,
     const previous = state?.previousActionData as IActionData<TContext>
     if (previous) {
       delete state?.previousActionData
-      if (state && Object.keys(state as object).length === 0) {
+      if (state && Object.keys(state as object).length === 0)
         state = null as TContext
-      }
     }
     return {
       target: {
