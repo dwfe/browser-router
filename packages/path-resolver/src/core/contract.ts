@@ -4,7 +4,7 @@ export type Routes = Route[]
 
 export interface Route<TComponent = any,
   TContext extends RouteContext = RouteContext,
-  TActionResult extends RoutingResult<TComponent> = RoutingResult<TComponent>,
+  TActionResult extends IActionResult<TComponent> = IActionResult<TComponent>,
   TNote = any> {
 
   path: string; // see syntax here: https://github.com/pillarjs/path-to-regexp#readme
@@ -25,16 +25,10 @@ export interface Route<TComponent = any,
   name?: string;
 }
 
-export type RouteContext = {
-  previousActionData?: IActionData<RouteContext>;
-} | null // because history package type 'State' = object | null
-
-
-export interface RoutingResult<TComponent = any> {
-  redirectTo?: string;
-  customTo?: ICustomTo;
-  component?: TComponent;
-  skip?: boolean; // if 'true' then stage 'CanActivate' will skip the processing to next stage
+export interface PathResolveResult {
+  route: Route;
+  pathParams: PathParams;
+  parentRoute?: Route;
 }
 
 export interface IActionData<TContext extends RouteContext = RouteContext, TNote = any> {
@@ -66,11 +60,17 @@ export interface IActionData<TContext extends RouteContext = RouteContext, TNote
 
 }
 
-export interface PathResolveResult {
-  route: Route;
-  pathParams: PathParams;
-  parentRoute?: Route;
+export interface IActionResult<TComponent = any> {
+  redirectTo?: string;
+  customTo?: ICustomTo;
+  component?: TComponent;
+  skip?: boolean; // if 'true' then stage 'CanActivate' will skip the processing to next stage
 }
+
+export type RouteContext = {
+  previousActionData?: IActionData<RouteContext>;
+} | null // because history package type 'State' = object | null
+
 
 export interface ICustomTo extends IPath {
   isRedirect?: boolean; // if not set, it equals 'true'

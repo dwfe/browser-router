@@ -1,11 +1,11 @@
-import {RouteContext, RoutingResult} from '@do-while-for-each/path-resolver'
+import {IActionResult, RouteContext} from '@do-while-for-each/path-resolver'
 import {Location} from 'history'
 import {BrowserRouter} from './browser-router'
 import {Task} from './task'
 
 export class LocationHandler<TComponent = any,
   TContext extends RouteContext = RouteContext,
-  TActionResult extends RoutingResult<TComponent> = RoutingResult<TComponent>,
+  TActionResult extends IActionResult<TComponent> = IActionResult<TComponent>,
   TNote = any> {
 
   private tasks = new Map<string, Task>()

@@ -1,5 +1,5 @@
 import {compile, match as matcher, MatchResult} from 'path-to-regexp'
-import {defaultOptions, PathResolveResult, Route, Routes, RoutingResult} from './contract'
+import {defaultOptions, IActionResult, PathResolveResult, Route, Routes} from './contract'
 import {Clone} from './clone'
 import {Init} from './init'
 
@@ -40,7 +40,7 @@ export class PathResolver {
     }
   }
 
-  correctResultFromAction(pathname: string, result: RoutingResult, route: Route, parentRoute?: Route) {
+  correctResultFromAction(pathname: string, result: IActionResult, route: Route, parentRoute?: Route) {
     if (result.redirectTo === undefined && result.customTo === undefined)
       return;
 

@@ -1,4 +1,4 @@
-import {IActionData, IPath, PathResolver, PathResolveResult, Route, RouteContext, RoutingResult} from '@do-while-for-each/path-resolver'
+import {IActionData, IActionResult, IPath, PathResolver, PathResolveResult, Route, RouteContext} from '@do-while-for-each/path-resolver'
 import {Blocker, Location, Transition} from 'history'
 import React from 'react'
 import {IBrowserRouterOptions} from './contract'
@@ -7,7 +7,7 @@ import {Path} from './path'
 
 export class Task<TComponent = any,
   TContext extends RouteContext = RouteContext,
-  TActionResult extends RoutingResult<TComponent> = RoutingResult<TComponent>,
+  TActionResult extends IActionResult<TComponent> = IActionResult<TComponent>,
   TNote = any> {
 
   static id = (path: IPath): string => Path.of(path).toString()
@@ -55,7 +55,7 @@ export class Task<TComponent = any,
     await this.invokeAction(this.route.canActivate, 'canActivate', stage)
   }
 
-  private async stageProcessResult({redirectTo, customTo, component, skip}: RoutingResult<TComponent>): Promise<boolean | undefined> {
+  private async stageProcessResult({redirectTo, customTo, component, skip}: IActionResult<TComponent>): Promise<boolean | undefined> {
     if (this.isCompleted())
       return;
     this.log('process result')

@@ -1,4 +1,4 @@
-import {IActionData, IPath, PathResolver, RouteContext, Routes, RoutingResult} from '@do-while-for-each/path-resolver'
+import {IActionData, IActionResult, IPath, PathResolver, RouteContext, Routes} from '@do-while-for-each/path-resolver'
 import {Action, Blocker, BrowserHistory, createBrowserHistory, State, Update} from 'history'
 import {distinctUntilChanged, filter, shareReplay} from 'rxjs/operators'
 import {Subject} from 'rxjs'
@@ -9,7 +9,7 @@ import {Task} from './task'
 
 export class BrowserRouter<TComponent = any,
   TContext extends RouteContext = RouteContext,
-  TActionResult extends RoutingResult<TComponent> = RoutingResult<TComponent>,
+  TActionResult extends IActionResult<TComponent> = IActionResult<TComponent>,
   TNote = any> {
 
   public pathResolver: PathResolver
