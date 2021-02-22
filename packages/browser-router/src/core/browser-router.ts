@@ -36,18 +36,18 @@ export class BrowserRouter<TComponent = any,
     return Path.of(this.window.location)
   }
 
-  start(ctx?: TContext) {
+  start(ctx?: TContext): void {
     this.gotoWithoutChangeLocation(ctx)
     this.history.listen(this.onLocationChange.bind(this))
   }
 
-  private onLocationChange({location}: Update<TContext>) {
+  private onLocationChange({location}: Update<TContext>): void {
     this.locationHandler
       .processLocation(location)
       .then(task => this.routeActivation(task))
   }
 
-  private routeActivation(task?: Task) {
+  private routeActivation(task?: Task): void {
     if (!task)
       return;
     const {isCanceled, result, id} = task
@@ -63,26 +63,26 @@ export class BrowserRouter<TComponent = any,
   )
 
 
-  goto(to: To, ctx?: TContext) {
+  goto(to: To, ctx?: TContext): void {
     const path = Path.normalize(to);
     this.isSameLocation(path)
       ? this.gotoWithoutChangeLocation(ctx, path.hash)
       : this.history.push(path, ctx)
   }
 
-  redirect(to: To, ctx?: TContext) {
+  redirect(to: To, ctx?: TContext): void {
     this.history.replace(Path.normalize(to), ctx)
   }
 
-  goBack() {
+  goBack(): void {
     this.history.back()
   }
 
-  goForward() {
+  goForward(): void {
     this.history.forward()
   }
 
-  goAway(href: string, target?: string) {
+  goAway(href: string, target?: string): void {
     if (target === '_blank') {
       this.window.open(href, target)
     } else {
@@ -99,8 +99,8 @@ export class BrowserRouter<TComponent = any,
    *  because we are already in the target location.
    *  We just need to find the route and activate it.
    */
-  gotoWithoutChangeLocation(ctx: TContext = null as TContext, hash?: string) {
-    const currentPath = this.currentPath.simplify() as Required<IPath>
+  gotoWithoutChangeLocation(ctx: TContext = null as TContext, hash?: string): void {
+    const currentPath = this.currentPath.simplify()
     const update: Update<TContext> = {
       action: Action.Push,
       location: {
@@ -113,14 +113,14 @@ export class BrowserRouter<TComponent = any,
     this.onLocationChange(update)
   }
 
-  block(blocker: Blocker<TContext>): any {
+  block(blocker: Blocker<TContext>): () => void {
     return this.history.block(blocker)
   }
 
 
 //region Utils
 
-  log(id: string, text: string) {
+  log(id: string, text: string): void {
     if (this.options.isDebug)
       console.log(`[ ${id} ]`, text)
   }

@@ -13,19 +13,19 @@ export class Path implements IPath {
               public hash: string) {
   }
 
-  isEquals(path: IPath) {
+  isEquals(path: IPath): boolean {
     return Path.isEquals(this, path)
   }
 
-  isLocationEquals(path: IPath) {
+  isLocationEquals(path: IPath): boolean {
     return Path.isLocationEquals(this, path)
   }
 
-  toString() {
+  toString(): string {
     return Path.toString(this)
   }
 
-  simplify(): IPath {
+  simplify(): Required<IPath> {
     return Path.normalize(this)
   }
 
@@ -57,7 +57,7 @@ export class Path implements IPath {
    * But using the passed object directly can lead to unexpected problems.
    * Therefore, the object is truncated exactly to the composition of the IPath fields.
    */
-  static normalize(to: To): IPath {
+  static normalize(to: To): Required<IPath> {
     const path = typeof to === 'string'
       ? Path.parse(to)
       : to
