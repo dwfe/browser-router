@@ -119,21 +119,20 @@ export interface RoutingResult<TComponent = any, TContext extends RouteContext =
 #### TODO
 
 - Path.normalizePathname, а если location /app/123 и там сделать переход "hello/world"
-- привести в соответсвии с URL свойствами
 - сделать чистый бандл
   - [чтобы без косяков](https://www.opennet.ru/opennews/art.shtml?num=54566)
 - оформить
   - чтобы красиво выглядело
   - описание возможностей(мб взять из тестов)
   - Get started
-  - раздел релизы на гитхабе
+  - добавить доп. remote repo на github и линки всякие на него указывать
+    - раздел релизы на гитхабе
   - добавить Open collective или чета наподобии
   - обновить демо
   - добавить бейджики:
     - ссылка на npm
     - сбилджено
     - протестировано
-- может быть добавить доп. remote repo на github и линки всякие на него указывать?
 - option: collecting statistics on the frequency of routes usage
 - tests for PathResolver.correctResultFromAction
 
