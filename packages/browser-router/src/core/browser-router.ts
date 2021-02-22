@@ -1,4 +1,4 @@
-import {IActionData, IActionResult, IPath, PathResolver, RouteContext, Routes} from '@do-while-for-each/path-resolver'
+import {IActionData, IActionResult, IPath, PathResolver, Routes, TRouteContext} from '@do-while-for-each/path-resolver'
 import {Action, Blocker, BrowserHistory, createBrowserHistory, State, Update} from 'history'
 import {distinctUntilChanged, filter, shareReplay} from 'rxjs/operators'
 import {Subject} from 'rxjs'
@@ -7,10 +7,9 @@ import {defaultOptions, To} from './contract'
 import {Path} from './path'
 import {Task} from './task'
 
-export class BrowserRouter<TComponent = any,
-  TContext extends RouteContext = RouteContext,
+export class BrowserRouter<TComponent = any, TNote = any,
   TActionResult extends IActionResult<TComponent> = IActionResult<TComponent>,
-  TNote = any> {
+  TContext extends TRouteContext = TRouteContext> {
 
   public pathResolver: PathResolver
   private history: BrowserHistory<State> = createBrowserHistory() // https://github.com/ReactTraining/history/blob/master/docs/getting-started.md#basic-usage
@@ -20,7 +19,7 @@ export class BrowserRouter<TComponent = any,
 
   public componentSubj = new Subject<{ // if routing result is component
     component: TComponent;
-    routeActionData: IActionData<TContext>
+    routeActionData: IActionData<TContext, TNote>
   }>()
 
   constructor(routes: Routes,

@@ -1,20 +1,19 @@
-import {IActionData, IActionResult, IPath, PathResolver, PathResolveResult, Route, RouteContext} from '@do-while-for-each/path-resolver'
+import {IActionData, IActionResult, IPath, IPathResolveResult, PathResolver, Route, TRouteContext} from '@do-while-for-each/path-resolver'
 import {Blocker, Location, Transition} from 'history'
 import React from 'react'
 import {IBrowserRouterOptions} from './contract'
 import {BrowserRouter} from './browser-router'
 import {Path} from './path'
 
-export class Task<TComponent = any,
-  TContext extends RouteContext = RouteContext,
+export class Task<TComponent = any, TNote = any,
   TActionResult extends IActionResult<TComponent> = IActionResult<TComponent>,
-  TNote = any> {
+  TContext extends TRouteContext = TRouteContext> {
 
   static id = (path: IPath): string => Path.of(path).toString()
 
-  route: Route<TComponent, TContext, TActionResult, TNote>
-  parentRoute: Route<TComponent, TContext, TActionResult, TNote>
-  routeActionData: IActionData<TContext>
+  route: Route<TComponent, TNote, TActionResult, TContext>
+  parentRoute: Route<TComponent, TNote, TActionResult, TContext>
+  routeActionData: IActionData<TContext, TNote>
   isCanceled = false // task can be canceled if the user changed the location while the current one was being processed
   result: () => void // task result is either a redirect to another location or a component for rendering
 
@@ -22,14 +21,14 @@ export class Task<TComponent = any,
 
   constructor(public id: string,
               public location: Location<TContext>,
-              private resolved: PathResolveResult,
-              private router: BrowserRouter<TComponent, TContext, TActionResult, TNote>) {
-    this.route = resolved.route as Route<TComponent, TContext, TActionResult, TNote>
-    this.parentRoute = resolved.parentRoute as Route<TComponent, TContext, TActionResult, TNote>
+              private resolved: IPathResolveResult,
+              private router: BrowserRouter<TComponent, TNote, TActionResult, TContext>) {
+    this.route = resolved.route as Route<TComponent, TNote, TActionResult, TContext>
+    this.parentRoute = resolved.parentRoute as Route<TComponent, TNote, TActionResult, TContext>
     this.routeActionData = this.getRouteActionData()
   }
 
-  runLifecycle = (): Promise<Task<TComponent, TContext, TActionResult, TNote>> =>
+  runLifecycle = (): Promise<Task<TComponent, TNote, TActionResult, TContext>> =>
     this.stageCanActivate()
       .then(() => this.blockNavigation()) // if 'canDeactivate' action is defined
       .then(() => this.stageProcessResult(this.route))
@@ -66,7 +65,7 @@ export class Task<TComponent = any,
       return skip
     }
 
-    const context_for_RedirectTo_or_Goto = {previousActionData: this.routeActionData} as RouteContext as TContext
+    const context_for_RedirectTo_or_Goto = {previousActionData: this.routeActionData} as TRouteContext as TContext
     if (redirectTo) {
       this.result = () => {
         this.log(`${stage} redirectTo`)
@@ -108,7 +107,7 @@ export class Task<TComponent = any,
     await this.invokeAction(this.route.action, 'action', stage)
   }
 
-  private async stageSummarize(): Promise<Task<TComponent, TContext, TActionResult, TNote>> {
+  private async stageSummarize(): Promise<Task<TComponent, TNote, TActionResult, TContext>> {
     this.log('location processed')
     if (!this.isCompleted())
       throw new Error(`Impossible to process of resolved route for [ ${this.id} ]`)
@@ -118,9 +117,9 @@ export class Task<TComponent = any,
 
 //region Handlers
 
-  private getRouteActionData(): IActionData<TContext> {
+  private getRouteActionData(): IActionData<TContext, TNote> {
     let {pathname, search, hash, state, key} = this.location
-    const previous = state?.previousActionData as IActionData<TContext>
+    const previous = state?.previousActionData as IActionData<TContext, TNote>
     if (previous) {
       delete state?.previousActionData
       if (state && Object.keys(state as object).length === 0)

@@ -1,5 +1,5 @@
 import {compile, match as matcher, MatchResult} from 'path-to-regexp'
-import {defaultOptions, IActionResult, PathResolveResult, Route, Routes} from './contract'
+import {defaultOptions, IActionResult, IPathResolveResult, Route, Routes} from './contract'
 import {Clone} from './clone'
 import {Init} from './init'
 
@@ -11,12 +11,12 @@ export class PathResolver {
     this.routes = routes.map(route => Init.route(route, '/'))
   }
 
-  resolve(pathname: string): PathResolveResult | undefined {
+  resolve(pathname: string): IPathResolveResult | undefined {
     this.log(`resolving '${pathname}'`)
     return this.find(pathname, this.routes)
   }
 
-  find(pathname: string, routes: Routes | undefined, parentRoute?: Route): PathResolveResult | undefined {
+  find(pathname: string, routes: Routes | undefined, parentRoute?: Route): IPathResolveResult | undefined {
     if (!routes) return;
 
     for (let i = 0; i < routes.length; i++) {

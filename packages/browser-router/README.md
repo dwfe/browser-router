@@ -77,7 +77,7 @@ return this.resolveRoute({location, taskId})
 The every location change is processed in a separate task:
 
 ```ts
-runLifecycle = (): Promise<Task<TComponent, TContext, TActionResult, TNote>> =>
+runLifecycle = (): Promise<Task<TComponent, TNote, TActionResult, TContext>> =>
   this.stageCanActivate()
     .then(() => this.blockNavigation()) // if 'canDeactivate' is defined in the route
     .then(() => this.stageProcessResult(this.route))

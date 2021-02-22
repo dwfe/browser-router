@@ -2,10 +2,9 @@ import {Location} from 'history'
 
 export type Routes = Route[]
 
-export interface Route<TComponent = any,
-  TContext extends RouteContext = RouteContext,
+export interface Route<TComponent = any, TNote = any,
   TActionResult extends IActionResult<TComponent> = IActionResult<TComponent>,
-  TNote = any> {
+  TContext extends TRouteContext = TRouteContext> {
 
   path: string; // see syntax here: https://github.com/pillarjs/path-to-regexp#readme
 
@@ -25,13 +24,13 @@ export interface Route<TComponent = any,
   name?: string;
 }
 
-export interface PathResolveResult {
+export interface IPathResolveResult {
   route: Route;
-  pathParams: PathParams;
+  pathParams: TPathParams;
   parentRoute?: Route;
 }
 
-export interface IActionData<TContext extends RouteContext = RouteContext, TNote = any> {
+export interface IActionData<TContext extends TRouteContext = TRouteContext, TNote = any> {
 
   target: IActionDataTarget;
 
@@ -46,7 +45,7 @@ export interface IActionData<TContext extends RouteContext = RouteContext, TNote
 
   note?: TNote; // note field defined in the route
 
-  previous?: IActionData<TContext>;
+  previous?: IActionData<TContext, TNote>;
 
   /**
    * A unique string associated with this location. May be used to safely store
@@ -67,8 +66,8 @@ export interface IActionResult<TComponent = any> {
   skip?: boolean; // if 'true' then stage 'CanActivate' will skip the processing to next stage
 }
 
-export type RouteContext = {
-  previousActionData?: IActionData<RouteContext>;
+export type TRouteContext = {
+  previousActionData?: IActionData<TRouteContext>;
 } | null // because history package type 'State' = object | null
 
 
@@ -77,10 +76,10 @@ export interface ICustomTo extends IPath {
 }
 
 export interface IActionDataTarget extends IPath {
-  pathParams: PathParams;
+  pathParams: TPathParams;
 }
 
-export type PathParams = object | { [key: string]: string; }
+export type TPathParams = object | { [key: string]: string; }
 
 
 export interface IPathResolverOptions {

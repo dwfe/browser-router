@@ -1,19 +1,18 @@
-import {IActionResult, RouteContext} from '@do-while-for-each/path-resolver'
+import {IActionResult, TRouteContext} from '@do-while-for-each/path-resolver'
 import {Location} from 'history'
 import {BrowserRouter} from './browser-router'
 import {Task} from './task'
 
-export class LocationHandler<TComponent = any,
-  TContext extends RouteContext = RouteContext,
+export class LocationHandler<TComponent = any, TNote = any,
   TActionResult extends IActionResult<TComponent> = IActionResult<TComponent>,
-  TNote = any> {
+  TContext extends TRouteContext = TRouteContext> {
 
   private tasks = new Map<string, Task>()
 
-  constructor(private router: BrowserRouter<TComponent, TContext, TActionResult, TNote>) {
+  constructor(private router: BrowserRouter<TComponent, TNote, TActionResult, TContext>) {
   }
 
-  public async processLocation(location: Location<TContext>): Promise<Task<TComponent, TContext, TActionResult, TNote> | undefined> {
+  public async processLocation(location: Location<TContext>): Promise<Task<TComponent, TNote, TActionResult, TContext> | undefined> {
     const id = Task.id(location)
     this.log(id, 'start processing location')
 
@@ -35,7 +34,7 @@ export class LocationHandler<TComponent = any,
     return {id, location, resolved}
   }
 
-  private createTask({id, location, resolved}): Task<TComponent, TContext, TActionResult, TNote> {
+  private createTask({id, location, resolved}): Task<TComponent, TNote, TActionResult, TContext> {
     const task = new Task(id, location, resolved, this.router)
     task.isCanceled = this.tasks.has(id)
     if (!task.isCanceled)
