@@ -89,7 +89,7 @@ export class Task<TComponent = any, TNote = any,
       component = this.injectRoutingProps(component)
       this.result = () => {
         this.log(`${stage} component`)
-        this.router.componentSubj.next({
+        this.router.listeners.call({
           component: component as TComponent,
           routeActionData: this.routeActionData
         })

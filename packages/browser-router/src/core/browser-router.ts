@@ -1,9 +1,8 @@
-import {IActionData, IActionResult, IPath, PathResolver, Routes, TRouteContext} from '@do-while-for-each/path-resolver'
+import {IActionResult, IPath, PathResolver, Routes, TRouteContext} from '@do-while-for-each/path-resolver'
 import {Action, Blocker, BrowserHistory, createBrowserHistory, State, Update} from 'history'
-import {distinctUntilChanged, filter, shareReplay} from 'rxjs/operators'
-import {Subject} from 'rxjs'
 import {LocationHandler} from './location-handler'
-import {defaultOptions, To} from './contract'
+import {EventListeners} from './event.listeners'
+import {defaultOptions, IListenersData, To} from './contract'
 import {Path} from './path'
 import {Task} from './task'
 
@@ -17,10 +16,8 @@ export class BrowserRouter<TComponent = any, TNote = any,
 
   private window: WindowProxy & typeof globalThis
 
-  public componentSubj = new Subject<{ // if routing result is component
-    component: TComponent;
-    routeActionData: IActionData<TNote, TContext>
-  }>()
+  // if routing result is component
+  public listeners = new EventListeners<IListenersData<TComponent, TNote, TContext>>()
 
   constructor(routes: Routes,
               public options = defaultOptions) {
@@ -55,11 +52,11 @@ export class BrowserRouter<TComponent = any, TNote = any,
       : result()
   }
 
-  componentData$ = this.componentSubj.asObservable().pipe(
-    filter(elem => !!elem?.component),
-    distinctUntilChanged(),
-    shareReplay(1),
-  )
+  // componentData$ = this.componentSubj.asObservable().pipe(
+  //   filter(elem => !!elem?.component),
+  //   distinctUntilChanged(),
+  //   shareReplay(1),
+  // )
 
 
   goto(to: To, ctx?: TContext): void {

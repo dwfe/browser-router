@@ -23,7 +23,8 @@
     "@do-while-for-each/browser-router": "1",
     "classnames": "2",
     "autosize": "4",
-    "react-modal": "3.12.1"
+    "react-modal": "3.12.1",
+    "rxjs": "6"
   },
   "scripts": {
     "clean": "rimraf ./build",
