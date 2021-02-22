@@ -10,7 +10,7 @@ export class Task<TComponent = any,
   TActionResult extends RoutingResult<TComponent> = RoutingResult<TComponent>,
   TNote = any> {
 
-  static id = (path: IPath): string => Path.toString(path)
+  static id = (path: IPath): string => Path.of(path).toString()
 
   route: Route<TComponent, TContext, TActionResult, TNote>
   parentRoute: Route<TComponent, TContext, TActionResult, TNote>

@@ -8,63 +8,43 @@ export class LocationHandler<TComponent = any,
   TActionResult extends RoutingResult<TComponent> = RoutingResult<TComponent>,
   TNote = any> {
 
-  private tasks: { [id: string]: true } = {}
+  private tasks = new Map<string, Task>()
 
   constructor(private router: BrowserRouter<TComponent, TContext, TActionResult, TNote>) {
   }
 
   public async processLocation(location: Location<TContext>): Promise<Task<TComponent, TContext, TActionResult, TNote> | undefined> {
-    const taskId = Task.id(location)
-    this.log(taskId, 'start processing location')
+    const id = Task.id(location)
+    this.log(id, 'start processing location')
 
-    if (this.isTaskExist(taskId)) {
-      this.log(taskId, 'duplicate, skipped')
+    if (this.tasks.has(id)) {
+      this.log(id, 'duplicate, skipped')
       return;
     }
-    return this.resolveRoute({location, taskId})
+    return this.resolveRoute({id, location})
       .then(data => this.createTask(data))
       .then(task => task.runLifecycle())
-      .finally(() => this.removeTask(taskId))
+      .finally(() => this.tasks.delete(id))
   }
 
-  private async resolveRoute({location, taskId}) {
-    this.log(taskId, 'resolving route...')
+  private async resolveRoute({id, location}) {
+    this.log(id, 'resolving route...')
     const resolved = this.router.pathResolver.resolve(location.pathname)
     if (!resolved)
-      throw new Error(`Cannot match any routes for [ ${taskId} ]`)
-    return {taskId, location, resolved}
+      throw new Error(`Cannot match any routes for [ ${id} ]`)
+    return {id, location, resolved}
   }
 
-  private createTask({taskId, location, resolved}): Task<TComponent, TContext, TActionResult, TNote> {
-    const task = new Task(taskId, location, resolved, this.router)
-    if (!this.addTask(taskId))
-      task.isCanceled = true
+  private createTask({id, location, resolved}): Task<TComponent, TContext, TActionResult, TNote> {
+    const task = new Task(id, location, resolved, this.router)
+    task.isCanceled = this.tasks.has(id)
+    if (!task.isCanceled)
+      this.tasks.set(id, task)
     return task
   }
 
-
-  private isTaskExist(id: string) {
-    return !!this.getTask(id)
-  }
-
-  private getTask(id: string): true | undefined {
-    return this.tasks[`${id}`]
-  }
-
-  private addTask(id: string): true | undefined {
-    if (!this.isTaskExist(id)) {
-      this.tasks[`${id}`] = true
-      return true
-    }
-  }
-
-  private removeTask(id: string): void {
-    delete this.tasks[`${id}`]
-  }
-
-
-  private log(taskId: string, stage: string) {
-    this.router.log(taskId, stage)
+  private log(id: string, ...args) {
+    this.router.log(id, ...args)
   }
 
 }

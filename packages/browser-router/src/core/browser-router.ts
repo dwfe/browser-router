@@ -25,11 +25,11 @@ export class BrowserRouter<TComponent = any,
 
   constructor(routes: Routes,
               public options = defaultOptions) {
-    this.pathResolver = new PathResolver(routes, options.pathResolver)
-    this.locationHandler = new LocationHandler(this)
     if (!document?.defaultView)
       throw new Error(`Object 'window' must be present, because this is router of Browser`)
     this.window = document.defaultView
+    this.pathResolver = new PathResolver(routes, options.pathResolver)
+    this.locationHandler = new LocationHandler(this)
   }
 
   get currentPath(): Path {
@@ -120,9 +120,9 @@ export class BrowserRouter<TComponent = any,
 
 //region Utils
 
-  log(id: string, text: string): void {
+  log(id: string, ...args): void {
     if (this.options.isDebug)
-      console.log(`[ ${id} ]`, text)
+      console.log(`[ ${id} ]`, ...args)
   }
 
   isSameLocation(path: IPath): boolean {
