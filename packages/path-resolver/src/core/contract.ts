@@ -1,9 +1,9 @@
 import {Location} from 'history'
 
 export interface IPathResolveResult {
-  route: Route;
+  route: IRoute;
   pathParams: TPathParams;
-  parentRoute?: Route;
+  parentRoute?: IRoute;
 }
 
 export interface IPathResolverOptions {
@@ -23,9 +23,7 @@ export interface IPath {
 }
 
 
-export type Routes = Route[]
-
-export interface Route<TComponent = any, TNote = any,
+export interface IRoute<TComponent = any, TNote = any,
   TActionResult extends IActionResult<TComponent> = IActionResult<TComponent>,
   TContext extends TRouteContext = TRouteContext> {
 
@@ -40,7 +38,7 @@ export interface Route<TComponent = any, TNote = any,
 
   action?: (data: IActionData<TNote, TContext>) => Promise<TActionResult>;
 
-  children?: Routes;
+  children?: IRoute[];
 
   note?: TNote;
 

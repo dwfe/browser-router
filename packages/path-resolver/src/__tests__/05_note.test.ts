@@ -1,7 +1,7 @@
 import {describe, expect, test} from '@jest/globals'
 import {lengthCheck, Traverse} from './common/common'
 import {initFlat} from './common/environment'
-import {Route} from '../..'
+import {IRoute} from '../..'
 
 describe(`note`, () => {
   const {flatRoutes, flatPathResolverRoutes, flatRoutesCheck} = initFlat()
@@ -9,7 +9,7 @@ describe(`note`, () => {
   test('.', () => {
     lengthCheck(flatRoutes, flatPathResolverRoutes, flatRoutesCheck)
 
-    new Traverse().run(flatPathResolverRoutes, (route: Route, totalCount) => {
+    new Traverse().run(flatPathResolverRoutes, (route: IRoute, totalCount) => {
       if (route.note === undefined) {
         expect(flatRoutes[totalCount].note).toBeUndefined()
         expect(flatRoutesCheck[totalCount].note).toBeUndefined()

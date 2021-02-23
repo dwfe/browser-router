@@ -1,4 +1,4 @@
-import {IActionResult, IPath, PathResolver, Routes, TRouteContext} from '@do-while-for-each/path-resolver'
+import {IActionResult, IPath, IRoute, PathResolver, TRouteContext} from '@do-while-for-each/path-resolver'
 import {Action, Blocker, BrowserHistory, createBrowserHistory, State, Update} from 'history'
 import {defaultOptions, IResultListenersArg, To} from './contract'
 import {LocationHandler} from './location-handler'
@@ -18,7 +18,7 @@ export class BrowserRouter<TComponent = any, TNote = any,
 
   public resultListeners = new ResultListeners<IResultListenersArg<TComponent, TNote, TContext>>()
 
-  constructor(routes: Routes,
+  constructor(routes: IRoute[],
               public options = defaultOptions) {
     if (!document?.defaultView)
       throw new Error(`Object 'window' must be present, because this is router of Browser`)

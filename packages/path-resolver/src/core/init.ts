@@ -1,9 +1,9 @@
-import {ICustomTo, Route, Routes} from './contract'
+import {ICustomTo, IRoute} from './contract'
 import {Clone} from './clone'
 
 export class Init {
 
-  static route(r: Route, parentPath: string): Route {
+  static route(r: IRoute, parentPath: string): IRoute {
     Init.checkLeadSlash(r.path)
     const route = Clone.route(r)
     route.path = Init.path(route.path, parentPath)
@@ -42,7 +42,7 @@ export class Init {
     }
   }
 
-  static children({path: parentPath, children}: Route): Routes | undefined {
+  static children({path: parentPath, children}: IRoute): IRoute[] | undefined {
     return children?.map(route => Init.route(route, parentPath))
   }
 

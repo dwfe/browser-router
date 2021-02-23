@@ -2,7 +2,7 @@ import {describe, expect, test} from '@jest/globals'
 import {lengthCheck, Traverse} from './common/common'
 import {initFlat} from './common/environment'
 import {Init} from '../core/init'
-import {Route} from '../..'
+import {IRoute} from '../..'
 
 describe(`to`, () => {
   const {flatRoutes, flatPathResolverRoutes, flatRoutesCheck} = initFlat()
@@ -10,7 +10,7 @@ describe(`to`, () => {
   test('redirectTo', () => {
     lengthCheck(flatRoutes, flatPathResolverRoutes, flatRoutesCheck)
 
-    new Traverse().run(flatPathResolverRoutes, (route: Route, totalCount) => {
+    new Traverse().run(flatPathResolverRoutes, (route: IRoute, totalCount) => {
       if (route.redirectTo === undefined) {
         expect(flatRoutes[totalCount].redirectTo).toBeUndefined()
         expect(flatRoutesCheck[totalCount].redirectTo).toBeUndefined()
@@ -25,7 +25,7 @@ describe(`to`, () => {
   })
 
   test('customTo', () => {
-    new Traverse().run(flatPathResolverRoutes, (route: Route, totalCount) => {
+    new Traverse().run(flatPathResolverRoutes, (route: IRoute, totalCount) => {
       if (route.customTo === undefined) {
         expect(flatRoutes[totalCount].customTo).toBeUndefined()
         expect(flatRoutesCheck[totalCount].customTo).toBeUndefined()

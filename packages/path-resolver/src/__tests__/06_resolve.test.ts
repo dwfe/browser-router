@@ -1,5 +1,5 @@
 import {describe, expect, test} from '@jest/globals'
-import {IPathResolveResult, Route} from '../..'
+import {IPathResolveResult, IRoute} from '../..'
 import {initFlat} from './common/environment'
 import {Traverse} from './common/common'
 
@@ -82,7 +82,7 @@ describe(`resolve`, () => {
   })
 
   test('clone resolve', () => {
-    new Traverse().run(flatPathResolverRoutes, (route: Route, totalCount) => {
+    new Traverse().run(flatPathResolverRoutes, (route: IRoute, totalCount) => {
       // [path] routesCheck === pathResolver.routes
       expect(route.path).toEqual(flatRoutesCheck[totalCount].path)
 

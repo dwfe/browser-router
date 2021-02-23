@@ -1,6 +1,6 @@
 import 'reflect-metadata'
-import {initServices} from './di/di-container'
-import {startRouter} from './routing'
+import {initServices} from './router/di-container'
+import {startRouter} from './router'
 import {routes} from './routes'
 import './index.css'
 

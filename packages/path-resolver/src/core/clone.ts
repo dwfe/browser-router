@@ -1,8 +1,8 @@
-import {Route} from './contract'
+import {IRoute} from './contract'
 
 export class Clone {
 
-  static route(r: Route): Route {
+  static route(r: IRoute): IRoute {
     const r2 = {...r}
     if (r2.customTo)
       r2.customTo = {...r2.customTo}

@@ -1,4 +1,4 @@
-import {IActionData, IActionResult, IPath, IPathResolveResult, PathResolver, Route, TRouteContext} from '@do-while-for-each/path-resolver'
+import {IActionData, IActionResult, IPath, IPathResolveResult, IRoute, PathResolver, TRouteContext} from '@do-while-for-each/path-resolver'
 import {Blocker, Location, Transition} from 'history'
 import React from 'react'
 import {IBrowserRouterOptions} from './contract'
@@ -11,8 +11,8 @@ export class Task<TComponent = any, TNote = any,
 
   static id = (path: IPath): string => Path.of(path).toString()
 
-  route: Route<TComponent, TNote, TActionResult, TContext>
-  parentRoute: Route<TComponent, TNote, TActionResult, TContext>
+  route: IRoute<TComponent, TNote, TActionResult, TContext>
+  parentRoute: IRoute<TComponent, TNote, TActionResult, TContext>
   routeActionData: IActionData<TNote, TContext>
   isCanceled = false // task can be canceled if the user changed the location while the current one was being processed
   result: () => void // task result is either a redirect to another location or a component for rendering
@@ -23,8 +23,8 @@ export class Task<TComponent = any, TNote = any,
               public location: Location<TContext>,
               private resolved: IPathResolveResult,
               private router: BrowserRouter<TComponent, TNote, TActionResult, TContext>) {
-    this.route = resolved.route as Route<TComponent, TNote, TActionResult, TContext>
-    this.parentRoute = resolved.parentRoute as Route<TComponent, TNote, TActionResult, TContext>
+    this.route = resolved.route as IRoute<TComponent, TNote, TActionResult, TContext>
+    this.parentRoute = resolved.parentRoute as IRoute<TComponent, TNote, TActionResult, TContext>
     this.routeActionData = this.getRouteActionData()
   }
 

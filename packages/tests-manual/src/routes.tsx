@@ -1,13 +1,13 @@
-import {IActionResult, Route} from '@do-while-for-each/path-resolver'
+import {IActionResult, IRoute} from '@do-while-for-each/path-resolver'
 import {Location} from '@do-while-for-each/browser-router'
 import React, {ReactElement} from 'react'
 import {container} from 'tsyringe'
-import {AuthService, CanDeactivatePage, FirstPage, IndexPage, LoginPage, PicPage, ProtectedByAuthorization, SecondPage} from './pages'
-import {CanDeactivateService} from './pages/CanDeactivate/can-deactivate.service'
-import {IRouteNote, NotFoundPage, TCtx, TRouteActionData} from './routing'
+import {AuthService, CanDeactivatePage, FirstPage, IndexPage, LoginPage, PicPage, ProtectedByAuthorization, SecondPage} from './app/pages'
+import {CanDeactivateService} from './app/pages/CanDeactivate/can-deactivate.service'
+import {IRouteNote, NotFoundPage, TCtx, TRouteActionData} from './router'
 
 
-export const routes: Route<ReactElement, IRouteNote, IActionResult<ReactElement>, TCtx>[] = [
+export const routes: IRoute<ReactElement, IRouteNote, IActionResult<ReactElement>, TCtx>[] = [
   {path: '', component: <IndexPage/>, note: {title: 'Index'}},
   {
     path: 'first', component: <FirstPage/>, note: {title: 'First page'}, children: [

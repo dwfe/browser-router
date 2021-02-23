@@ -1,8 +1,8 @@
 import {expect} from '@jest/globals'
 import {routesTotalCount} from '../routes/routes'
-import {Routes} from '../../..'
+import {IRoute} from '../../..'
 
-export const routesFlat = (routes: Routes, deleteChildren: boolean, parentRoute: any = null, res: Routes = []): Routes => {
+export const routesFlat = (routes: IRoute[], deleteChildren: boolean, parentRoute: any = null, res: IRoute[] = []): IRoute[] => {
   for (let i = 0; i < routes.length; i++) {
     let route = routes[i]
     if (deleteChildren) {
@@ -20,14 +20,14 @@ export const routesFlat = (routes: Routes, deleteChildren: boolean, parentRoute:
   return res
 }
 
-export const removeChildren = (routes: Routes) =>
+export const removeChildren = (routes: IRoute[]) =>
   routes.forEach(r => {
     if (r.children)
       delete r.children
   })
 ;
 
-export const traverse = (routes: Routes | undefined, fn) => {
+export const traverse = (routes: IRoute[] | undefined, fn) => {
   if (!routes)
     return;
 
@@ -41,7 +41,7 @@ export const traverse = (routes: Routes | undefined, fn) => {
 export class Traverse {
   private totalCount = -1
 
-  run(routes: Routes | undefined, fn) {
+  run(routes: IRoute[] | undefined, fn) {
     if (!routes)
       return;
 

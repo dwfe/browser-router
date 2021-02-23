@@ -2,7 +2,7 @@ import {describe, expect, test} from '@jest/globals'
 import {lengthCheck, Traverse} from './common/common'
 import {initFlat} from './common/environment'
 import {Init} from '../core/init'
-import {Route} from '../..'
+import {IRoute} from '../..'
 
 describe(`path construction`, () => {
   const {flatRoutes, flatPathResolverRoutes, flatRoutesCheck} = initFlat()
@@ -10,7 +10,7 @@ describe(`path construction`, () => {
   test('.', () => {
     lengthCheck(flatRoutes, flatPathResolverRoutes, flatRoutesCheck)
 
-    new Traverse().run(flatPathResolverRoutes, (route: Route, totalCount) => {
+    new Traverse().run(flatPathResolverRoutes, (route: IRoute, totalCount) => {
       // [path] routes !== pathResolver.routes
       expect(route.path).not.toEqual(flatRoutes[totalCount].path)
 

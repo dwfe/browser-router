@@ -1,12 +1,12 @@
 import {compile, match as matcher, MatchResult} from 'path-to-regexp'
-import {defaultOptions, IActionResult, IPathResolveResult, Route, Routes, TPathParams} from './contract'
+import {defaultOptions, IActionResult, IPathResolveResult, IRoute, TPathParams} from './contract'
 import {Clone} from './clone'
 import {Init} from './init'
 
 export class PathResolver {
-  routes: Routes = [];
+  routes: IRoute[] = [];
 
-  constructor(routes: Routes,
+  constructor(routes: IRoute[],
               public options = defaultOptions) {
     this.routes = routes.map(route => Init.route(route, '/'))
   }
@@ -16,7 +16,7 @@ export class PathResolver {
     return this.find(pathname, this.routes)
   }
 
-  find(pathname: string, routes: Routes | undefined, parentRoute?: Route): IPathResolveResult | undefined {
+  find(pathname: string, routes: IRoute[] | undefined, parentRoute?: IRoute): IPathResolveResult | undefined {
     if (!routes) return;
 
     for (let i = 0; i < routes.length; i++) {
@@ -40,7 +40,7 @@ export class PathResolver {
     }
   }
 
-  correctResultFromAction(pathname: string, result: IActionResult, route: Route, parentRoute?: Route) {
+  correctResultFromAction(pathname: string, result: IActionResult, route: IRoute, parentRoute?: IRoute) {
     if (result.redirectTo === undefined && result.customTo === undefined)
       return;
 
@@ -60,7 +60,7 @@ export class PathResolver {
     }
   }
 
-  static needToMatchChildren({redirectTo, component, children}: Route): boolean {
+  static needToMatchChildren({redirectTo, component, children}: IRoute): boolean {
     return redirectTo === undefined && component === undefined // if 'redirectTo' and 'component' are omitted
       && children !== undefined && children.length > 0         // but children are available
   }
