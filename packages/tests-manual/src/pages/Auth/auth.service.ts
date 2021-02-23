@@ -10,7 +10,7 @@ export class AuthService {
   private router: BrowserRouter
 
   constructor() {
-    this.router = container.resolve<BrowserRouter>(BrowserRouter)
+    this.router = container.resolve(BrowserRouter)
   }
 
   isLoggedIn(): boolean {

@@ -4,7 +4,7 @@ import {useDIInstance} from '../../di/useDIInstance'
 
 export const Link = (props: IProps) => {
   const {href, onClick, children, ctx} = props
-  const [router] = useDIInstance<BrowserRouter>(BrowserRouter)
+  const [router] = useDIInstance(BrowserRouter)
 
   const handleClick = (event: SyntheticEvent) => {
     event.preventDefault()

@@ -9,7 +9,7 @@ import {QaSel} from '../../qa/qa-selector';
 
 
 export const Header = () => {
-  const [router] = useDIInstance<BrowserRouter>(BrowserRouter)
+  const [router] = useDIInstance(BrowserRouter)
 
   const backFn = () => router.goBack()
   const forwardFn = () => router.goForward()
