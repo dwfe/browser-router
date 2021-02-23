@@ -1,5 +1,6 @@
 import React from 'react'
-import {ActionData, IRoutableProps, Link, useDocumentTitle} from '../../router'
+import {useDocumentTitle} from '../../hooks/use-document-title'
+import {ActionData, IRoutableProps, Link} from '../../router'
 import {QaSel} from '../qa-selector'
 
 export const IndexPage = (props: IRoutableProps) => {

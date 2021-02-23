@@ -2,10 +2,9 @@ import {IActionResult, IRoute} from '@do-while-for-each/path-resolver'
 import {Location} from '@do-while-for-each/browser-router'
 import React, {ReactElement} from 'react'
 import {container} from 'tsyringe'
-import {AuthService, CanDeactivatePage, FirstPage, IndexPage, LoginPage, PicPage, ProtectedByAuthorization, SecondPage} from './app/pages'
-import {CanDeactivateService} from './app/pages/CanDeactivate/can-deactivate.service'
-import {IRouteNote, NotFoundPage, TCtx, TRouteActionData} from './router'
-
+import {AuthService, CanDeactivatePage, FirstPage, IndexPage, LoginPage, PicPage, ProtectedByAuthorization, SecondPage} from '../app/pages'
+import {CanDeactivateService} from '../app/pages/CanDeactivate/can-deactivate.service'
+import {IRouteNote, NotFoundPage, TCtx, TRouteActionData} from './index'
 
 export const routes: IRoute<ReactElement, IRouteNote, IActionResult<ReactElement>, TCtx>[] = [
   {path: '', component: <IndexPage/>, note: {title: 'Index'}},
@@ -25,32 +24,25 @@ export const routes: IRoute<ReactElement, IRouteNote, IActionResult<ReactElement
       },
     ]
   },
-  {path: 'protected-by-authorization', canActivate: passIfLoggedIn, component: <ProtectedByAuthorization/>},
-  {path: 'can-deactivate-check', canDeactivate: canDeactivateFn, component: <CanDeactivatePage/>},
+  {path: 'protected-by-authorization', component: <ProtectedByAuthorization/>, canActivate: passIfLoggedIn},
+  {path: 'can-deactivate-check', component: <CanDeactivatePage/>, canDeactivate: canDeactivateFn},
   {path: 'login', component: <LoginPage/>},
   {path: 'not-found', component: <NotFoundPage/>, note: {title: 'Not found page'}},
   {path: '(.*)', redirectTo: '/not-found'}
 ]
 
 
-function longTimeGettingOfActionResult(data: TRouteActionData): Promise<IActionResult<ReactElement>> {
+function longTimeGettingOfActionResult(data: TRouteActionData): Promise<IActionResult> {
   return new Promise(resolve => {
     setTimeout(() => resolve({redirectTo: 'picture'}), 5_000)
   })
 }
 
-async function passIfLoggedIn(data: TRouteActionData): Promise<IActionResult<ReactElement>> {
-  const auth = container.resolve(AuthService)
-  if (auth.isLoggedIn())
-    return {skip: true}
-  else {
-    auth.redirectTo = data.target // the user will be redirected here after successful login
-    return {redirectTo: 'login'}
-  }
+function passIfLoggedIn(data: TRouteActionData): Promise<IActionResult> {
+  return container.resolve(AuthService).passIfLoggedIn(data)
 }
 
-async function canDeactivateFn(tryRelocation: Location, data: TRouteActionData): Promise<boolean> {
-  return await container
-    .resolve(CanDeactivateService)
-    .canDeactivate(tryRelocation, data)
+function canDeactivateFn(tryRelocation: Location<TCtx>, data: TRouteActionData): Promise<boolean> {
+  return container.resolve(CanDeactivateService).canDeactivate(tryRelocation, data)
 }
+

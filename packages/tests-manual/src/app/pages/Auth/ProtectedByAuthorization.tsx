@@ -1,6 +1,6 @@
 import React from 'react'
 import {ActionData, IRoutableProps} from '../../../router'
-import {useDIInstance} from '../../../router/hooks/use-di-instance'
+import {useDIInstance} from '../../../hooks/use-di-instance'
 import {AuthService} from './auth.service'
 import {QaSel} from '../../qa-selector'
 

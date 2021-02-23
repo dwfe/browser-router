@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import Modal from 'react-modal'
 import {ActionData, IRoutableProps} from '../../../../router'
-import {useDIInstance} from '../../../../router/hooks/use-di-instance'
+import {useDIInstance} from '../../../../hooks/use-di-instance'
 import {AuthService} from '../auth.service'
 import {defaultModalStyles} from '../../modal.settings';
 import {QaSel} from '../../../qa-selector';

@@ -1,5 +1,6 @@
 import React from 'react';
-import {ActionData, IRoutableProps, useDocumentTitle} from '../../../../router';
+import {useDocumentTitle} from '../../../../hooks/use-document-title'
+import {ActionData, IRoutableProps} from '../../../../router'
 import pic from './pic.png'
 
 export const PicPage = (props: IRoutableProps) => {

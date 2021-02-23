@@ -1,7 +1,7 @@
 import React from 'react'
 import {BrowserRouter} from '@do-while-for-each/browser-router'
 import './style.css'
-import {useDIInstance} from '../../../router/hooks/use-di-instance'
+import {useDIInstance} from '../../../hooks/use-di-instance'
 import {GitGetCode} from '../GitGetCode/GitGetCode'
 import {BtnNavigate} from '../BtnNavigate/BtnNavigate'
 import {Link} from '../../../router'

@@ -1,5 +1,6 @@
 import {BrowserRouter, To} from '@do-while-for-each/browser-router'
-import {container} from 'tsyringe'
+import {IActionResult} from '@do-while-for-each/path-resolver'
+import {TRouteActionData} from '../../../router'
 
 export const LOGGED_KEY = 'logged-key'
 
@@ -7,10 +8,7 @@ export class AuthService {
 
   redirectTo: To = {pathname: ''}
 
-  private router: BrowserRouter
-
-  constructor() {
-    this.router = container.resolve(BrowserRouter)
+  constructor(private router: BrowserRouter) {
   }
 
   isLoggedIn(): boolean {
@@ -28,6 +26,15 @@ export class AuthService {
   logOut() {
     localStorage.removeItem(LOGGED_KEY)
     this.router.goto('/')
+  }
+
+  async passIfLoggedIn(data: TRouteActionData): Promise<IActionResult> {
+    if (this.isLoggedIn())
+      return {skip: true}
+    else {
+      this.redirectTo = data.target // the user will be redirected here after successful login
+      return {redirectTo: 'login'}
+    }
   }
 }
 

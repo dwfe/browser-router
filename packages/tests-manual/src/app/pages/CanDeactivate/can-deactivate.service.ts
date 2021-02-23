@@ -1,7 +1,7 @@
 import {Location} from '@do-while-for-each/browser-router';
-import {Subject} from 'rxjs'
 import {first} from 'rxjs/operators'
-import {TRouteActionData} from '../../../router';
+import {Subject} from 'rxjs'
+import {TRouteActionData} from '../../../router'
 
 export class CanDeactivateService {
 

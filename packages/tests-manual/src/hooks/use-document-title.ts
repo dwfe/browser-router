@@ -1,5 +1,5 @@
-import {IRoutableProps} from '../contract';
-import {useEffect} from 'react';
+import {useEffect} from 'react'
+import {IRoutableProps} from '../router'
 
 export const useDocumentTitle = ({routeActionData}: IRoutableProps) => {
   useEffect(() => {

@@ -1,10 +1,11 @@
 import React, {useState} from 'react'
 import Modal from 'react-modal'
-import {ActionData, IRoutableProps, Link, useDocumentTitle} from '../../../router'
-import {useDIInstance} from '../../../router/hooks/use-di-instance';
+import {useDocumentTitle} from '../../../hooks/use-document-title'
+import {ActionData, IRoutableProps, Link} from '../../../router'
+import {useDIInstance} from '../../../hooks/use-di-instance'
 import {CanDeactivateService} from './can-deactivate.service'
-import {QaSel} from '../../qa-selector';
-import {defaultModalStyles} from '../modal.settings';
+import {defaultModalStyles} from '../modal.settings'
+import {QaSel} from '../../qa-selector'
 
 Modal.setAppElement('#root')
 
@@ -24,25 +25,27 @@ export const CanDeactivatePage = (props: IRoutableProps) => {
     btn?.focus()
   }
 
-  return (<div>
-    <p>Try to leave the page</p>
-    <Link href="/first" data-qa={QaSel.CanDeactivatePage_First}>first</Link><br/><br/>
-    <Link href="/second" data-qa={QaSel.CanDeactivatePage_Second}>second</Link><br/><br/>
+  return (
+    <div>
+      <p>Try to leave the page</p>
+      <Link href="/first" data-qa={QaSel.CanDeactivatePage_First}>first</Link><br/><br/>
+      <Link href="/second" data-qa={QaSel.CanDeactivatePage_Second}>second</Link><br/><br/>
 
-    <Modal
-      isOpen={showModal}
-      onRequestClose={() => canBeDeactivated(false)}
-      onAfterOpen={afterOpenModal}
-      style={defaultModalStyles}
-    >
-      <p>Are you sure you want to go to <code><b>{canDeactivateService.tryRelocation?.pathname}</b></code> page?</p>
-      <div>
-        <button onClick={() => canBeDeactivated(true)} data-qa={QaSel.CanDeactivatePage_DialogueYes}>Yes</button>
-        &nbsp;&nbsp;&nbsp;
-        <button onClick={() => canBeDeactivated(false)} data-qa={QaSel.CanDeactivatePage_DialogueCancel}>Cancel</button>
-      </div>
-    </Modal>
+      <Modal
+        isOpen={showModal}
+        onRequestClose={() => canBeDeactivated(false)}
+        onAfterOpen={afterOpenModal}
+        style={defaultModalStyles}
+      >
+        <p>Are you sure you want to go to <code><b>{canDeactivateService.tryRelocation?.pathname}</b></code> page?</p>
+        <div>
+          <button onClick={() => canBeDeactivated(true)} data-qa={QaSel.CanDeactivatePage_DialogueYes}>Yes</button>
+          &nbsp;&nbsp;&nbsp;
+          <button onClick={() => canBeDeactivated(false)} data-qa={QaSel.CanDeactivatePage_DialogueCancel}>Cancel</button>
+        </div>
+      </Modal>
 
-    <ActionData actionData={props.routeActionData}/>
-  </div>)
+      <ActionData actionData={props.routeActionData}/>
+    </div>
+  )
 }
