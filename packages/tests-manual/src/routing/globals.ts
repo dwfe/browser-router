@@ -1,6 +1,6 @@
-import {RouteActionData} from './contract';
+import {TRouteActionData} from './contract'
 
-export const getPreviousRouteActionData = (routeActionData?: RouteActionData): RouteActionData | undefined =>
+export const getPreviousRouteActionData = (routeActionData?: TRouteActionData): TRouteActionData | undefined =>
   routeActionData
     ? routeActionData.previous
     : undefined

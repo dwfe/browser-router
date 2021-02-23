@@ -1,8 +1,8 @@
 import {IActionResult, IPath, PathResolver, Routes, TRouteContext} from '@do-while-for-each/path-resolver'
 import {Action, Blocker, BrowserHistory, createBrowserHistory, State, Update} from 'history'
 import {LocationHandler} from './location-handler'
-import {EventListeners} from './event.listeners'
-import {defaultOptions, IListenersData, To} from './contract'
+import {ResultListeners} from './result.listeners'
+import {defaultOptions, IResultListenersArg, To} from './contract'
 import {Path} from './path'
 import {Task} from './task'
 
@@ -16,8 +16,7 @@ export class BrowserRouter<TComponent = any, TNote = any,
 
   private window: WindowProxy & typeof globalThis
 
-  // if routing result is component
-  public listeners = new EventListeners<IListenersData<TComponent, TNote, TContext>>()
+  public resultListeners = new ResultListeners<IResultListenersArg<TComponent, TNote, TContext>>()
 
   constructor(routes: Routes,
               public options = defaultOptions) {
@@ -51,13 +50,6 @@ export class BrowserRouter<TComponent = any, TNote = any,
       ? this.log(id, 'canceled')
       : result()
   }
-
-  // componentData$ = this.componentSubj.asObservable().pipe(
-  //   filter(elem => !!elem?.component),
-  //   distinctUntilChanged(),
-  //   shareReplay(1),
-  // )
-
 
   goto(to: To, ctx?: TContext): void {
     const path = Path.normalize(to);

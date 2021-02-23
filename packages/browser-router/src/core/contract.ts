@@ -16,7 +16,7 @@ export const defaultOptions: IBrowserRouterOptions = {
 
 export type To = IPath | string;
 
-export interface IListenersData<TComponent = any, TNote = any, TContext extends TRouteContext = TRouteContext> {
+export interface IResultListenersArg<TComponent = any, TNote = any, TContext extends TRouteContext = TRouteContext> {
   component: TComponent;
   routeActionData: IActionData<TNote, TContext>
 }

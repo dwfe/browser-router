@@ -4,10 +4,10 @@ import React, {ReactElement} from 'react'
 import {container} from 'tsyringe'
 import {AuthService, CanDeactivatePage, FirstPage, IndexPage, LoginPage, PicPage, ProtectedByAuthorization, SecondPage} from './pages'
 import {CanDeactivateService} from './pages/CanDeactivate/can-deactivate.service'
-import {Ctx, IRouteNote, NotFoundPage, RouteActionData} from './routing'
+import {IRouteNote, NotFoundPage, TCtx, TRouteActionData} from './routing'
 
 
-export const routes: Route<ReactElement, IRouteNote, IActionResult<ReactElement>, Ctx>[] = [
+export const routes: Route<ReactElement, IRouteNote, IActionResult<ReactElement>, TCtx>[] = [
   {path: '', component: <IndexPage/>, note: {title: 'Index'}},
   {
     path: 'first', component: <FirstPage/>, note: {title: 'First page'}, children: [
@@ -33,13 +33,13 @@ export const routes: Route<ReactElement, IRouteNote, IActionResult<ReactElement>
 ]
 
 
-function longTimeGettingOfActionResult(data: RouteActionData): Promise<IActionResult<ReactElement>> {
+function longTimeGettingOfActionResult(data: TRouteActionData): Promise<IActionResult<ReactElement>> {
   return new Promise(resolve => {
     setTimeout(() => resolve({redirectTo: 'picture'}), 5_000)
   })
 }
 
-async function passIfLoggedIn(data: RouteActionData): Promise<IActionResult<ReactElement>> {
+async function passIfLoggedIn(data: TRouteActionData): Promise<IActionResult<ReactElement>> {
   const auth = container.resolve(AuthService)
   if (auth.isLoggedIn())
     return {skip: true}
@@ -49,7 +49,7 @@ async function passIfLoggedIn(data: RouteActionData): Promise<IActionResult<Reac
   }
 }
 
-async function canDeactivateFn(tryRelocation: Location, data: RouteActionData): Promise<boolean> {
+async function canDeactivateFn(tryRelocation: Location, data: TRouteActionData): Promise<boolean> {
   return await container
     .resolve(CanDeactivateService)
     .canDeactivate(tryRelocation, data)

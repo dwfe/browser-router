@@ -26,7 +26,7 @@ export const Header = () => {
           <li>The routes used can be seen&nbsp;
             <Link href="https://gitlab.com/wizards-lab/routing/-/blob/master/packages/tests-manual/src/routes.tsx#L9" target="_blank">here</Link>
           </li>
-          <li>Trace output you can see in console</li>
+          <li>Log output you can see in console</li>
         </ol>
       </div>
       <div className="page-header_get-code">
