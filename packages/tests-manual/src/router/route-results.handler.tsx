@@ -23,7 +23,7 @@ export class RouteResultsHandler {
     this.unlistenFn?.()
   }
 
-  onRouteResult({component, routeActionData}: TRouteResultArg) {
+  private onRouteResult({component, routeActionData}: TRouteResultArg) {
     ReactDOM.render(
       <GeneralTemplate>
         {component}
