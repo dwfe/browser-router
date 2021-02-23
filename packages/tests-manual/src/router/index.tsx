@@ -1,5 +1,5 @@
 export * from './contract'
-export * from './route-result.handler'
+export * from './route-results.handler'
 
 export * from './components/Link'
 export * from './components/NotFoundPage'

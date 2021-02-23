@@ -1,18 +1,22 @@
-import React from 'react'
 import {BrowserRouter} from '@do-while-for-each/browser-router'
-import './style.css'
+import React, {useCallback} from 'react'
 import {useDIInstance} from '../../../hooks/use-di-instance'
-import {GitGetCode} from '../GitGetCode/GitGetCode'
 import {BtnNavigate} from '../BtnNavigate/BtnNavigate'
+import {GitGetCode} from '../GitGetCode/GitGetCode'
+import {QaSel} from '../../qa-selector'
 import {Link} from '../../../router'
-import {QaSel} from '../../qa-selector';
-
+import './Header.css'
 
 export const Header = () => {
   const [router] = useDIInstance(BrowserRouter)
 
-  const backFn = () => router.goBack()
-  const forwardFn = () => router.goForward()
+  const backFn = useCallback(() => {
+    router.goBack()
+  }, [router])
+
+  const forwardFn = useCallback(() => {
+    router.goForward()
+  }, [router])
 
   return (
     <header className="page-header">

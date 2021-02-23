@@ -7,6 +7,7 @@ import {routes} from './router/routes'
 export class DI {
 
   static init(): void {
+
     const routerOptions: IBrowserRouterOptions = {
       isDebug: true,
       injectRouteActionsDataToComponent: true,

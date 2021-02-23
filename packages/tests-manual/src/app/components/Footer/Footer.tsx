@@ -1,7 +1,6 @@
 import React from 'react'
 import {Link} from '../../../router'
-import './style.css'
-
+import './Footer.css'
 
 export const Footer = () => {
 

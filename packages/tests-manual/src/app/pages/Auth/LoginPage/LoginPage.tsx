@@ -1,11 +1,11 @@
-import React, {useState} from 'react'
+import React, {useCallback, useState} from 'react'
 import Modal from 'react-modal'
-import {ActionData, IRoutableProps} from '../../../../router'
 import {useDIInstance} from '../../../../hooks/use-di-instance'
+import {ActionData, IRoutableProps} from '../../../../router'
+import {defaultModalStyles} from '../../modal.settings'
 import {AuthService} from '../auth.service'
-import {defaultModalStyles} from '../../modal.settings';
-import {QaSel} from '../../../qa-selector';
-import './style.css'
+import {QaSel} from '../../../qa-selector'
+import './LoginPage.css'
 
 Modal.setAppElement('#root')
 
@@ -14,7 +14,7 @@ export const LoginPage = (props: IRoutableProps) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [showModal, setShowModal] = useState(false)
-  const closeModal = () => setShowModal(false)
+  const closeModal = useCallback(() => setShowModal(false), [setShowModal])
 
   const logIn = () => {
     if (isNonEmptyString(username) && isNonEmptyString(password))

@@ -1,7 +1,6 @@
 import React from 'react'
-import './style.css'
 import {Link} from '../../../router'
-
+import './GitGetCode.css'
 
 export const GitGetCode = ({text, href}: IProps) => {
 

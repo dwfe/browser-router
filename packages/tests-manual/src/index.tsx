@@ -1,10 +1,10 @@
 import 'reflect-metadata'
-import {RouteResultHandler} from './router'
+import {RouteResultsHandler} from './router'
 import {DI} from './di'
 import './index.css'
 
 DI.init()
 
-const routeResultHandler = new RouteResultHandler(document.getElementById('root'))
-routeResultHandler.start()
+const routeResultsHandler = new RouteResultsHandler(document.getElementById('root'))
+routeResultsHandler.start()
 

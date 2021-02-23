@@ -2,8 +2,8 @@ import React, {useState} from 'react'
 import Modal from 'react-modal'
 import {useDocumentTitle} from '../../../hooks/use-document-title'
 import {ActionData, IRoutableProps, Link} from '../../../router'
-import {useDIInstance} from '../../../hooks/use-di-instance'
 import {CanDeactivateService} from './can-deactivate.service'
+import {useDIInstance} from '../../../hooks/use-di-instance'
 import {defaultModalStyles} from '../modal.settings'
 import {QaSel} from '../../qa-selector'
 
@@ -13,12 +13,12 @@ export const CanDeactivatePage = (props: IRoutableProps) => {
   useDocumentTitle(props)
 
   const [showModal, setShowModal] = useState(false)
-  const [canDeactivateService] = useDIInstance(CanDeactivateService)
-  canDeactivateService.isItBeingCheckedNow = showModal
-  canDeactivateService.initCheck = () => setShowModal(true)
+  const [deactSrv] = useDIInstance(CanDeactivateService)
+  deactSrv.isItBeingCheckedNow = showModal
+  deactSrv.initCheck = () => setShowModal(true)
   const canBeDeactivated = (can: boolean) => {
     setShowModal(false)
-    canDeactivateService.canBeDeactivatedResultSubj.next(can)
+    deactSrv.canBeDeactivatedResultSubj.next(can)
   }
   const afterOpenModal = () => {
     const btn = document.querySelector(`[data-qa=${QaSel.CanDeactivatePage_DialogueYes}]`) as HTMLButtonElement
@@ -37,7 +37,7 @@ export const CanDeactivatePage = (props: IRoutableProps) => {
         onAfterOpen={afterOpenModal}
         style={defaultModalStyles}
       >
-        <p>Are you sure you want to go to <code><b>{canDeactivateService.tryRelocation?.pathname}</b></code> page?</p>
+        <p>Are you sure you want to go to <code><b>{deactSrv.tryRelocation?.pathname}</b></code> page?</p>
         <div>
           <button onClick={() => canBeDeactivated(true)} data-qa={QaSel.CanDeactivatePage_DialogueYes}>Yes</button>
           &nbsp;&nbsp;&nbsp;

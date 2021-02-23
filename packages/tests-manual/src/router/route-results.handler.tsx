@@ -5,7 +5,7 @@ import React from 'react'
 import {GeneralTemplate} from '../app/templates/General/GeneralTemplate'
 import {TRouteResultArg} from './contract'
 
-export class RouteResultHandler {
+export class RouteResultsHandler {
 
   private router: BrowserRouter
   private unlistenFn!: () => void

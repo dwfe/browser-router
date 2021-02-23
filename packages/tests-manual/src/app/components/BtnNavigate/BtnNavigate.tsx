@@ -1,8 +1,7 @@
-import React, {MutableRefObject, useRef} from 'react'
+import React, {MutableRefObject, useCallback, useRef} from 'react'
+import {QaSel} from '../../qa-selector'
 import classNames from 'classnames'
-import './style.css'
-import {QaSel} from '../../qa-selector';
-
+import './BtnNavigate.css'
 
 export const BtnNavigate = ({isBack, onClick}: IProps) => {
   const buttonRef: MutableRefObject<HTMLButtonElement | null> = useRef(null)
@@ -18,12 +17,10 @@ export const BtnNavigate = ({isBack, onClick}: IProps) => {
       onClick: handleClick,
     }
   }
-
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     onClick && onClick()
     buttonRef?.current?.focus()
-  }
-
+  }, [buttonRef])
 
   return (
     <button

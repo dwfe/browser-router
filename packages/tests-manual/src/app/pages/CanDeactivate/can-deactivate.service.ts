@@ -1,4 +1,4 @@
-import {Location} from '@do-while-for-each/browser-router';
+import {Location} from '@do-while-for-each/browser-router'
 import {first} from 'rxjs/operators'
 import {Subject} from 'rxjs'
 import {TRouteActionData} from '../../../router'

@@ -9,8 +9,8 @@ export interface IRouteNote {
   title?: string;
 }
 
-export type TCtx = TRouteContext & {
-  title?: string; // for example
+export type TCtx = TRouteContext & { // this context for example
+  title?: string;
 } | null // because history package type 'State' = object | null
 
 

@@ -1,6 +1,6 @@
 import React, {useLayoutEffect, useRef} from 'react'
 import autosize from 'autosize'
-import './styles.css'
+import './ActionData.css'
 
 export const ActionData = ({actionData}: any) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
