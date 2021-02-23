@@ -1,8 +1,8 @@
 import {IActionResult, IPath, PathResolver, Routes, TRouteContext} from '@do-while-for-each/path-resolver'
 import {Action, Blocker, BrowserHistory, createBrowserHistory, State, Update} from 'history'
+import {defaultOptions, IResultListenersArg, To} from './contract'
 import {LocationHandler} from './location-handler'
 import {ResultListeners} from './result.listeners'
-import {defaultOptions, IResultListenersArg, To} from './contract'
 import {Path} from './path'
 import {Task} from './task'
 
