@@ -1,5 +1,5 @@
 import {BrowserRouter} from '@do-while-for-each/browser-router'
-import React, {useCallback} from 'react'
+import React from 'react'
 import {useDIInstance} from '../../../hooks/use-di-instance'
 import {BtnNavigate} from '../BtnNavigate/BtnNavigate'
 import {GitGetCode} from '../GitGetCode/GitGetCode'
@@ -10,13 +10,8 @@ import './Header.css'
 export const Header = () => {
   const [router] = useDIInstance(BrowserRouter)
 
-  const backFn = useCallback(() => {
-    router.goBack()
-  }, [router])
-
-  const forwardFn = useCallback(() => {
-    router.goForward()
-  }, [router])
+  const backFn = () => router.goBack()
+  const forwardFn = () => router.goForward()
 
   return (
     <header className="page-header">

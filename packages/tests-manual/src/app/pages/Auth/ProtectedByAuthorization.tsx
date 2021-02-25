@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React from 'react'
 import {useDIInstance} from '../../../hooks/use-di-instance'
 import {ActionData, IRoutableProps} from '../../../router'
 import {AuthService} from './auth.service'
@@ -7,9 +7,7 @@ import {QaSel} from '../../qa-selector'
 export const ProtectedByAuthorization = (props: IRoutableProps) => {
   const [auth] = useDIInstance(AuthService)
 
-  const logOut = useCallback(() => {
-    auth.logOut()
-  }, [auth])
+  const logOut = () => auth.logOut()
 
   return (<div>
     <p>Congratulations!</p>
