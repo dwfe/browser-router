@@ -4,13 +4,17 @@
 
 ## Getting Started
 
+Using the example for React.js:
+
 1. [Define routes](https://github.com/dwfe/browser-router/blob/master/packages/tests-manual/src/router/routes.tsx#L9)
 2. [Create `BrowserRouter` instance](https://github.com/dwfe/browser-router/blob/master/packages/tests-manual/src/di.ts#L18)
 3. [Start `BrowserRouter`](https://github.com/dwfe/browser-router/blob/master/packages/tests-manual/src/router/route-results.handler.tsx#L17)
 
+And that's all you need to do to make the router work.
+
 ## TODO
 
-- Path.normalizePathname, а если location /app/123 и там сделать переход "hello/world"
+- Path.normalize pathname, а если location /app/123 и там сделать переход "hello/world"
 - сделать чистый бандл
   - [чтобы без косяков](https://www.opennet.ru/opennews/art.shtml?num=54566)
 - оформить
