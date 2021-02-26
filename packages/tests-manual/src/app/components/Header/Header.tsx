@@ -23,13 +23,13 @@ export const Header = () => {
       <div className="page-header_info">
         <ol>
           <li>The routes used can be seen&nbsp;
-            <Link href="https://gitlab.com/wizards-lab/routing/-/blob/master/packages/tests-manual/src/routes.tsx#L9" target="_blank">here</Link>
+            <Link href="https://github.com/dwfe/browser-router/blob/master/packages/tests-manual/src/router/routes.tsx#L9" target="_blank">here</Link>
           </li>
           <li>Trace output you can see in console</li>
         </ol>
       </div>
       <div className="page-header_get-code">
-        <GitGetCode href="https://gitlab.com/wizards-lab/routing/-/tree/master/packages/tests-manual"
+        <GitGetCode href="https://github.com/dwfe/browser-router/tree/master/packages/tests-manual"
                     text='get source of this demo'/>
       </div>
     </header>
