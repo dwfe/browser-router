@@ -2,12 +2,12 @@
   "name": "@do-while-for-each/browser-router",
   "description": "Routing for any single page app",
   "version": "1.1.1",
-  "homepage": "",
+  "homepage": "https://github.com/dwfe/browser-router/tree/master/packages/browser-router",
   "bugs": "",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/wizards-lab/routing.git"
+    "url": "https://github.com/dwfe/browser-router.git"
   },
   "main": "./dist/js",
   "typings": "./dist/types",
@@ -19,7 +19,7 @@
     "build": "npm run clean && tsc -b",
     "prepare-regress": "node ./dist/js/src/__tests__/regress-browser-router",
     "test": "jest",
-    "prod": "npm run build && webpack --config ./dist/js/webpack/prod/prod.config.js"
+    "prod": "npm run build && webpack --config ./dist/js/webpack/prod/prod.conf.js"
   },
   "devDependencies": {
     "@types/node": "12",

@@ -1,6 +1,6 @@
-import {join, resolve} from 'path'
 import {Configuration} from 'webpack'
-import {DoneActions} from './done.actions'
+import {join, resolve} from 'path'
+import {WebpackCompilerFileAction} from '../plugin/webpack-compiler.file-action'
 
 const DIST = resolve(__dirname, '../../../')
 
@@ -13,7 +13,7 @@ export default {
     libraryTarget: 'umd'
   },
   plugins: [
-    new DoneActions([
+    new WebpackCompilerFileAction('done', [
       ['clean-dir', [join(DIST, 'js')]],
       ['move-file', [join(DIST, 'index.js'), join(DIST, 'js/index.js')]]
     ])
