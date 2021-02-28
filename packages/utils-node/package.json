@@ -1,13 +1,13 @@
 {
-  "name": "@dwfe/utils-dev",
+  "name": "@dwfe/utils-node",
   "version": "1.0.0",
   "private": true,
   "license": "UNLICENSED",
   "main": "dist/js",
   "typings": "dist/types",
   "scripts": {
-    "clean:utils": "rimraf ./dist",
-    "build": "npm run clean:utils && tsc -b"
+    "clean:node-utils": "rimraf ./dist",
+    "build": "npm run clean:node-utils && tsc -b"
   },
   "devDependencies": {
     "@types/node": "12",

@@ -1,5 +1,5 @@
 import {lstatSync, readdirSync, readFileSync, unlinkSync, writeFileSync} from 'fs';
-import {FileCheck, FileJson} from '@dwfe/file-system';
+import {FileCheck, FileJson} from '@dwfe/utils-node';
 import {join} from 'path';
 import {IAutomationEnvironmentOptions, IFileInfo, IFileMetadata, IStorage, IStorageGet, IStorageIndex, IStorageIndexValue, ITask} from './contract';
 import {AutomationEnvironment} from './automation.environment';

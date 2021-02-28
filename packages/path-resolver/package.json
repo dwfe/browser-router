@@ -28,7 +28,7 @@
     "@types/jest": "26",
     "jest": "26.6.0",
     "ts-jest": "26",
-    "@dwfe/utils-dev": "1.0.0"
+    "@dwfe/utils-node": "1.0.0"
   },
   "dependencies": {
     "path-to-regexp": "6"

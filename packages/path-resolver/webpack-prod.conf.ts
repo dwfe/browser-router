@@ -1,4 +1,4 @@
-import {StandardProdConf} from '@dwfe/utils-dev'
+import {StandardProdConf} from '@dwfe/utils-node'
 import {Configuration} from 'webpack'
 import {resolve} from 'path'
 

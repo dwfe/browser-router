@@ -1,7 +1,6 @@
 import {compilation, Compiler, Plugin} from 'webpack'
 import {PathLike} from 'fs'
-import {FileProcess} from '../../fs/file.process'
-import {TCmd} from '../../fs/contract'
+import {FileProcess, TCmd} from '../../fs'
 
 export class WebpackCompilerFileAction implements Plugin {
   constructor(private hookName: keyof compilation.CompilerHooks,
@@ -12,6 +11,5 @@ export class WebpackCompilerFileAction implements Plugin {
     compiler.hooks[this.hookName].tap('actions', () => {
       FileProcess.run(this.tasks)
     })
-
   }
 }
