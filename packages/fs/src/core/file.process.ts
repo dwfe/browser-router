@@ -4,7 +4,7 @@ import {TCmd} from './contract'
 
 export class FileProcess {
 
-  static process(tasks: Array<[TCmd, [PathLike, PathLike?]]>) {
+  static run(tasks: Array<[TCmd, [PathLike, PathLike?]]>) {
     tasks.forEach(([cmd, [src, dest]]) => {
       switch (cmd) {
         case 'clean-dir':

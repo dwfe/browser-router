@@ -1,8 +1,8 @@
 import {lstatSync, readdirSync, readFileSync, unlinkSync, writeFileSync} from 'fs';
+import {FileCheck, FileJson} from '@dwfe/fs';
 import {join} from 'path';
 import {IAutomationEnvironmentOptions, IFileInfo, IFileMetadata, IStorage, IStorageGet, IStorageIndex, IStorageIndexValue, ITask} from './contract';
 import {AutomationEnvironment} from './automation.environment';
-import {ensureDir, readJson, writeJson} from './common';
 
 /**
  * Хранилище реализует структуру вида:
@@ -53,8 +53,8 @@ export class Storage implements IStorage {
 //region Структура хранилища
 
   private initDirs() {
-    ensureDir(this.dir);
-    ensureDir(this.environmentDir);
+    FileCheck.ensureDir(this.dir);
+    FileCheck.ensureDir(this.environmentDir);
   }
 
   /**
@@ -63,9 +63,9 @@ export class Storage implements IStorage {
    *  - обновить соответствующие переменные.
    */
   private updatePosition(task: ITask, meta: IFileMetadata) {
-    ensureDir(this.getStorageFileTypeDir(meta));
+    FileCheck.ensureDir(this.getStorageFileTypeDir(meta));
     if (meta.type === 'response') {
-      ensureDir(this.getTaskDir(task));
+      FileCheck.ensureDir(this.getTaskDir(task));
     }
   }
 
@@ -127,7 +127,7 @@ export class Storage implements IStorage {
   }
 
   private getIndex(path: string) {
-    return readJson<IStorageIndex>(path);
+    return FileJson.read<IStorageIndex>(path);
   }
 
   private updateIndex(meta: IFileMetadata, value: IStorageIndexValue) {
@@ -135,7 +135,7 @@ export class Storage implements IStorage {
       return;
     const index = this.currentIndex;
     index[meta.key] = value;
-    writeJson(index, this.taskIndexFilePath);
+    FileJson.write(index, this.taskIndexFilePath, true);
   }
 
 //endregion

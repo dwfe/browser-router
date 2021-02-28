@@ -1,7 +1,6 @@
 import {IAutomationEnvironmentOptions, IStorage, ITask} from './contract';
 import {AutomationEnvironment} from './automation.environment';
 import {PngUtils} from './png.utils';
-import {joinUrl} from './common';
 
 export class TaskExecutor {
 
@@ -151,4 +150,10 @@ export class TaskExecutor {
 
 //endregion
 
+}
+
+const joinUrl = (path: string, baseUrl: string) => {
+  if (!baseUrl || path.includes('http://') || path.includes('https://'))
+    return path;
+  return baseUrl + (path[0] === '/' ? path : `/${path}`);
 }

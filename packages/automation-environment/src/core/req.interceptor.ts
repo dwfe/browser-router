@@ -2,7 +2,6 @@ import {Page, Request, Route} from 'playwright';
 import fetch, {Response} from 'node-fetch';
 import {IInterception, IInterceptionInfo, IStorage, ITask} from './contract';
 import {AutomationEnvironment} from './automation.environment';
-import {getUrlPath} from './common';
 
 /**
  * Каждый из перехватов(match) по умолчанию отработает только один раз(onePass = true).
@@ -153,4 +152,9 @@ interface IResponse {
   status: number;
   body: Buffer; // тело ответа
   contentType: string;
+}
+
+const getUrlPath = (url: string): string => {
+  const u = new URL(url);
+  return u.href.replace(u.origin, ''); // весь url минус origin
 }
