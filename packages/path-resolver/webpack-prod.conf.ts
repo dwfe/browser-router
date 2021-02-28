@@ -5,5 +5,5 @@ import {resolve} from 'path'
 const DIST = resolve(__dirname, '../')
 
 export default {
-  ...new StandardProdConf(DIST).get()
+  ...new StandardProdConf(DIST).get(),
 } as Configuration

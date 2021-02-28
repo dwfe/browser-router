@@ -2,12 +2,12 @@
   "name": "@do-while-for-each/path-resolver",
   "description": "Looks for a route by pathname in a predefined route tree",
   "version": "1.1.1",
-  "homepage": "",
+  "homepage": "https://github.com/dwfe/browser-router/tree/master/packages/path-resolver",
   "bugs": "",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/wizards-lab/routing.git"
+    "url": "git@github.com:dwfe/browser-router.git"
   },
   "main": "./dist/js",
   "typings": "./dist/types",
@@ -17,7 +17,8 @@
   "scripts": {
     "clean": "rimraf ./dist",
     "build": "npm run clean && tsc -b",
-    "test": "jest"
+    "test": "jest",
+    "prod": "npm run build && webpack --config ./dist/js/webpack-prod.conf.js"
   },
   "devDependencies": {
     "@types/node": "12",
@@ -26,7 +27,8 @@
     "typescript": "4",
     "@types/jest": "26",
     "jest": "26.6.0",
-    "ts-jest": "26"
+    "ts-jest": "26",
+    "@dwfe/utils-dev": "1.0.0"
   },
   "dependencies": {
     "path-to-regexp": "6"

@@ -1,18 +1,19 @@
 {
-  "name": "@dwfe/webpack",
+  "name": "@dwfe/utils-dev",
   "version": "1.0.0",
+  "private": true,
+  "license": "UNLICENSED",
   "main": "dist/js",
   "typings": "dist/types",
   "scripts": {
-    "clean": "rimraf ./dist",
-    "build": "npm run clean && tsc -b"
+    "clean:utils": "rimraf ./dist",
+    "build": "npm run clean:utils && tsc -b"
   },
   "devDependencies": {
     "@types/node": "12",
-    "@types/webpack": "4",
     "typescript": "4",
     "rimraf": "3",
-    "@dwfe/fs": "1.0.0"
+    "webpack": "4.44.2"
   },
   "dependencies": {
   }
