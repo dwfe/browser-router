@@ -1,4 +1,4 @@
-import {Command, TCommand} from '@dwfe/automation-environment';
+import {Command, TCommand} from '@dwfe/utils-node';
 import {AbstractClickTask} from './abstract-click.task';
 
 const {goto} = Command;

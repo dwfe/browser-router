@@ -8,22 +8,16 @@ export class FileProcess {
     tasks.forEach(([cmd, [src, dest]]) => {
       switch (cmd) {
         case 'clean-dir':
-          console.log(`==========================\r\n Clean dirs \r\n==========================`);
           FileProcess.cleanDir(src, {recursive: true})
-          console.log(`> clean dir '${src}'`)
-          console.log(`==========================\r\n\r\n`)
+          console.log(`> clean dir '${src}' \r\n`)
           return;
         case 'move-file':
-          console.log(`==========================\r\n Move files \r\n==========================`);
           FileProcess.moveFile(src, dest)
-          console.log(`> move file '${src}' -> '${dest}'`)
-          console.log(`==========================\r\n\r\n`)
+          console.log(`> move file '${src}' -> '${dest}' \r\n`)
           return;
         case 'copy-file':
-          console.log(`==========================\r\n Copy files \r\n==========================`);
           FileProcess.copyFile(src, dest)
-          console.log(`> copy file '${src}' -> '${dest}'`)
-          console.log(`==========================\r\n\r\n`)
+          console.log(`> copy file '${src}' -> '${dest}' \r\n`)
           return;
         default:
           throw new Error(`unknown command type '${cmd}'`)

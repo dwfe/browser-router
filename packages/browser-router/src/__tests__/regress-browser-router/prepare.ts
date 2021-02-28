@@ -1,4 +1,4 @@
-import {AutomationEnvironment, IAutomationEnvironmentOptions} from '@dwfe/automation-environment';
+import {AutomationEnvironment, IAutomationEnvironmentOptions} from '@dwfe/utils-node';
 import {chromium800x600} from './env/chromium800x600.env';
 import {webkit800x600} from './env/webkit800x600.env';
 import {TaskFactory} from './task/task.factory';

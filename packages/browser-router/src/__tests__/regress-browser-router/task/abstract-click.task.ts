@@ -1,4 +1,4 @@
-import {AbstractTask, AutomationEnvironment, Command, TCommand} from '@dwfe/automation-environment';
+import {AbstractTask, AutomationEnvironment, Command, TCommand} from '@dwfe/utils-node';
 import {QaSel} from './qa-selector';
 import {TaskId} from './task.id';
 

@@ -6,15 +6,25 @@
   "main": "dist/js",
   "typings": "dist/types",
   "scripts": {
-    "clean:node-utils": "rimraf ./dist",
-    "build": "npm run clean:node-utils && tsc -b"
+    "clean:utils-node": "rimraf ./dist",
+    "build": "npm run clean:utils-node && tsc -b"
   },
   "devDependencies": {
     "@types/node": "12",
+    "@types/pngjs": "3.4.2",
+    "@types/jpeg-js": "0.3.7",
+    "@types/pixelmatch": "^5.2.1",
+    "@types/node-fetch": "2.5.7",
+    "@types/webpack": "4",
     "typescript": "4",
-    "rimraf": "3",
-    "webpack": "4.44.2"
+    "rimraf": "3"
   },
   "dependencies": {
+    "playwright": "1.8.1",
+    "pixelmatch": "5.2.1",
+    "dotenv": "8.2.0",
+    "node-fetch": "2.6.1",
+    "rxjs": "6",
+    "jpeg-js": "0.4.3"
   }
 }
