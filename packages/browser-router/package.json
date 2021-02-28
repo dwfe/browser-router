@@ -19,7 +19,7 @@
     "build": "npm run clean && tsc -b",
     "prepare-regress": "node ./dist/js/src/__tests__/regress-browser-router",
     "test": "jest",
-    "prod": "npm run build && webpack --config ./dist/js/webpack/prod.conf.js"
+    "prod": "npm run build && webpack --config ./dist/js/webpack-prod.conf.js"
   },
   "devDependencies": {
     "@types/node": "12",
