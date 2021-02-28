@@ -30,6 +30,7 @@
     "jest": "26.6.0",
     "ts-jest": "26",
     "webpack": "4.44.2",
+    "webpack-cli": "3",
     "@dwfe/utils-node": "1.0.0"
   },
   "dependencies": {
