@@ -3,9 +3,9 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "composite": true,
-    "outDir": "./dist/esm",
-    "declarationDir": "./dist/types",
-    "baseUrl": "."
+    "baseUrl": ".",
+    "outDir": "dist/js",
+    "declarationDir": "dist/types"
   },
   "exclude": [
     "node_modules",

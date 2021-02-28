@@ -1,8 +1,8 @@
 import {Configuration} from 'webpack'
 import {join, resolve} from 'path'
-import {WebpackCompilerFileAction} from '../plugin/webpack-compiler.file-action'
+import {WebpackCompilerFileAction} from '@dwfe/webpack'
 
-const DIST = resolve(__dirname, '../../../')
+const DIST = resolve(__dirname, '../../')
 
 export default {
   mode: 'production',

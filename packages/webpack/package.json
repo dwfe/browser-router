@@ -1,0 +1,19 @@
+{
+  "name": "@dwfe/webpack",
+  "version": "1.0.0",
+  "main": "dist/js",
+  "typings": "dist/types",
+  "scripts": {
+    "clean": "rimraf ./dist",
+    "build": "npm run clean && tsc -b"
+  },
+  "devDependencies": {
+    "@types/node": "12",
+    "@types/webpack": "4",
+    "typescript": "4",
+    "rimraf": "3",
+    "@dwfe/fs": "1.0.0"
+  },
+  "dependencies": {
+  }
+}

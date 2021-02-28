@@ -1,7 +1,6 @@
 import {closeSync, copyFileSync, lstatSync, openSync, PathLike, readdirSync, RmDirOptions, rmdirSync, unlinkSync} from 'fs'
 import {join} from 'path'
-
-export type TCmd = 'clean-dir' | 'copy-file' | 'move-file'
+import {TCmd} from './contract'
 
 export class FileProcess {
 

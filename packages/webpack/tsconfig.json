@@ -4,11 +4,10 @@
     "composite": true,
     "baseUrl": ".",
     "outDir": "dist/js",
-    "declarationDir": "dist/types",
-    "esModuleInterop": true
+    "declarationDir": "dist/types"
   },
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
   ]
 }
