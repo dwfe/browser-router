@@ -15,7 +15,6 @@
     "@types/node-fetch": "2.5.7",
     "@types/pixelmatch": "^5.2.1",
     "@types/pngjs": "3.4.2",
-    "@types/webpack": "4",
     "rimraf": "3",
     "typescript": "4"
   },

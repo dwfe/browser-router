@@ -1,14 +1,14 @@
-import {compilation, Compiler, Plugin} from 'webpack'
+import {Compiler} from 'webpack'
 import {PathLike} from 'fs'
 import {FileProcess, TCmd} from '../../fs'
 
-export class WebpackCompilerFileAction implements Plugin {
-  constructor(private hookName: keyof compilation.CompilerHooks,
+export class WebpackCompilerFileAction {
+  constructor(private hookName: keyof Compiler['hooks'],
               private tasks: Array<[TCmd, [PathLike, PathLike?]]>) {
   }
 
   apply(compiler: Compiler) {
-    compiler.hooks[this.hookName].tap('actions', () => {
+    compiler.hooks[this.hookName].tap('actions', (): any => {
       FileProcess.run(this.tasks)
     })
   }

@@ -13,6 +13,8 @@
   },
   "devDependencies": {
     "lerna": "3",
-    "rimraf": "3"
+    "rimraf": "3",
+    "webpack": "4.44.2",
+    "webpack-cli": "3"
   }
 }
