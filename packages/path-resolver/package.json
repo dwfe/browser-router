@@ -36,5 +36,10 @@
   "dependencies": {
     "path-to-regexp": "6"
   },
+  "files": [
+    "dist/",
+    "LICENSE",
+    "README.md"
+  ],
   "gitHead": "ba5aa382e029d28b722b620c1d7ff909a63508ec"
 }
