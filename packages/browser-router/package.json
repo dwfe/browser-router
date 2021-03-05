@@ -3,8 +3,17 @@
   "description": "Routing for any single page app",
   "version": "2.0.1",
   "homepage": "https://github.com/dwfe/browser-router/tree/master/packages/browser-router",
-  "bugs": "",
+  "bugs": "https://github.com/dwfe/browser-router/issues",
+  "keywords": [
+    "router",
+    "routing",
+    "route",
+    "universal",
+    "link",
+    "history"
+  ],
   "license": "MIT",
+  "author": "Do-While-For-Each",
   "repository": {
     "type": "git",
     "url": "git@github.com:dwfe/browser-router.git"

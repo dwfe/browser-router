@@ -3,7 +3,15 @@
   "description": "Looks for a route by pathname in a predefined route tree",
   "version": "2.0.1",
   "homepage": "https://github.com/dwfe/browser-router/tree/master/packages/path-resolver",
-  "bugs": "",
+  "bugs": "https://github.com/dwfe/browser-router/issues",
+  "keywords": [
+    "route",
+    "pathname",
+    "path",
+    "search",
+    "tree"
+  ],
+  "author": "Do-While-For-Each",
   "license": "MIT",
   "repository": {
     "type": "git",
