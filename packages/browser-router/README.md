@@ -1,4 +1,4 @@
-<p style="text-align: center;">Router for any JavaScript app</p>
+<p align="center">Router for any JavaScript app</p>
 
 ## Getting Started
 
