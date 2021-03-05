@@ -1,3 +1,5 @@
+Router for any JavaScript app.
+
 ## Getting Started
 
 Using the example for React.js:

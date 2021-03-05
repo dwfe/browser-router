@@ -1,7 +1,8 @@
 import {Page, Request, Route} from 'playwright';
 import fetch, {Response} from 'node-fetch';
-import {IInterception, IInterceptionInfo, IStorage, ITask} from './contract';
+import {IInterception, IInterceptionInfo, IStorage, ITask, TInterceptionMatch} from './contract';
 import {AutomationEnvironment} from './automation.environment';
+import {getUrlPath} from './common';
 
 /**
  * Каждый из перехватов(match) по умолчанию отработает только один раз(onePass = true).
@@ -24,12 +25,12 @@ export class ReqInterceptor {
 
   register(data: IInterception[]) {
     data?.forEach(({match, type}) => {
-      this.interceptions.set(match, {type});
+      this.interceptions.set(match.toString(), {type});
       this.page.route(match, this.getInterceptor(match));
     });
   }
 
-  private getInterceptor(match: string) {
+  private getInterceptor(match: TInterceptionMatch) {
     this.debug(`listen '${match}'`);
 
     return async (route: Route, req: Request) => {
@@ -91,8 +92,8 @@ export class ReqInterceptor {
     this.storage.set(this.task, {type: 'response', key, contentType}, buf);
   }
 
-  private setCompleted(match: string) {
-    const info = this.interceptions.get(match);
+  private setCompleted(match: TInterceptionMatch) {
+    const info = this.interceptions.get(match.toString());
     if (info.completed) {
       this.checkAllDataReceived();
       return;
@@ -113,7 +114,7 @@ export class ReqInterceptor {
     }
   }
 
-  private completeInterception(match: string, info: IInterceptionInfo) {
+  private completeInterception(match: TInterceptionMatch, info: IInterceptionInfo) {
     info.completed = true;
     this.page.unroute(match);
     this.debug(`stop listen '${match}'`);
@@ -152,9 +153,4 @@ interface IResponse {
   status: number;
   body: Buffer; // тело ответа
   contentType: string;
-}
-
-const getUrlPath = (url: string): string => {
-  const u = new URL(url);
-  return u.href.replace(u.origin, ''); // весь url минус origin
 }

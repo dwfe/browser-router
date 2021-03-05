@@ -109,6 +109,8 @@ export class Storage implements IStorage {
           fileName = `${Math.random().toString(36).substr(2, 8)}${getFileExtention(contentType)}`;
         } else {
           const index = this.currentIndex[meta.key];
+          if (index === undefined)
+            throw new Error(`Storage#file: в индексе нет такого ключа '${meta.key}'`);
           fileName = index.fileName;
           contentType = index.contentType;
         }

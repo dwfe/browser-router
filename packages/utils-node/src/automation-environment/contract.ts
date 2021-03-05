@@ -96,13 +96,15 @@ export interface ILogin {
 
 export interface IInterception {
   type: TInterceptionType;
-  match: string;
+  match: TInterceptionMatch;
 }
 
 export type TInterceptionType =
   'single'     // один запрос - один ответ
   | 'multiple' // несколько запросов - несколько ответов
   ;
+
+export type TInterceptionMatch = string | RegExp;
 
 export interface IInterceptionInfo {
   type: TInterceptionType;
