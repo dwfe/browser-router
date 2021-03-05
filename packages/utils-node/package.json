@@ -23,7 +23,7 @@
     "jpeg-js": "0.4.3",
     "node-fetch": "2.6.1",
     "pixelmatch": "5.2.1",
-    "playwright": "1.8.1",
+    "playwright": "1.9.1",
     "rxjs": "6"
   }
 }
