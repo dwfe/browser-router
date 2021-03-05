@@ -1,6 +1,5 @@
 import {IActionData, IActionResult, IPath, IPathResolveResult, IRoute, PathResolver, TRouteContext} from '@do-while-for-each/path-resolver'
 import {Blocker, Location, Transition} from 'history'
-import React from 'react'
 import {IBrowserRouterOptions} from './contract'
 import {BrowserRouter} from './browser-router'
 import {Path} from './path'
@@ -86,7 +85,6 @@ export class Task<TComponent = any, TNote = any,
         }
       return;
     } else if (component) {
-      component = this.injectRoutingProps(component)
       this.result = () => {
         this.log(`${stage} component`)
         this.router.resultListeners.call({
@@ -137,24 +135,6 @@ export class Task<TComponent = any, TNote = any,
       previous,
       key,
     }
-  }
-
-  private injectRoutingProps(component): any {
-    if (!this.options.injectRouteActionsDataToComponent)
-      return component
-
-    if (typeof component === 'object') {
-      this.log('  inject routing props to component')
-      const props = {routeActionData: this.routeActionData}
-      if (React.isValidElement(component)) {
-        return React.cloneElement(
-          component as any,
-          props
-        )
-      }
-      // else if() {}        // condition and inject for component in Your case
-    }
-    return component
   }
 
   private async invokeAction(action: (data: IActionData<TNote, TContext>) => Promise<TActionResult>, name: string, stage: string): Promise<void> {

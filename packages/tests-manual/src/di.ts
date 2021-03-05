@@ -10,7 +10,6 @@ export class DI {
 
     const routerOptions: IBrowserRouterOptions = {
       isDebug: true,
-      injectRouteActionsDataToComponent: true,
       pathResolver: {
         isDebug: true,
       }

@@ -1,16 +1,17 @@
 import {BrowserRouter} from '@do-while-for-each/browser-router'
+import React, {ReactElement} from 'react'
 import {container} from 'tsyringe'
 import ReactDOM from 'react-dom'
-import React from 'react'
+import {defaultRouteResultHandlerOptions, IRouteResultHandlerOptions, TRouteResultArg} from './contract'
 import {GeneralTemplate} from '../app/templates/General/GeneralTemplate'
-import {TRouteResultArg} from './contract'
 
 export class RouteResultsHandler {
 
   private router: BrowserRouter
   private unlistenFn!: () => void
 
-  constructor(private root: HTMLElement | null) {
+  constructor(private root: HTMLElement | null,
+              private options: IRouteResultHandlerOptions = defaultRouteResultHandlerOptions) {
     this.router = container.resolve(BrowserRouter)
   }
 
@@ -23,13 +24,22 @@ export class RouteResultsHandler {
     this.unlistenFn?.()
   }
 
-  private onRouteResult({component, routeActionData}: TRouteResultArg) {
+  private onRouteResult(arg: TRouteResultArg) {
+    const component = this.injectProps(arg);
     ReactDOM.render(
       <GeneralTemplate>
         {component}
       </GeneralTemplate>,
       this.root
     )
+  }
+
+  private injectProps({component, routeActionData}: TRouteResultArg): ReactElement {
+    if (!this.options.injectRouteActionsDataToComponent)
+      return component;
+    return React.isValidElement(component)
+      ? React.cloneElement(component as any, {routeActionData})
+      : component;
   }
 
 }

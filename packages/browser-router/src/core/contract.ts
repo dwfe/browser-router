@@ -2,13 +2,11 @@ import {IActionData, IPath, IPathResolverOptions, TRouteContext} from '@do-while
 
 export interface IBrowserRouterOptions {
   isDebug?: boolean;
-  injectRouteActionsDataToComponent?: boolean;
   pathResolver?: IPathResolverOptions;
 }
 
 export const defaultOptions: IBrowserRouterOptions = {
   isDebug: true,
-  injectRouteActionsDataToComponent: false,
   pathResolver: {
     isDebug: true,
   }

@@ -17,3 +17,11 @@ export type TCtx = TRouteContext & { // this context for example
 export interface IRoutableProps extends HTMLProps<any> {
   routeActionData?: TRouteActionData;
 }
+
+export interface IRouteResultHandlerOptions {
+  injectRouteActionsDataToComponent?: boolean;
+}
+
+export const defaultRouteResultHandlerOptions: IRouteResultHandlerOptions = {
+  injectRouteActionsDataToComponent: true
+};
