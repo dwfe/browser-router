@@ -15,6 +15,7 @@
     "**/*.test.ts",
     "**/node_modules",
     "**/dist",
-    "**/*.d.ts"
+    "**/*.d.ts",
+    "**/browser-router-react-tools*"
   ]
 }

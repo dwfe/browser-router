@@ -18,7 +18,7 @@ export abstract class AbstractClickTask extends AbstractTask {
   async actionsBeforeScreenshot(): Promise<void> {
     await this.page.addStyleTag({
       content: `
-        .ActionData {
+        .RouteActionData {
           display: none;
         }
       `,
