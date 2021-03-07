@@ -19,6 +19,10 @@ export class FileProcess {
           FileProcess.copyFile(src, dest)
           console.log(`> copy file '${src}' -> '${dest}' \r\n`)
           return;
+        case 'delete-path':
+          FileProcess.deletePath(src, {recursive: true})
+          console.log(`> delete path '${src}' \r\n`)
+          return;
         default:
           throw new Error(`unknown command type '${cmd}'`)
       }
@@ -29,10 +33,7 @@ export class FileProcess {
     const fileNames = readdirSync(source);
     fileNames.forEach(file => {
       const path = join(source.toString(), file)
-      if (lstatSync(path).isDirectory())
-        rmdirSync(path, options)
-      else
-        unlinkSync(path)
+      FileProcess.deletePath(path, options)
     })
   }
 
@@ -48,6 +49,13 @@ export class FileProcess {
 
   static moveFile(src: PathLike, dest: PathLike, flags?: number): void {
     FileProcess.copyFile(src, dest, true, flags)
+  }
+
+  static deletePath(path: PathLike, options?: RmDirOptions): void {
+    if (lstatSync(path).isDirectory())
+      rmdirSync(path, options)
+    else
+      unlinkSync(path)
   }
 
 }

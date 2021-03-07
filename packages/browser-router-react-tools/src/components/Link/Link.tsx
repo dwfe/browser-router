@@ -1,5 +1,5 @@
 import {BrowserRouter} from '@do-while-for-each/browser-router';
-import React, {HTMLProps, SyntheticEvent} from 'react'
+import {HTMLProps, SyntheticEvent} from 'react'
 import {useDIInstance} from '../../hooks'
 
 export const Link = (props: IProps) => {

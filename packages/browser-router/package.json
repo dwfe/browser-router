@@ -24,7 +24,7 @@
     "access": "public"
   },
   "scripts": {
-    "clean": "rimraf ./dist",
+    "clean": "rimraf ./dist && rimraf package-lock.json",
     "build": "npm run clean && tsc -b",
     "prepare-regress": "node ./dist/js/src/__tests__/regress-browser-router",
     "test": "jest",

@@ -1,4 +1,3 @@
-import React from 'react';
 import {RouteActionData} from '../RouteActionData/RouteActionData'
 import {useDocumentTitle} from '../../hooks'
 import {IRoutableProps} from '../../contract'

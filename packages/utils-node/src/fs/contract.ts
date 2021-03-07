@@ -1,1 +1,1 @@
-export type TCmd = 'clean-dir' | 'copy-file' | 'move-file'
+export type TCmd = 'clean-dir' | 'copy-file' | 'move-file' | 'delete-path'

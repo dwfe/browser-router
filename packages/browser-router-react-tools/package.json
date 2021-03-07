@@ -11,28 +11,36 @@
     "type": "git",
     "url": "git@github.com:dwfe/browser-router.git"
   },
-  "main": "dist/js",
-  "typings": "dist/types",
+  "main": "./dist/js",
+  "typings": "./dist/types",
   "scripts": {
-    "clean": "rimraf ./dist",
+    "clean": "rimraf ./dist && rimraf package-lock.json",
     "build": "npm run clean && tsc -b",
     "prod": "npm run build && webpack"
+  },
+  "peerDependencies": {
+    "react": "",
+    "tsyringe": "",
+    "autosize": ""
   },
   "devDependencies": {
     "@types/node": "12",
     "@types/autosize": "*",
     "rimraf": "3",
     "typescript": "4",
-    "react": "17",
     "webpack": "4.44.2",
     "webpack-cli": "3",
     "ts-loader": "8",
-    "file-loader": "6"
+    "file-loader": "6",
+    "@dwfe/utils-node": "^2.0.0"
   },
   "dependencies": {
     "@do-while-for-each/browser-router": "^2.0.1",
-    "@do-while-for-each/path-resolver": "^2.0.1",
-    "tsyringe": "4",
-    "autosize": "4"
-  }
+    "@do-while-for-each/path-resolver": "^2.0.1"
+  },
+  "files": [
+    "dist/",
+    "package.json",
+    "README.md"
+  ]
 }

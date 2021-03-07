@@ -9,7 +9,7 @@ const defaultOptions: IRouteResultHandlerOptions = {
   injectData: true
 };
 
-export class RouteResultsHandler {
+export class RouteResultHandler {
 
   private router: BrowserRouter
   private unlistenFn!: () => void
@@ -39,11 +39,11 @@ export class RouteResultsHandler {
   }
 
   private injectProps({component, routeActionData}: TRouteResultArg): ReactElement {
-    if (!this.options.injectData)
-      return component;
-    return React.isValidElement(component)
-      ? React.cloneElement(component as any, {routeActionData})
-      : component;
+    if (this.options.injectData)
+      return React.isValidElement(component)
+        ? React.cloneElement(component as any, {routeActionData})
+        : component;
+    return component;
   }
 
 }

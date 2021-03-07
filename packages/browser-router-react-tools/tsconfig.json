@@ -4,23 +4,21 @@
     "baseUrl": ".",
     "outDir": "./dist/js",
     "declarationDir": "./dist/types",
+    //    "lib": [
+    //      "dom",
+    //      "dom.iterable",
+    //      "esnext"
+    //    ],
+    //    "allowJs": true,
+    //    "skipLibCheck": true,
+    //    "esModuleInterop": true,
+    //    "allowSyntheticDefaultImports": true,
 
-//    "lib": [
-//      "dom",
-//      "dom.iterable",
-//      "esnext"
-//    ],
-//    "allowJs": true,
-//    "skipLibCheck": true,
-//    "esModuleInterop": true,
-//    "allowSyntheticDefaultImports": true,
-
-//    "resolveJsonModule": true,
-//    "isolatedModules": true,
-//    "noEmit": true,
-    "jsx": "react-jsx",
-//    "experimentalDecorators": true
-
+    //    "resolveJsonModule": true,
+    //    "isolatedModules": true,
+    //    "noEmit": true,
+    "jsx": "react-jsx"
+    //    "experimentalDecorators": true
   },
   "exclude": [
     "node_modules",

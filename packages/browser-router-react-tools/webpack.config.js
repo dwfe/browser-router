@@ -1,15 +1,13 @@
+const {WebpackCompilerFileAction} = require('@dwfe/utils-node')
 const {join, resolve} = require('path')
 
 const DIST = resolve(__dirname, './dist')
-const SRC = resolve(__dirname, './src')
 
 module.exports = {
-  mode: 'production',
   entry: './index.tsx',
   output: {
     path: DIST,
     filename: 'index.js',
-    libraryTarget: 'umd'
   },
   module: {
     rules: [
@@ -26,9 +24,15 @@ module.exports = {
           outputPath: (url, resourcePath, context) =>
             'js' + resourcePath.replace(context, '')
         },
+        exclude: /node_modules/
       },
     ]
   },
+  plugins: [
+    new WebpackCompilerFileAction('done', [
+      ['delete-path', [join(DIST, 'index.js')]],
+    ]),
+  ],
   resolve: {
     extensions: ['.tsx', '.ts', '.js']
   },

@@ -4,7 +4,6 @@
   "license": "UNLICENSED",
   "version": "2.0.1",
   "devDependencies": {
-    "@types/autosize": "*",
     "@types/classnames": "2",
     "@types/node": "12",
     "@types/react": "16",
@@ -19,17 +18,17 @@
     "@do-while-for-each/browser-router": "^2.0.1",
     "@do-while-for-each/path-resolver": "^2.0.1",
     "@dwfe/browser-router-react-tools": "1",
-    "autosize": "4",
     "classnames": "2",
     "react": "17",
     "react-dom": "17",
     "react-modal": "3.12.1",
     "reflect-metadata": "0",
     "rxjs": "6",
-    "tsyringe": "4"
+    "tsyringe": "4",
+    "autosize": "4"
   },
   "scripts": {
-    "clean": "rimraf ./build",
+    "clean": "rimraf ./build && rimraf package-lock.json",
     "start": "react-scripts start",
     "build:prod": "npm run clean && react-scripts build",
     "test": "react-scripts test",
