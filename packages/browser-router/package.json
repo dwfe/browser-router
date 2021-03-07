@@ -1,7 +1,7 @@
 {
   "name": "@do-while-for-each/browser-router",
   "description": "Router for any browser-based JavaScript app",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "homepage": "https://github.com/dwfe/browser-router/tree/master/packages/browser-router",
   "bugs": "https://github.com/dwfe/browser-router/issues",
   "keywords": [
@@ -31,7 +31,7 @@
     "prod": "npm run build && webpack --config ./dist/js/webpack-prod.conf.js"
   },
   "devDependencies": {
-    "@dwfe/utils-node": "^2.0.0",
+    "@dwfe/utils-node": "^2.0.2",
     "@types/jest": "26",
     "@types/node": "12",
     "jest": "26.6.0",
@@ -43,7 +43,7 @@
     "webpack-cli": "3"
   },
   "dependencies": {
-    "@do-while-for-each/path-resolver": "^2.0.1",
+    "@do-while-for-each/path-resolver": "^2.0.2",
     "history": "5"
   },
   "files": [

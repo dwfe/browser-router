@@ -1,7 +1,7 @@
 {
   "name": "@do-while-for-each/browser-router-react-tools",
   "description": "Some browser-router's tools for React.js app",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "homepage": "https://github.com/dwfe/browser-router/tree/master/packages/browser-router-react-tools",
   "bugs": "https://github.com/dwfe/browser-router/issues",
   "keywords": [],
@@ -22,24 +22,24 @@
     "prod": "npm run build && webpack"
   },
   "peerDependencies": {
+    "autosize": "",
     "react": "",
-    "tsyringe": "",
-    "autosize": ""
+    "tsyringe": ""
   },
   "devDependencies": {
-    "@types/node": "12",
+    "@dwfe/utils-node": "^2.0.2",
     "@types/autosize": "*",
+    "@types/node": "12",
+    "file-loader": "6",
     "rimraf": "3",
+    "ts-loader": "8",
     "typescript": "4",
     "webpack": "4.44.2",
-    "webpack-cli": "3",
-    "ts-loader": "8",
-    "file-loader": "6",
-    "@dwfe/utils-node": "^2.0.0"
+    "webpack-cli": "3"
   },
   "dependencies": {
-    "@do-while-for-each/browser-router": "^2.0.1",
-    "@do-while-for-each/path-resolver": "^2.0.1"
+    "@do-while-for-each/browser-router": "^2.0.2",
+    "@do-while-for-each/path-resolver": "^2.0.2"
   },
   "files": [
     "dist/",
