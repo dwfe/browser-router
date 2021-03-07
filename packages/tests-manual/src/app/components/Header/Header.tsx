@@ -1,4 +1,4 @@
-import {Link, useDIInstance} from '@dwfe/browser-router-react-tools'
+import {Link, useDIInstance} from '@do-while-for-each/browser-router-react-tools'
 import {BrowserRouter} from '@do-while-for-each/browser-router'
 import React from 'react'
 import {BtnNavigate} from '../BtnNavigate/BtnNavigate'
@@ -22,7 +22,7 @@ export const Header = () => {
       <div className="page-header_info">
         <ol>
           <li>The routes used can be seen&nbsp;
-            <Link href="https://github.com/dwfe/browser-router/blob/master/packages/tests-manual/src/router/routes.tsx#L9" target="_blank">here</Link>
+            <Link href="https://github.com/dwfe/browser-router/blob/master/packages/tests-manual/src/router/routes.tsx#L10" target="_blank">here</Link>
           </li>
           <li>Trace output you can see in console</li>
         </ol>

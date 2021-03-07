@@ -1,4 +1,4 @@
-import {Link} from '@dwfe/browser-router-react-tools'
+import {Link} from '@do-while-for-each/browser-router-react-tools'
 import React from 'react'
 import './GitGetCode.css'
 

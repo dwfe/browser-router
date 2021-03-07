@@ -1,6 +1,6 @@
 import {IActionResult, IRoute} from '@do-while-for-each/path-resolver'
 import {Location} from '@do-while-for-each/browser-router'
-import {NotFoundPage} from '@dwfe/browser-router-react-tools'
+import {NotFoundPage} from '@do-while-for-each/browser-router-react-tools'
 import React, {ReactElement} from 'react'
 import {container} from 'tsyringe'
 import {AuthService, CanDeactivatePage, FirstPage, IndexPage, LoginPage, PicPage, ProtectedByAuthorization, SecondPage} from '../app/pages'

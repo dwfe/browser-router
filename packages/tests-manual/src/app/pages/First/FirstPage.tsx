@@ -1,4 +1,4 @@
-import {IRoutableProps, Link, RouteActionData} from '@dwfe/browser-router-react-tools'
+import {IRoutableProps, Link, RouteActionData} from '@do-while-for-each/browser-router-react-tools'
 import React from 'react'
 import {QaSel} from '../../qa-selector'
 

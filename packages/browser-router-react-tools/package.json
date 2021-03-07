@@ -1,9 +1,9 @@
 {
-  "name": "@dwfe/browser-router-react-tools",
-  "description": "Some browser-router tools for React.js app",
-  "version": "1.0.0",
-  "homepage": "",
-  "bugs": "",
+  "name": "@do-while-for-each/browser-router-react-tools",
+  "description": "Some browser-router's tools for React.js app",
+  "version": "2.0.1",
+  "homepage": "https://github.com/dwfe/browser-router/tree/master/packages/browser-router-react-tools",
+  "bugs": "https://github.com/dwfe/browser-router/issues",
   "keywords": [],
   "license": "MIT",
   "author": "Do-While-For-Each",
@@ -13,6 +13,9 @@
   },
   "main": "./dist/js",
   "typings": "./dist/types",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "clean": "rimraf ./dist && rimraf package-lock.json",
     "build": "npm run clean && tsc -b",
@@ -40,7 +43,7 @@
   },
   "files": [
     "dist/",
-    "package.json",
+    "LICENSE",
     "README.md"
   ]
 }

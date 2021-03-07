@@ -1,4 +1,4 @@
-import {IRoutableProps, RouteActionData, useDIInstance} from '@dwfe/browser-router-react-tools'
+import {IRoutableProps, RouteActionData, useDIInstance} from '@do-while-for-each/browser-router-react-tools'
 import React from 'react'
 import {AuthService} from './auth.service'
 import {QaSel} from '../../qa-selector'

@@ -1,4 +1,4 @@
-import {IRoutableProps, Link, RouteActionData, useDIInstance, useDocumentTitle} from '@dwfe/browser-router-react-tools'
+import {IRoutableProps, Link, RouteActionData, useDIInstance, useDocumentTitle} from '@do-while-for-each/browser-router-react-tools'
 import React, {useState} from 'react'
 import Modal from 'react-modal'
 import {CanDeactivateService} from './can-deactivate.service'

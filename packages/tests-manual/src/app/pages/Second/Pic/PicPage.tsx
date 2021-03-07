@@ -1,4 +1,4 @@
-import {IRoutableProps, RouteActionData, useDocumentTitle} from '@dwfe/browser-router-react-tools'
+import {IRoutableProps, RouteActionData, useDocumentTitle} from '@do-while-for-each/browser-router-react-tools'
 import React from 'react';
 import pic from './pic.png'
 
