@@ -1,4 +1,4 @@
-<p align="center">Some browser-router's tools for React.js app</p>
+<p align="center">Some <a href="https://github.com/dwfe/browser-router/tree/master/packages/browser-router">BrowserRouter's</a> tools for React.js app</p>
 
 ## Components
 
