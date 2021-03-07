@@ -4,6 +4,7 @@ const {join, resolve} = require('path')
 const DIST = resolve(__dirname, './dist')
 
 module.exports = {
+  mode: 'production',
   entry: './index.tsx',
   output: {
     path: DIST,
