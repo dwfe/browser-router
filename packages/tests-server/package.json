@@ -8,7 +8,7 @@
     "server:clean": "rimraf ./dist",
     "server:build": "npm run server:clean && tsc -b",
     "build watch": "tsc -b -w",
-    "sever:run": "node ."
+    "sever:run": "npm run server:build && node ."
   },
   "devDependencies": {
     "@types/express": "4",
