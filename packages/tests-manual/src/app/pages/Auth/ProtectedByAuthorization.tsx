@@ -1,6 +1,5 @@
+import {IRoutableProps, RouteActionData, useDIInstance} from '@dwfe/browser-router-react-tools'
 import React from 'react'
-import {useDIInstance} from '../../../hooks/use-di-instance'
-import {ActionData, IRoutableProps} from '../../../router'
 import {AuthService} from './auth.service'
 import {QaSel} from '../../qa-selector'
 
@@ -14,6 +13,6 @@ export const ProtectedByAuthorization = (props: IRoutableProps) => {
     <p>You have access to this protected by authorization page.</p>
     <button onClick={logOut} data-qa={QaSel.LoginPage_LogOut}>Log Out</button>
     <br/><br/>
-    <ActionData actionData={props.routeActionData}/>
+    <RouteActionData actionData={props.routeActionData}/>
   </div>)
 }

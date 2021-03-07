@@ -1,9 +1,7 @@
+import {IRoutableProps, Link, RouteActionData, useDIInstance, useDocumentTitle} from '@dwfe/browser-router-react-tools'
 import React, {useState} from 'react'
 import Modal from 'react-modal'
-import {useDocumentTitle} from '../../../hooks/use-document-title'
-import {ActionData, IRoutableProps, Link} from '../../../router'
 import {CanDeactivateService} from './can-deactivate.service'
-import {useDIInstance} from '../../../hooks/use-di-instance'
 import {defaultModalStyles} from '../modal.settings'
 import {QaSel} from '../../qa-selector'
 
@@ -45,7 +43,7 @@ export const CanDeactivatePage = (props: IRoutableProps) => {
         </div>
       </Modal>
 
-      <ActionData actionData={props.routeActionData}/>
+      <RouteActionData actionData={props.routeActionData}/>
     </div>
   )
 }

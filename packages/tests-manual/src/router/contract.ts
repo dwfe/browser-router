@@ -1,6 +1,6 @@
 import {IActionData, TRouteContext} from '@do-while-for-each/path-resolver'
 import {IResultListenersArg} from '@do-while-for-each/browser-router'
-import {HTMLProps, ReactElement} from 'react'
+import {ReactElement} from 'react'
 
 export type TRouteActionData = IActionData<IRouteNote, TCtx>
 export type TRouteResultArg = IResultListenersArg<ReactElement, TRouteActionData>
@@ -14,14 +14,6 @@ export type TCtx = TRouteContext & { // this context for example
 } | null // because history package type 'State' = object | null
 
 
-export interface IRoutableProps extends HTMLProps<any> {
-  routeActionData?: TRouteActionData;
-}
-
 export interface IRouteResultHandlerOptions {
-  injectRouteActionsDataToComponent?: boolean;
+  injectData?: boolean;
 }
-
-export const defaultRouteResultHandlerOptions: IRouteResultHandlerOptions = {
-  injectRouteActionsDataToComponent: true
-};

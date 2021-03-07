@@ -1,5 +1,5 @@
+import {Link} from '@dwfe/browser-router-react-tools'
 import React from 'react'
-import {Link} from '../../../router'
 import './Footer.css'
 
 export const Footer = () => {

@@ -1,6 +1,5 @@
+import {IRoutableProps, Link, RouteActionData, useDocumentTitle} from '@dwfe/browser-router-react-tools'
 import React from 'react'
-import {useDocumentTitle} from '../../hooks/use-document-title'
-import {ActionData, IRoutableProps, Link} from '../../router'
 import {QaSel} from '../qa-selector'
 
 export const IndexPage = (props: IRoutableProps) => {
@@ -14,7 +13,7 @@ export const IndexPage = (props: IRoutableProps) => {
       <Link href="https://tools.ietf.org/html/rfc2616" data-qa={QaSel.IndexPage_External}>external - Hypertext Transfer Protocol, RFC</Link><br/><br/>
       <Link href="/first" data-qa={QaSel.IndexPage_First}>First component</Link><br/><br/>
       <Link href="/second" data-qa={QaSel.IndexPage_Second}>Second component</Link><br/><br/>
-      <ActionData actionData={props.routeActionData}/>
+      <RouteActionData actionData={props.routeActionData}/>
     </div>
   )
 }

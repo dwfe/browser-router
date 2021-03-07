@@ -1,4 +1,4 @@
-<p align="center">Router for any JavaScript app</p>
+<p align="center">Router for any browser-based JavaScript app</p>
 
 ## Getting Started
 

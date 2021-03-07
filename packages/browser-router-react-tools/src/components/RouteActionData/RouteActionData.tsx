@@ -1,8 +1,8 @@
 import React, {useLayoutEffect, useRef} from 'react'
 import autosize from 'autosize'
-import './ActionData.css'
+import './RouteActionData.css'
 
-export const ActionData = ({actionData}: any) => {
+export const RouteActionData = ({actionData}: any) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   useLayoutEffect(() => {
@@ -12,9 +12,9 @@ export const ActionData = ({actionData}: any) => {
 
   return (
     <div>
-      <div className="ActionData">
-        <p className="ActionData_text">route action data (injected):</p>
-        <textarea className="ActionData_listing"
+      <div className="RouteActionData">
+        <p className="RouteActionData_text">route action data (injected):</p>
+        <textarea className="RouteActionData_listing"
                   value={JSON.stringify(actionData || 'empty', null, 2)}
                   readOnly={true}
                   ref={textareaRef}/>

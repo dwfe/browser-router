@@ -1,7 +1,7 @@
-import * as express from 'express'
+import express from 'express'
 import * as path from 'path'
 import * as fs from 'fs'
-import * as cors from 'cors'
+import cors from 'cors'
 import * as bodyParser from 'body-parser'
 
 const SRC_DIR = path.resolve(__dirname, 'src')

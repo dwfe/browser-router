@@ -18,6 +18,7 @@
   "dependencies": {
     "@do-while-for-each/browser-router": "^2.0.1",
     "@do-while-for-each/path-resolver": "^2.0.1",
+    "@dwfe/browser-router-react-tools": "1",
     "autosize": "4",
     "classnames": "2",
     "react": "17",

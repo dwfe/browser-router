@@ -1,14 +1,14 @@
 import {BrowserRouter} from '@do-while-for-each/browser-router';
 import React, {HTMLProps, SyntheticEvent} from 'react'
-import {useDIInstance} from '../../hooks/use-di-instance'
+import {useDIInstance} from '../../hooks'
 
 export const Link = (props: IProps) => {
-  const {href, onClick, children, ctx} = props
+  const {href, onClick, ctx, children} = props as any
   const [router] = useDIInstance(BrowserRouter)
 
   const handleClick = (event: SyntheticEvent) => {
     event.preventDefault()
-    onClick && onClick(event as any)
+    onClick?.(event as any);
     const target = event.currentTarget as HTMLAnchorElement;
     target.origin === window.location.origin
       ? router.goto(target, ctx)

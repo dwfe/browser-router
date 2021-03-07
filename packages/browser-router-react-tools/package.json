@@ -1,0 +1,38 @@
+{
+  "name": "@dwfe/browser-router-react-tools",
+  "description": "Some browser-router tools for React.js app",
+  "version": "1.0.0",
+  "homepage": "",
+  "bugs": "",
+  "keywords": [],
+  "license": "MIT",
+  "author": "Do-While-For-Each",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:dwfe/browser-router.git"
+  },
+  "main": "dist/js",
+  "typings": "dist/types",
+  "scripts": {
+    "clean": "rimraf ./dist",
+    "build": "npm run clean && tsc -b",
+    "prod": "npm run build && webpack"
+  },
+  "devDependencies": {
+    "@types/node": "12",
+    "@types/autosize": "*",
+    "rimraf": "3",
+    "typescript": "4",
+    "react": "17",
+    "webpack": "4.44.2",
+    "webpack-cli": "3",
+    "ts-loader": "8",
+    "file-loader": "6"
+  },
+  "dependencies": {
+    "@do-while-for-each/browser-router": "^2.0.1",
+    "@do-while-for-each/path-resolver": "^2.0.1",
+    "tsyringe": "4",
+    "autosize": "4"
+  }
+}

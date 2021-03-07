@@ -2,8 +2,12 @@ import {BrowserRouter} from '@do-while-for-each/browser-router'
 import React, {ReactElement} from 'react'
 import {container} from 'tsyringe'
 import ReactDOM from 'react-dom'
-import {defaultRouteResultHandlerOptions, IRouteResultHandlerOptions, TRouteResultArg} from './contract'
 import {GeneralTemplate} from '../app/templates/General/GeneralTemplate'
+import {IRouteResultHandlerOptions, TRouteResultArg} from './contract'
+
+const defaultOptions: IRouteResultHandlerOptions = {
+  injectData: true
+};
 
 export class RouteResultsHandler {
 
@@ -11,7 +15,7 @@ export class RouteResultsHandler {
   private unlistenFn!: () => void
 
   constructor(private root: HTMLElement | null,
-              private options: IRouteResultHandlerOptions = defaultRouteResultHandlerOptions) {
+              private options: IRouteResultHandlerOptions = defaultOptions) {
     this.router = container.resolve(BrowserRouter)
   }
 
@@ -35,7 +39,7 @@ export class RouteResultsHandler {
   }
 
   private injectProps({component, routeActionData}: TRouteResultArg): ReactElement {
-    if (!this.options.injectRouteActionsDataToComponent)
+    if (!this.options.injectData)
       return component;
     return React.isValidElement(component)
       ? React.cloneElement(component as any, {routeActionData})

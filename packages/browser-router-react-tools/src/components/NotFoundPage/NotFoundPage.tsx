@@ -1,7 +1,7 @@
 import React from 'react';
-import {useDocumentTitle} from '../../hooks/use-document-title'
-import {ActionData} from './ActionData/ActionData'
-import {IRoutableProps} from '../contract'
+import {RouteActionData} from '../RouteActionData/RouteActionData'
+import {useDocumentTitle} from '../../hooks'
+import {IRoutableProps} from '../../contract'
 
 export const NotFoundPage = (props: IRoutableProps) => {
   useDocumentTitle(props)
@@ -14,6 +14,6 @@ export const NotFoundPage = (props: IRoutableProps) => {
 
   return (<>
     <p>404. {message}</p>
-    <ActionData actionData={routeActionData}/>
+    <RouteActionData actionData={routeActionData}/>
   </>)
 }

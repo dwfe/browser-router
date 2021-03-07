@@ -1,7 +1,6 @@
+import {IRoutableProps, RouteActionData, useDIInstance} from '@dwfe/browser-router-react-tools'
 import React, {useState} from 'react'
 import Modal from 'react-modal'
-import {useDIInstance} from '../../../../hooks/use-di-instance'
-import {ActionData, IRoutableProps} from '../../../../router'
 import {defaultModalStyles} from '../../modal.settings'
 import {AuthService} from '../auth.service'
 import {QaSel} from '../../../qa-selector'
@@ -59,7 +58,7 @@ export const LoginPage = (props: IRoutableProps) => {
         <button onClick={closeModal} data-ok="ok">Ok</button>
       </Modal>
 
-      <ActionData actionData={props.routeActionData}/>
+      <RouteActionData actionData={props.routeActionData}/>
     </div>
   )
 }

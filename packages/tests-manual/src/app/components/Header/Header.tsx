@@ -1,10 +1,9 @@
+import {Link, useDIInstance} from '@dwfe/browser-router-react-tools'
 import {BrowserRouter} from '@do-while-for-each/browser-router'
 import React from 'react'
-import {useDIInstance} from '../../../hooks/use-di-instance'
 import {BtnNavigate} from '../BtnNavigate/BtnNavigate'
 import {GitGetCode} from '../GitGetCode/GitGetCode'
 import {QaSel} from '../../qa-selector'
-import {Link} from '../../../router'
 import './Header.css'
 
 export const Header = () => {

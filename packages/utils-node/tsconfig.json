@@ -1,10 +1,9 @@
 {
   "extends": "../../config/tsconfig",
   "compilerOptions": {
-    "composite": true,
     "baseUrl": ".",
-    "outDir": "dist/js",
-    "declarationDir": "dist/types"
+    "outDir": "./dist/js",
+    "declarationDir": "./dist/types"
   },
   "exclude": [
     "node_modules",
