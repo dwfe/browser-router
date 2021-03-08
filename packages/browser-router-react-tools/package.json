@@ -22,9 +22,9 @@
     "prod": "npm run build && webpack"
   },
   "peerDependencies": {
-    "autosize": "",
-    "react": "",
-    "tsyringe": ""
+    "autosize": "4",
+    "react": "17",
+    "tsyringe": "4"
   },
   "devDependencies": {
     "@dwfe/utils-node": "^2.0.2",

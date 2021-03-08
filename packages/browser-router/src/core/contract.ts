@@ -6,9 +6,9 @@ export interface IBrowserRouterOptions {
 }
 
 export const defaultOptions: IBrowserRouterOptions = {
-  isDebug: true,
+  isDebug: false,
   pathResolver: {
-    isDebug: true,
+    isDebug: false,
   }
 }
 

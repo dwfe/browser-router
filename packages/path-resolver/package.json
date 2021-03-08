@@ -41,7 +41,7 @@
     "webpack-cli": "3"
   },
   "dependencies": {
-    "path-to-regexp": "6"
+    "path-to-regexp": "6.2.0"
   },
   "files": [
     "dist/",
