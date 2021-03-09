@@ -28,6 +28,7 @@ export const routes: IRoute[] = [
       {path: 'check/redirect', customTo: {pathname: 'aqua', search: 'hello=12', hash: 'qwe'}}
     ]
   },
+  {path: ':userId', component: 'user'},
 ]
 
-export const routesTotalCount = 15
+export const routesTotalCount = 16

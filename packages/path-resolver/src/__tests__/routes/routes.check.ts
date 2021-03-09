@@ -28,4 +28,5 @@ export const routesCheck: IRoute[] = [
       {path: '/auto/check/redirect', customTo: {pathname: '/auto/aqua', search: 'hello=12', hash: 'qwe'}}
     ]
   },
+  {path: '/:userId', component: 'user'},
 ]

@@ -79,6 +79,13 @@ describe(`resolve`, () => {
     expect(res.route.customTo).toEqual({pathname: '/auto/aqua', search: 'hello=12', hash: 'qwe'})
     params = res.pathParams
     expect(Object.keys(params).length).toEqual(0)
+
+    // '/455'
+    res = pathResolver.resolve('/455') as IPathResolveResult
+    expect(res).toBeTruthy()
+    expect(res.route.component).toEqual('user')
+    expect(res.pathParams.userId).toEqual('455')
+
   })
 
   test('clone resolve', () => {

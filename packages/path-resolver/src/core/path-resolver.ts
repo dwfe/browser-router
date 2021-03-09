@@ -21,6 +21,12 @@ export class PathResolver {
 
     for (let i = 0; i < routes.length; i++) {
       let route = routes[i]
+
+      if (PathResolver.isWrongBranchByFirst(route.path, pathname)) {
+        this.log(`[x] ${route.path}, wrong branch`)
+        continue;
+      }
+
       const match: MatchResult<TPathParams> | false = matcher<TPathParams>(route.path)(pathname)
       this.log(`[${match ? 'v' : 'x'}] ${route.path}`)
 
@@ -63,6 +69,15 @@ export class PathResolver {
   static needToMatchChildren({redirectTo, component, children}: IRoute): boolean {
     return redirectTo === undefined && component === undefined // if 'redirectTo' and 'component' are omitted
       && children !== undefined && children.length > 0         // but children are available
+  }
+
+  static isWrongBranchByFirst(src: string, toCheck: string): boolean {
+    const srcFirst = src.split('/')[1] // check only first level: '/this'
+    const start = srcFirst[0];
+    if (start === undefined || start === ':' || start === '(') // can't check -> is same -> check or go inside branch
+      return false;
+    const checkFirst = toCheck.split('/')[1]
+    return srcFirst !== checkFirst;
   }
 
   private log(path: string) {
