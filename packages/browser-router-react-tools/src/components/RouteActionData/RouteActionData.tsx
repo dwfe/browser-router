@@ -1,14 +1,13 @@
-import {useLayoutEffect, useRef} from 'react'
+import {useEffect, useRef} from 'react'
 import autosize from 'autosize'
 import './RouteActionData.css'
 
 export const RouteActionData = ({actionData}: any) => {
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const textareaRef = useRef(null)
 
-  useLayoutEffect(() => {
-    if (!!textareaRef.current)
-      autosize(textareaRef.current)
-  }, [textareaRef])
+  useEffect(() => {
+    autosize(textareaRef.current)
+  })
 
   return (
     <div>
