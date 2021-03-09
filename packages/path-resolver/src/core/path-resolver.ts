@@ -74,7 +74,7 @@ export class PathResolver {
   static isWrongBranchByFirst(src: string, toCheck: string): boolean {
     const srcFirst = src.split('/')[1] // check only first level: '/this'
     const start = srcFirst[0];
-    if (start === undefined || start === ':' || start === '(') // can't check -> is same -> check or go inside branch
+    if (start === undefined || start === ':' || start === '(') // can't check -> is not wrong -> check or go inside branch
       return false;
     const checkFirst = toCheck.split('/')[1]
     return srcFirst !== checkFirst;
