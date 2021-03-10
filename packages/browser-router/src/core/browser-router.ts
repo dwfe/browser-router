@@ -21,14 +21,10 @@ export class BrowserRouter<TComponent = any, TNote = any,
   constructor(routes: IRoute[],
               public options = defaultOptions) {
     if (!document?.defaultView)
-      throw new Error(`Object 'window' must be present, because this is router of Browser`)
+      throw new Error(`Object 'window' must be present, because this is router for Browser`)
     this.window = document.defaultView
     this.pathResolver = new PathResolver(routes, options.pathResolver)
     this.locationHandler = new LocationHandler(this)
-  }
-
-  get currentPath(): Path {
-    return Path.of(this.window.location)
   }
 
   start(ctx?: TContext): void {
@@ -39,17 +35,24 @@ export class BrowserRouter<TComponent = any, TNote = any,
   private onLocationChange({location}: Update<TContext>): void {
     this.locationHandler
       .processLocation(location)
-      .then(task => this.routeActivation(task))
+      .then(task => this.activateResult(task))
   }
 
-  private routeActivation(task?: Task): void {
-    if (!task)
-      return;
-    const {isCanceled, result, id} = task
-    isCanceled
-      ? this.log(id, 'canceled')
-      : result()
+  private activateResult(task?: Task): void {
+    if (!task) return;
+    task.isCanceled
+      ? this.log(task.id, 'canceled')
+      : task.result()
   }
+
+  get currentPath(): Path {
+    return Path.of(this.window.location)
+  }
+
+  isSameLocation(path: IPath): boolean {
+    return this.currentPath.isLocationEquals(path)
+  }
+
 
   goto(to: To, ctx?: TContext): void {
     const path = Path.normalize(to);
@@ -87,12 +90,12 @@ export class BrowserRouter<TComponent = any, TNote = any,
    *  because we are already in the target location.
    *  We just need to find the route and activate it.
    */
-  gotoWithoutChangeLocation(ctx: TContext = null as TContext, hash?: string): void {
+  gotoWithoutChangeLocation(ctx?: TContext, hash?: string): void {
     const currentPath = this.currentPath.simplify()
     const update: Update<TContext> = {
       action: Action.Push,
       location: {
-        state: ctx,
+        state: ctx || null,
         key: this.window.history.state?.key || 'default',
         ...currentPath,
         hash: hash || currentPath.hash // location has not changed, but hash can
@@ -101,20 +104,17 @@ export class BrowserRouter<TComponent = any, TNote = any,
     this.onLocationChange(update)
   }
 
+
   block(blocker: Blocker<TContext>): () => void {
     return this.history.block(blocker)
   }
 
 
-//region Utils
+//region Support
 
   log(id: string, ...args): void {
     if (this.options.isDebug)
       console.log(`[ ${id} ]`, ...args)
-  }
-
-  isSameLocation(path: IPath): boolean {
-    return this.currentPath.isLocationEquals(path)
   }
 
 //endregion
