@@ -27,7 +27,7 @@ export interface IRoute<TComponent = any, TNote = any,
   TActionResult extends IActionResult<TComponent> = IActionResult<TComponent>,
   TContext extends TRouteContext = TRouteContext> {
 
-  path: string; // see syntax here: https://github.com/pillarjs/path-to-regexp#readme
+  path: string; // see syntax here: https://www.npmjs.com/package/path-to-regexp
 
   canActivate?: (data: IActionData<TNote, TContext>) => Promise<TActionResult>;
   canDeactivate?: (tryRelocation: Location<TContext>, data: IActionData<TNote, TContext>) => Promise<boolean>;

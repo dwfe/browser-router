@@ -1,10 +1,11 @@
 import {ICustomTo, IRoute} from './contract'
 import {Clone} from './clone'
+import {Check} from './check'
 
 export class Init {
 
   static route(r: IRoute, parentPath: string): IRoute {
-    Init.checkLeadSlash(r.path)
+    Check.leadSlash(r.path)
     const route = Clone.route(r)
     route.path = Init.path(route.path, parentPath)
     route.redirectTo = Init.to(route.redirectTo, parentPath)
@@ -46,8 +47,4 @@ export class Init {
     return children?.map(route => Init.route(route, parentPath))
   }
 
-  static checkLeadSlash(path: string) {
-    if (path[0] === '/')
-      throw new Error(`Invalid configuration of route, because path [ ${path} ] cannot start with a slash`)
-  }
 }
