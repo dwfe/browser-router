@@ -2,8 +2,8 @@
   "extends": "./config/tsconfig",
   "compilerOptions": {
     "composite": true,
-    "outDir": "dist/js",
     "baseUrl": ".",
+    "outDir": "dist/js",
     "skipLibCheck": true
   },
   "references": [
