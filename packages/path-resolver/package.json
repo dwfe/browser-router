@@ -34,7 +34,7 @@
     "prod": "npm run build && webpack --config ./dist/js/webpack-prod.conf.js"
   },
   "devDependencies": {
-    "@do-while-for-each/webpack": "1",
+    "@do-while-for-each/webpack": "^1.0.1",
     "@types/jest": "26",
     "@types/node": "12",
     "history": "5.0.0",

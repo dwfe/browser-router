@@ -1,5 +1,5 @@
 import {Location} from '@do-while-for-each/browser-router'
-import {SubjectWrap} from '@do-while-for-each/rxjs'
+import {Subj} from '@do-while-for-each/rxjs'
 import {TRouteActionData} from '../../../router'
 
 export class CanDeactivateService {
@@ -8,7 +8,7 @@ export class CanDeactivateService {
   initCheck: any
   tryRelocation: Location | null = null
 
-  canBeDeactivated = new SubjectWrap<boolean>()
+  canBeDeactivated = new Subj<boolean>()
 
   async canDeactivate(tryRelocation: Location, data: TRouteActionData): Promise<boolean> {
     if (this.isItBeingCheckedNow) {

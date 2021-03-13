@@ -32,7 +32,7 @@
     "tsyringe": "^4.4.0"
   },
   "devDependencies": {
-    "@do-while-for-each/webpack": "1",
+    "@do-while-for-each/webpack": "^1.0.1",
     "@types/autosize": "*",
     "@types/node": "12",
     "file-loader": "6",
