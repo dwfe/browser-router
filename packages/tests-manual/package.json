@@ -2,7 +2,7 @@
   "name": "@dwfe/tests-manual",
   "private": true,
   "license": "UNLICENSED",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "devDependencies": {
     "@types/classnames": "2",
     "@types/node": "12",
@@ -15,9 +15,9 @@
     "typescript": "4"
   },
   "dependencies": {
-    "@do-while-for-each/browser-router": "^2.0.2",
-    "@do-while-for-each/browser-router-react-tools": "^2.0.2",
-    "@do-while-for-each/path-resolver": "^2.0.2",
+    "@do-while-for-each/browser-router": "^2.0.3",
+    "@do-while-for-each/browser-router-react-tools": "^2.0.3",
+    "@do-while-for-each/path-resolver": "^2.0.3",
     "@do-while-for-each/rxjs": "1",
     "autosize": "4",
     "classnames": "2",

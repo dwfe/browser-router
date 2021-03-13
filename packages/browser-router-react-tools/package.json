@@ -1,7 +1,7 @@
 {
   "name": "@do-while-for-each/browser-router-react-tools",
   "description": "Some browser-router's tools for React.js app",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "homepage": "https://github.com/dwfe/browser-router/tree/master/packages/browser-router-react-tools",
   "bugs": "https://github.com/dwfe/browser-router/issues",
   "keywords": [],
@@ -32,6 +32,7 @@
     "tsyringe": "4"
   },
   "devDependencies": {
+    "@do-while-for-each/webpack": "1",
     "@types/autosize": "*",
     "@types/node": "12",
     "file-loader": "6",
@@ -39,11 +40,10 @@
     "ts-loader": "8",
     "typescript": "4",
     "webpack": "4.44.2",
-    "webpack-cli": "3",
-    "@do-while-for-each/webpack": "1"
+    "webpack-cli": "3"
   },
   "dependencies": {
-    "@do-while-for-each/browser-router": "^2.0.2",
-    "@do-while-for-each/path-resolver": "^2.0.2"
+    "@do-while-for-each/browser-router": "^2.0.3",
+    "@do-while-for-each/path-resolver": "^2.0.3"
   }
 }
