@@ -27,9 +27,9 @@
     "prod": "npm run build && webpack"
   },
   "peerDependencies": {
-    "autosize": "4",
-    "react": "17",
-    "tsyringe": "4"
+    "autosize": "^4.0.2",
+    "react": "^17.0.1",
+    "tsyringe": "^4.4.0"
   },
   "devDependencies": {
     "@do-while-for-each/webpack": "1",
