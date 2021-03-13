@@ -1,4 +1,4 @@
-import {defaultPixelmatchOptions, IAutomationEnvironmentOptions, Storage} from '@dwfe/utils-node';
+import {defaultPixelmatchOptions, IAutomationEnvironmentOptions, Storage} from '@do-while-for-each/node-utils';
 
 export const firefox800x600: IAutomationEnvironmentOptions = {
   browserType: 'firefox',

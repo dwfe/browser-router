@@ -1,4 +1,4 @@
-const {WebpackCompilerFileAction} = require('@dwfe/utils-node')
+const {WebpackCompilerFileAction} = require('@do-while-for-each/webpack')
 const {join, resolve} = require('path')
 
 const DIST = resolve(__dirname, './dist')

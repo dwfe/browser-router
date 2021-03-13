@@ -34,7 +34,6 @@
     "prod": "npm run build && webpack --config ./dist/js/webpack-prod.conf.js"
   },
   "devDependencies": {
-    "@dwfe/utils-node": "^2.0.2",
     "@types/jest": "26",
     "@types/node": "12",
     "history": "5",
@@ -43,7 +42,8 @@
     "ts-jest": "26",
     "typescript": "4",
     "webpack": "4.44.2",
-    "webpack-cli": "3"
+    "webpack-cli": "3",
+    "@do-while-for-each/webpack": "1"
   },
   "dependencies": {
     "path-to-regexp": "6.2.0"

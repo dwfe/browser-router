@@ -1,5 +1,5 @@
 import {afterAll, beforeAll, describe, expect, test} from '@jest/globals';
-import {AutomationEnvironment} from '@dwfe/utils-node';
+import {AutomationEnvironment} from '@do-while-for-each/node-utils';
 import {addAttach} from 'jest-html-reporters/helper';
 import {TaskFactory} from './task/task.factory';
 import {TaskIds} from './task/task.id';

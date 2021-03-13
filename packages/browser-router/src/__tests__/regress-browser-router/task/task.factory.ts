@@ -1,4 +1,4 @@
-import {AutomationEnvironment, Command, ITask} from '@dwfe/utils-node';
+import {AutomationEnvironment, Command, ITask} from '@do-while-for-each/node-utils';
 import {ClickTask} from './01.click.task';
 import {TaskIds} from './task.id';
 

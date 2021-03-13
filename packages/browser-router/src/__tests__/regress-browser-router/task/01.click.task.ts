@@ -1,4 +1,4 @@
-import {Command, TCommand} from '@dwfe/utils-node';
+import {Command, TCommand} from '@do-while-for-each/node-utils';
 import {AbstractClickTask} from './abstract-click.task';
 
 const {goto} = Command;

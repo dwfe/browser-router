@@ -1,4 +1,4 @@
-import {StandardProdConf} from '@dwfe/utils-node'
+import {StandardProdConf} from '@do-while-for-each/webpack'
 import {Configuration} from 'webpack'
 import {resolve} from 'path'
 

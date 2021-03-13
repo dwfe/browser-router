@@ -1,4 +1,4 @@
-import {AbstractTask, AutomationEnvironment, Command, TCommand} from '@dwfe/utils-node';
+import {AbstractTask, AutomationEnvironment, Command, TCommand} from '@do-while-for-each/node-utils';
 import {QaSel} from './qa-selector';
 import {TaskId} from './task.id';
 
