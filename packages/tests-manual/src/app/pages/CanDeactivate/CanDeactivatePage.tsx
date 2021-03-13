@@ -14,9 +14,9 @@ export const CanDeactivatePage = (props: IRoutableProps) => {
   const [deactSrv] = useDIInstance(CanDeactivateService)
   deactSrv.isItBeingCheckedNow = showModal
   deactSrv.initCheck = () => setShowModal(true)
-  const canBeDeactivated = (can: boolean) => {
+  const canBeDeactivated = (value: boolean) => {
     setShowModal(false)
-    deactSrv.canBeDeactivatedResultWrap.setValue(can)
+    deactSrv.canBeDeactivated.setValue(value)
   }
   const afterOpenModal = () => {
     const btn = document.querySelector(`[data-qa=${QaSel.CanDeactivatePage_DialogueYes}]`) as HTMLButtonElement
