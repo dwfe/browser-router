@@ -22,6 +22,11 @@
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "dist/",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "clean": "rimraf ./dist && rimraf package-lock.json",
     "build": "npm run clean && tsc -b",
@@ -42,11 +47,5 @@
   },
   "dependencies": {
     "path-to-regexp": "6.2.0"
-  },
-  "files": [
-    "dist/",
-    "LICENSE",
-    "README.md"
-  ],
-  "gitHead": "ba5aa382e029d28b722b620c1d7ff909a63508ec"
+  }
 }
