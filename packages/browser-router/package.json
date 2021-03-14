@@ -39,7 +39,7 @@
     "@do-while-for-each/node-utils": "^1.0.7",
     "@do-while-for-each/webpack": "^1.0.1",
     "@types/jest": "26",
-    "@types/node": "12",
+    "@types/node": "^12",
     "jest": "26.6.0",
     "jest-html-reporters": "2.1.2",
     "rimraf": "3",
@@ -50,6 +50,6 @@
   },
   "dependencies": {
     "@do-while-for-each/path-resolver": "^2.0.4",
-    "history": "5.0.0"
+    "history": "^5.0.0"
   }
 }
