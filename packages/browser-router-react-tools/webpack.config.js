@@ -1,4 +1,4 @@
-const {WebpackCompilerFileAction} = require('@do-while-for-each/webpack')
+const {WebpackCompilerFileAction} = require('@do-while-for-each/develop')
 const {join, resolve} = require('path')
 
 const DIST = resolve(__dirname, './dist')

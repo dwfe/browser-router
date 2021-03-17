@@ -32,16 +32,9 @@
     "tsyringe": "^4.4.0"
   },
   "devDependencies": {
+    "@do-while-for-each/develop": "^1.0.1",
     "@do-while-for-each/path-resolver": "^2.0.4",
-    "@do-while-for-each/webpack": "^1.0.1",
-    "@types/autosize": "*",
-    "@types/node": "^12",
-    "file-loader": "6",
-    "rimraf": "3",
-    "ts-loader": "8",
-    "typescript": "4",
-    "webpack": "4.44.2",
-    "webpack-cli": "3"
+    "@types/autosize": "*"
   },
   "dependencies": {
     "@do-while-for-each/browser-router": "^2.0.4"
