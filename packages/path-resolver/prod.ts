@@ -1,3 +1,3 @@
-import {StandardProd} from '@do-while-for-each/develop'
+import {WebProd} from '@do-while-for-each/develop'
 
-new StandardProd()
+new WebProd()

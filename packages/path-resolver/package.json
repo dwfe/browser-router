@@ -34,7 +34,7 @@
     "prod": "npm run build && node ./dist/js/prod.js"
   },
   "devDependencies": {
-    "@do-while-for-each/develop": "^1.0.1",
+    "@do-while-for-each/develop": "^1.0.2",
     "history": "^5.0.0"
   },
   "dependencies": {

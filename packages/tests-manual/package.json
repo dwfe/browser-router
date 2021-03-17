@@ -16,7 +16,7 @@
     "@do-while-for-each/browser-router": "^2.0.4",
     "@do-while-for-each/browser-router-react-tools": "^2.0.4",
     "@do-while-for-each/path-resolver": "^2.0.4",
-    "@do-while-for-each/rxjs": "^1.0.6",
+    "@do-while-for-each/rxjs": "^1.0.8",
     "autosize": "^4.0.2",
     "classnames": "2",
     "react": "^17.0.1",
