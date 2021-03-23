@@ -49,6 +49,11 @@ export interface IActionData<TNote = any, TContext extends TRouteContext = TRout
 
   target: IActionDataTarget;
 
+  route: {
+    note?: TNote;  // 'note' field defined in the route
+    name?: string; // 'name' field defined in the route
+  }
+
   /**
    * Context is unreliable!, because context will be null when:
    *   - user manually changes link in the browser line, then follows it;
@@ -57,10 +62,6 @@ export interface IActionData<TNote = any, TContext extends TRouteContext = TRout
    * for independent reuse of values better use 'target.search' or 'note' fields
    */
   ctx: TContext;
-
-  note?: TNote; // note field defined in the route
-
-  previous?: IActionData<TNote, TContext>;
 
   /**
    * A unique string associated with this location. May be used to safely store
@@ -71,6 +72,8 @@ export interface IActionData<TNote = any, TContext extends TRouteContext = TRout
    * @see https://github.com/ReactTraining/history/tree/master/docs/api-reference.md#location.key
    */
   key: string;
+
+  previous?: IActionData<TNote, TContext>;
 
 }
 

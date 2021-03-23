@@ -6,7 +6,7 @@ export class FirstPage extends React.Component<IRoutableProps, any> {
 
   constructor(props: IRoutableProps) {
     super(props)
-    const title = props?.routeActionData?.note?.title
+    const title = props?.routeActionData?.route?.note?.title
     if (title) {
       document.title = title
     }

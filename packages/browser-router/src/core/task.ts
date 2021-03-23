@@ -130,10 +130,13 @@ export class Task<TComponent = any, TNote = any,
         search,
         hash,
       },
+      route: {
+        note: this.route.note,
+        name: this.route.name,
+      },
       ctx: state,
-      note: this.route.note,
-      previous,
       key,
+      previous,
     }
   }
 
