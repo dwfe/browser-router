@@ -1,0 +1,50 @@
+{
+  "name": "@do-while-for-each/browser-router",
+  "description": "Router for any browser-based JavaScript app",
+  "version": "3.0.1",
+  "exports": "./dist/cjs/index.js",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/types/*"
+      ]
+    }
+  },
+  "homepage": "https://github.com/dwfe/browser-router",
+  "bugs": "https://github.com/dwfe/browser-router/issues",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:dwfe/browser-router.git"
+  },
+  "keywords": [
+    "browser router",
+    "router",
+    "routing"
+  ],
+  "author": "Do|While|For|Each",
+  "license": "MIT",
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md"
+  ],
+  "dependencies": {
+    "@do-while-for-each/path-resolver": "^2.0.8",
+    "history": "5.3.0"
+  },
+  "devDependencies": {
+    "@do-while-for-each/tsconfig": "^1.0.3",
+    "@do-while-for-each/common": "^1.2.16"
+  },
+  "scripts": {
+    "clean": "dwfeFs cleanDir . --fileNames=\"dist;node_modules;package-lock.json\"",
+    "build": "dwfeFs rmForce dist --noConfirm && tsc -b src/tsconfig.json",
+    "version": "npm run build",
+    "postversion": "git push",
+    "deploy": "npm version patch && npm publish"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
