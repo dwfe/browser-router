@@ -1,7 +1,7 @@
 {
   "name": "@do-while-for-each/browser-router",
   "description": "Router for any browser-based JavaScript app",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "exports": "./dist/cjs/index.js",
   "typesVersions": {
     "*": {
