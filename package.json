@@ -30,12 +30,12 @@
     "README.md"
   ],
   "dependencies": {
-    "@do-while-for-each/path-resolver": "^2.0.8",
+    "@do-while-for-each/path-resolver": "2.x.x",
     "history": "5.3.0"
   },
   "devDependencies": {
-    "@do-while-for-each/tsconfig": "^1.0.3",
-    "@do-while-for-each/common": "^1.2.16"
+    "@do-while-for-each/tsconfig": "1.x.x",
+    "@do-while-for-each/common": "1.x.x"
   },
   "scripts": {
     "clean": "dwfeFs cleanDir . --fileNames=\"dist;node_modules;package-lock.json\"",
